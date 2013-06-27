@@ -1,0 +1,9 @@
+---
+layout: default
+title: Patrick Lioi
+---
+{% for post in site.posts limit:1 %}
+  <h1><a href="{{ page.url }}">{{ page.title }}</a></h1>
+  <div>{{ page.date | date_to_string }}</div>
+  {{ content }}
+{% endfor %}
