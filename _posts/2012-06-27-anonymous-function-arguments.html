@@ -1,0 +1,37 @@
+---
+title: Anonymous Function Arguments
+layout: post
+---
+
+A lambda expression is also called an "anonymous function" as it has no official name of its own: <code>x => x + 1</code> does some work, but there's no declared name for that function.  Anonymous functions are powerful and expressive, and are now common in .NET projects.
+
+Anonymous function <em>arguments</em>, on the other hand, are weak and inexpressive.  Since the advent of the <code>Func</code> and <code>Action</code> delegate types, anonymous arguments have unfortuanately become as common as anonymous functions.  That is a trend I'd like to quash ASAP.<!--more-->
+
+<h2>Sneaky Ambiguity</h2>
+What do I mean by "anonymous function arguments"?  Let's say someone else has written a method that takes in a <code>Func</code> and then invokes it as part of its own work:
+
+[gist id="2992221"]
+
+Let's say you really need to reticulate some splines, and you have a general idea of what function you should be passing into the <code>ReticulateSplines</code> method, but you don't happen to really know what the int and bool arguments are supposed to signify.  You confidently put your keyboard to work and get as far as the open-parenthesis in but a few keystrokes:
+
+[gist id="2992224"]
+
+Alas, your stalled and blinking cursor finds your youthful confidence quaint but ultimately futile.  Visual Studio isn't going to be of any use here.  The most you'll find out from Intellisense is that you need to supply some function that takes in an int and a bool.  <code>Func</code>'s declared argument names are <em>arg1</em> and <em>arg2</em>.  These names are so useless that they might as well not exist.  Hence, "anonymous" function arguments.
+
+<code>ReticulateSplines</code> has a descriptive name for its <em>own</em> argument (<code>generateSplines</code>), but has provided no clue as to what the arguments to this <code>Func</code> are.  If I started writing methods with parameters named <em>arg1</em>, <em>arg2</em>, <em>arg3</em>… I'd be immediately despised by every other developer who had to use my code.  Why, then, should I be able to get away with expecting those same developers to make sense of delegate arguments that have equally-ambiguous names?
+
+<h2>Getting Specific</h2>
+The <code>delegate</code> keyword gets used less and less now that <code>Func</code> and <code>Action</code> are used for everything.  It's time to dust it off and put it to work again.  When faced with the problem of anonymous function arguments, and you can resolve the problem with a simple delegate declaration.
+
+I recently needed to call a method that accepted an <code>Action&lt;Action, Action&gt;</code>.  I had a rough idea of what such an action needed to accomplish, but even after reading the body of the method in question I was unsure of the details.  The two anonymous arguments (the two inner actions) were passed around a bit before they were actually used.  Thankfully, someone had successfully called this method before, and after looking at the concrete method declaration that was being used in that case, I had a real clue what <em>arg1</em> and <em>arg2</em> were supposed to be called.
+
+The fix was to introduce a more useful yet equivalent delegate type.
+
+[gist id="2995736"]
+
+Now, I could replace all usages of <code>Action&lt;Action, Action&gt;</code> with <code>SavePromptContinuation</code>.  Back in my own code, Intellisense started offering the help I needed, and more importantly started offering the help that the next developer would inevitably need.  When trying to call a method that accepts one of these, ReSharper even offers to write the method stub for the specific delegate expected, complete with well-named parameters!
+
+<code>Func</code> and <code>Action</code> are useful because they are <em>at hand</em>, but the other edge of that sword may just cut your fellow developers.  Here's some advice for their use:
+
+1. Use <code>Func</code> and <code>Action</code> when writing something that is inherently so abstract that you can't be more specific.
+2. You are not writing something that abstract.

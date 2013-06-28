@@ -1,0 +1,34 @@
+---
+title: You could have invented lambda expressions
+layout: post
+---
+
+Delegate types and lambda expressions have been a part of the .NET tool belt for a while now, so they show up everywhere. If you've ever used StructureMap, AutoMapper, ASP.NET MVC and the like, then you've surely run into them. Despite this, delegates and lambdas tend to confuse developers when first encountered. Even when you get comfortable with the syntax as it's used in your favorite library, you might not really be familiar with what they <em>are</em> or how they allow for such seemingly magical statements.
+
+Let's pretend that delegate types and lambdas don't exist yet, and then reinvent them in terms of other .NET concepts that are more widely understood.
+
+Suppose we have been given an IEnumerable&lt;Customer&gt; and we want to filter that down to the list of those customers who live in Texas. Without delegates, we could write the obvious loop like so:<!--more-->
+
+{% gist 1253799 %}
+
+Yeesh. I have written foreach-if-add loops a thousand times. Whenever we find ourselves writing virtually the same thing again and again, we should take a step back and think, "Is there a deeper concept here I could pull out into a library?" We have some subtle code duplication whenever we write foreach-if-add loops.
+
+To remove duplication, we first identify what parts vary from one instance of the pattern to the next. For foreach-if-add loops, the things that vary are the type of the items being filtered, and the if-statement's condition expression. To bottle up the foreach-if-add loop, we need a new method that takes in the condition as an <em>argument</em>. Without delegates, we could deal with this using an interface:
+
+{% gist 1253795 %}
+
+Ok, so we've pulled out the foreach-if-add loop into a reusable <code>Where</code> extension method. Still, though, that's a lot of boilerplate code: every time we want to call <code>Where</code> with a new filter, we have to bottle it up in a whole new class.
+
+Let's start removing boilerplate code until we're left with delegates! With this example, we can <strong>imagine a whole family of interfaces that have one thing in common: interfaces with a single method named <code>RunMe</code>, whose implementing classes contain only that method.</strong> If we knew this family of interfaces only have one method, and its name was always <code>RunMe</code>, then we could avoid even writing its name: <code>condition.RunMe(item)</code> could be shortened to simply <code>condition(item)</code>. Since the relevant part of a single <code>IFilterCondition</code> implementation is the body of the now-nameless method, we should be able to simply provide the code for that method inline:
+
+{% gist 1253808 %}
+
+<strong>We can imagine that this use of the <code>delegate</code> keyword is just shorthand for an instance of a class implementing our single-method interface.</strong>
+
+Since most of these small unnamed classes exist just to evaluate and return a single expression, we might as well get rid of the <code>return</code> keyword and braces. Since we already know what the item type T is, we might as well leave out the type declaration of the <code>customer</code> parameter, allowing the compiler to fill in the blank. We'll need <em>something</em> between the argument list and the return expression so the compiler knows which is which, so we introduce the =&gt; operator. This makes the <code>delegate</code> keyword redundant, leaving us with some valid (and clean!) C#:
+
+{% gist 1253881 %}
+
+There's a lot more to delegates and lamda expressions, but in most cases I find it easiest to reason about them as shorthand for the interfaces and classes we would have otherwise used.
+
+If you found this blog to be helpful <a href="http://www.headspring.com/feed" target="_blank">subscribe to our blog feed</a> for the freshest content.
