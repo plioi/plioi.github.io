@@ -3,7 +3,7 @@ title: Graphiti
 layout: post
 ---
 
-Back in college, I stumbled across a great tool called <a href="http://www.graphviz.org/">GraphViz</a>.  I used it to generate class diagrams from the source of a PHP application I was working on.  More recently, I've found it useful again for visualizing the *runtime* relationships between objects.  GraphViz can turn a plaintext description of relationships into a graph image.  Not "graph" as in "charts and graphs", but "graph" as in "computer science graph".  Nodes and edges:
+Back in college, I stumbled across a great tool called [GraphViz](http://www.graphviz.org/).  I used it to generate class diagrams from the source of a PHP application I was working on.  More recently, I've found it useful again for visualizing the *runtime* relationships between objects.  GraphViz can turn a plaintext description of relationships into a graph image.  Not "graph" as in "charts and graphs", but "graph" as in "computer science graph".  Nodes and edges:
 
 <a href="http://www.headspring.com/wp-content/uploads/2013/02/simple.png"><img src="http://www.headspring.com/wp-content/uploads/2013/02/simple.png" alt="simple" width="179" height="251" class="aligncenter size-medium wp-image-6425" /></a>
 
@@ -41,7 +41,7 @@ Next, take a look at the way the optional parameters were supplied in the earlie
 
 {% gist 5014245 %}
 
-I *could* have instead provided a real named class with all the possible dot properties already defined.  Doing so would be useful as it would give the developer statement completion suggestions, but the <a href="http://www.graphviz.org/doc/info/attrs.html">dot file format is actually quite extensive</a>.  In this case, it's a very reasonable tradeoff to use anonymous objects and reflection for these node and edge attributes.  Even with statement completion, you'd find yourself frequently looking up details in the documentation anyway, so the return on investment would be ridiculous.
+I *could* have instead provided a real named class with all the possible dot properties already defined.  Doing so would be useful as it would give the developer statement completion suggestions, but the [dot file format is actually quite extensive](http://www.graphviz.org/doc/info/attrs.html).  In this case, it's a very reasonable tradeoff to use anonymous objects and reflection for these node and edge attributes.  Even with statement completion, you'd find yourself frequently looking up details in the documentation anyway, so the return on investment would be ridiculous.
 
 We can represent a single node in the graph like so:
 

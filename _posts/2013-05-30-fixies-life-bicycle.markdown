@@ -3,7 +3,7 @@ title: Fixie's Life Bicycle
 layout: post
 ---
 
-Last week, we saw how the <a href="https://github.com/plioi/fixie">Fixie test framework</a> gives you control over <a href="http://www.headspring.com/patrick/test-discovery/">test discovery</a>. This week, we'll see my first (admittedly rough) attempt at similarly giving you control over test *execution*. Let's start with a quick review of last week's test discovery feature, and then extend the example to demonstrate Fixie's treatment of test execution.
+Last week, we saw how the [Fixie test framework](https://github.com/plioi/fixie) gives you control over [test discovery](http://www.headspring.com/patrick/test-discovery/). This week, we'll see my first (admittedly rough) attempt at similarly giving you control over test *execution*. Let's start with a quick review of last week's test discovery feature, and then extend the example to demonstrate Fixie's treatment of test execution.
 
 ## Test Discovery (Again)
 
@@ -35,7 +35,7 @@ That's not at all like NUnit! Thankfully, our custom convention was honored so t
 
 <blockquote>The functionality covered in this section is in its infancy and is likely to change in the short term, but serves to demonstrate the kind of customization I am shooting for.</blockquote>
 
-Fixie's Samples project contains a more useful <a href="https://github.com/plioi/fixie/blob/cd85b7ddae14dbe7deb82d2070a314fd8d710819/src/Fixie.Samples/NUnitStyle/CustomConvention.cs">NUnit look-alike convention</a>:
+Fixie's Samples project contains a more useful [NUnit look-alike convention](https://github.com/plioi/fixie/blob/cd85b7ddae14dbe7deb82d2070a314fd8d710819/src/Fixie.Samples/NUnitStyle/CustomConvention.cs):
 
 [gist id="5675332"]
 
@@ -45,6 +45,6 @@ Armed with this new convention, running the sample test class confirms that we'r
 
 [gist id="5675335"]
 
-The FixtureExecutionBehavior you select in your convention is the key driving force affecting how your test classes will be executed. There are two built-in behaviors: <a href="https://github.com/plioi/fixie/blob/cd85b7ddae14dbe7deb82d2070a314fd8d710819/src/Fixie/Behaviors/CreateInstancePerCase.cs">CreateInstancePerCase</a>, and <a href="https://github.com/plioi/fixie/blob/cd85b7ddae14dbe7deb82d2070a314fd8d710819/src/Fixie/Behaviors/CreateInstancePerFixture.cs">CreateInstancePerFixture</a>.
+The FixtureExecutionBehavior you select in your convention is the key driving force affecting how your test classes will be executed. There are two built-in behaviors: [CreateInstancePerCase](https://github.com/plioi/fixie/blob/cd85b7ddae14dbe7deb82d2070a314fd8d710819/src/Fixie/Behaviors/CreateInstancePerCase.cs), and [CreateInstancePerFixture](https://github.com/plioi/fixie/blob/cd85b7ddae14dbe7deb82d2070a314fd8d710819/src/Fixie/Behaviors/CreateInstancePerFixture.cs).
 
-These two classes give Fixie a two-mode test lifecycle. A life-*bi*cycle if you will, <a href="http://en.wikipedia.org/wiki/Fixed-gear_bicycle">finally justifying the name beyond any doubt</a>.
+These two classes give Fixie a two-mode test lifecycle. A life-*bi*cycle if you will, [finally justifying the name beyond any doubt](http://en.wikipedia.org/wiki/Fixed-gear_bicycle).

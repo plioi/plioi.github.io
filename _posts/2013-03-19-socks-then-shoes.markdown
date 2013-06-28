@@ -3,7 +3,7 @@ title: Socks, *then* Shoes
 layout: post
 ---
 
-A couple weeks back, I announced the <a href="http://www.headspring.com/patrick/insufficiently-round-wheels/">start of development on Fixie</a>, a .NET test framework. Last week, I covered some early <a href="http://www.headspring.com/patrick/strongly-typed-whiteboarding/">proof-of-concept work</a> performed with throw-away code. This week, we'll take a close look at the first <a href="http://www.headspring.com/patrick/am-i-not-dead-commit/">several small commits</a> to <a href="https://github.com/plioi/fixie">Fixie on GitHub</a>.
+A couple weeks back, I announced the [start of development on Fixie](http://www.headspring.com/patrick/insufficiently-round-wheels/), a .NET test framework. Last week, I covered some early [proof-of-concept work](http://www.headspring.com/patrick/strongly-typed-whiteboarding/) performed with throw-away code. This week, we'll take a close look at the first [several small commits](http://www.headspring.com/patrick/am-i-not-dead-commit/) to [Fixie on GitHub](https://github.com/plioi/fixie).
 
 The commits we cover today are all about preparing the initial solution structure, installing dependencies with NuGet, writing a build script, and applying a simple version numbers scheme.  I strongly recommend performing similar steps when starting up any new project.  You've gotta put on your socks before you can seriously think about putting on your shoes.  **Today's work is all about the socks.**
 
@@ -21,7 +21,7 @@ Here's a minimal .gitignore file you can start with.  It tells git to ignore som
 
 I am not a lawyer, so I cannot offer advice as to which open source license is right for you.  I selected the MIT License and included it as a .txt file at the root of my repo.  The fact that I went with this is not a recommendation.  This is your decision, but whatever you choose, include it in your repo and be sure to include the official name of the license at the top of the file so that everyone knows what it is.
 
-<a href="https://github.com/plioi/fixie/commit/af7c43afaf3111c2139e5886abc9b57e983a0962">Commit</a>.
+[Commit](https://github.com/plioi/fixie/commit/af7c43afaf3111c2139e5886abc9b57e983a0962).
 
 ## Initial Solution Structure
 
@@ -44,7 +44,7 @@ At this point, we have the following file structure
     /src/Fixie.Tests/Fixie.Tests.csproj
     /src/Fixie.Tests/Properties/AssemblyInfo.cs</pre>
 
-<a href="https://github.com/plioi/fixie/commit/c066c8b89ff606a59d26a60ce77d7c890ed53ef6">Commit</a>.
+[Commit](https://github.com/plioi/fixie/commit/c066c8b89ff606a59d26a60ce77d7c890ed53ef6).
 
 ## Enable NuGet Package Restore
 
@@ -60,7 +60,7 @@ Be sure to include the following line in your .gitignore.  This is the folder th
 
 {% gist 5192486 %}
 
-<a href="https://github.com/plioi/fixie/commit/2cf6ed22a1008787f33bc7d07d0fc0816393d90f">Commit.</a>
+[Commit.](https://github.com/plioi/fixie/commit/2cf6ed22a1008787f33bc7d07d0fc0816393d90f)
 
 ## Install NUnit and NUnit.Runners via NuGet
 
@@ -70,7 +70,7 @@ There are two dependencies we want to include via NuGet: NUnit and NUnit.Runners
 
 I also added the Shouldly test assertion library, again referenced by Fixie.Tests, but use whatever assertion style you are comfortable with.
 
-<a href="https://github.com/plioi/fixie/commit/92cb56fd553639da0b2127f4fcefc408cfb40078">Commit</a>.
+[Commit](https://github.com/plioi/fixie/commit/92cb56fd553639da0b2127f4fcefc408cfb40078).
 
 ## Add a Build Script to Compile and Run Tests
 
@@ -102,7 +102,7 @@ When someone clones the repo and runs "build" at the command line, the results i
 
 I encourage the habit of running "build" at the command line manually prior to any commit.  Speaking of commits,
 
-<a href="https://github.com/plioi/fixie/commit/c45ac7a6c50c1be995303b70a85396c89b8fb768">Commit</a>.
+[Commit](https://github.com/plioi/fixie/commit/c45ac7a6c50c1be995303b70a85396c89b8fb768).
 
 ## Version Your Assemblies with Common AssemblyInfo
 
@@ -128,7 +128,7 @@ I updated the build script to produce a CommonAssemblyInfo.cs file with the buil
 
 I ran the script and confirmed the contents of CommonAssemblyInfo.cs.  Next, I needed to make both Projects in the Solution actually use this file instead of the defaults.  In both Projects, I removed most of the contents of Properties/AssemblyInfo.cs (leaving only the Project-specific [AssemblyName] attribute), right-clicked the Project to Add \ Existing Item, browsed to CommonAssemblyInfo.cs *and clicked the down-arrow within the Add button to select Add As Link* so that a single copy of the file would be used by all projects.  Once these links were created, I dragged them into the Properties folders to get them out of the way.  Whenever I add a new project to the solution, I'll need to repeat this step.
 
-<a href="https://github.com/plioi/fixie/commit/d861ff8fb6bc5621c7066a855fa96733cbe7eebf">Commit</a>.
+[Commit](https://github.com/plioi/fixie/commit/d861ff8fb6bc5621c7066a855fa96733cbe7eebf).
 
 ## Footwear Accomplished
 

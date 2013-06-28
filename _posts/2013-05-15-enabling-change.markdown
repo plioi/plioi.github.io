@@ -13,7 +13,7 @@ I do lean towards fine-grained tests, especially in the early days of a project.
 
 ## Fixie's Early Test Strategy
 
-While <a href="http://www.headspring.com/patrick/bootstrapping/">bootstrapping</a> the basic functionality of the <a href="https://github.com/plioi/fixie">Fixie test framework</a>, I deliberately tested everything at a fine-grained level. One of the first things I implemented was the logic around executing a single test case. For a given test method, I needed to prove that I could invoke the method via reflection and properly handle some subtle exception catching details. The tests for this were fine-grained: I had several tests for a single pivotal method. I needed confidence over this important block of code because everything that followed would build upon it.
+While [bootstrapping](http://www.headspring.com/patrick/bootstrapping/) the basic functionality of the [Fixie test framework](https://github.com/plioi/fixie), I deliberately tested everything at a fine-grained level. One of the first things I implemented was the logic around executing a single test case. For a given test method, I needed to prove that I could invoke the method via reflection and properly handle some subtle exception catching details. The tests for this were fine-grained: I had several tests for a single pivotal method. I needed confidence over this important block of code because everything that followed would build upon it.
 
 Fast-forward 2 months, and I have built up a lot more infrastructure.  Fixie's starting to resemble something useful, and I'm beginning to take serious steps towards the customization features that motivated the whole project. These features will have a big impact on what exactly happens when a test case runs. I've done some design work on how test case execution needs to work going forward, but *that early test-method-runner and exception-handler code was no longer in a good place*. I needed to start shuffling implementation details between a few classes, in order for the details to find their proper home and enable further work, but the important tests of that behavior were too fine-grained.
 
@@ -31,14 +31,14 @@ Consider the tests for Fixie's treatment of IDisposable test fixture classes (de
 
 This pattern appeared a few times:
 <ol>
-<li><a href="https://github.com/plioi/fixie/blob/754af5e9c14bcb9ad55ce70d7f69ebdb84c26c35/src/Fixie.Tests/ClassFixtures/DisposalTests.cs">DisposalTests.cs</a> as described above.</li>
-<li><a href="https://github.com/plioi/fixie/blob/754af5e9c14bcb9ad55ce70d7f69ebdb84c26c35/src/Fixie.Tests/ClassFixtures/ConstructionTests.cs">ConstructionTests.cs</a> demonstrates the behavior of test classes that have constructors.</li>
-<li><a href="https://github.com/plioi/fixie/blob/754af5e9c14bcb9ad55ce70d7f69ebdb84c26c35/src/Fixie.Tests/ClassFixtures/AsyncCaseTests.cs">AsyncCaseTests.cs</a> demonstrates the behavior of test classes when the individual test case methods use async/await.</li>
+<li>[DisposalTests.cs](https://github.com/plioi/fixie/blob/754af5e9c14bcb9ad55ce70d7f69ebdb84c26c35/src/Fixie.Tests/ClassFixtures/DisposalTests.cs) as described above.</li>
+<li>[ConstructionTests.cs](https://github.com/plioi/fixie/blob/754af5e9c14bcb9ad55ce70d7f69ebdb84c26c35/src/Fixie.Tests/ClassFixtures/ConstructionTests.cs) demonstrates the behavior of test classes that have constructors.</li>
+<li>[AsyncCaseTests.cs](https://github.com/plioi/fixie/blob/754af5e9c14bcb9ad55ce70d7f69ebdb84c26c35/src/Fixie.Tests/ClassFixtures/AsyncCaseTests.cs) demonstrates the behavior of test classes when the individual test case methods use async/await.</li>
 </ol>
 
 Even though the specific code paths under tests are not *super close* to the code that tests them, all the relevant paths are being exercised. I'm getting meaningful code coverage but at a not-so-fine-grained level.
 
-I translated the original fine-grained tests to this new approach, giving me <a href="https://github.com/plioi/fixie/blob/754af5e9c14bcb9ad55ce70d7f69ebdb84c26c35/src/Fixie.Tests/ClassFixtures/CaseTests.cs">CaseTests.cs</a>.  Now, *all* test execution is exercised at the same high level. Rather than asserting on the behavior of running a single test method, I assert on the behavior of running a whole test class. I needed to admit that there's more to running a test case than just calling the test method itself.
+I translated the original fine-grained tests to this new approach, giving me [CaseTests.cs](https://github.com/plioi/fixie/blob/754af5e9c14bcb9ad55ce70d7f69ebdb84c26c35/src/Fixie.Tests/ClassFixtures/CaseTests.cs).  Now, *all* test execution is exercised at the same high level. Rather than asserting on the behavior of running a single test method, I assert on the behavior of running a whole test class. I needed to admit that there's more to running a test case than just calling the test method itself.
 
 <blockquote>I don't think it's a coincidence that the level at which I'm testing resembles the level at which end users would reason about a test framework. Fixie's test suite is not quite executable documentation, but it certainly suggests what ought to appear in the documentation.</blockquote>
 

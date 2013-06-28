@@ -3,7 +3,7 @@ title: Strongly Typed Whiteboarding
 layout: post
 ---
 
-Last week, I announced the start of a <a href="http://www.headspring.com/patrick/insufficiently-round-wheels/">new open source project, a test framework named Fixie</a>.  This week, we'll see how to mitigate technical risks during the early days of such a project.  In short, you do the hard work first.
+Last week, I announced the start of a [new open source project, a test framework named Fixie](http://www.headspring.com/patrick/insufficiently-round-wheels/).  This week, we'll see how to mitigate technical risks during the early days of such a project.  In short, you do the hard work first.
 
 When starting a new project, it's easy to spend all of your time thinking about what success looks like: the awesome features you have in mind, all working together in perfect harmony, with code so clean there's just no room for bugs.  However, there are all kinds of reasons a project could fail, and these reasons include the possibility of a technical obstacle turning the project into a nonstarter.  Early on, you've got to put on your Pessimist Hat and think,
 
@@ -21,7 +21,7 @@ The 10,000 foot view of my plans for Fixie include the following features:
 <li>Slick customization of the defaults: fixture discovery, case discovery, and fixture lifecycle.</li>
 </ol>
 
-The first two are easy: I basically accomplished that when I <a href="http://www.headspring.com/patrick/low-ceremony-xunit/">customized xUnit</a> a while back.  I'm similarly not concerned about making a simple fixture lifecycle either, since I've used enough reflection to be comfortable instantiating a given Type, invoking methods on that Type, and the like.  The console runner will be a relatively small wrapper around that foundation.  Slick customization is a big, fancy feature I'd love to get to, *but utter failure there isn't a deal breaker*.  I'd still want to use this on my own projects even if I could only leverage the simple defaults.
+The first two are easy: I basically accomplished that when I [customized xUnit](http://www.headspring.com/patrick/low-ceremony-xunit/) a while back.  I'm similarly not concerned about making a simple fixture lifecycle either, since I've used enough reflection to be comfortable instantiating a given Type, invoking methods on that Type, and the like.  The console runner will be a relatively small wrapper around that foundation.  Slick customization is a big, fancy feature I'd love to get to, *but utter failure there isn't a deal breaker*.  I'd still want to use this on my own projects even if I could only leverage the simple defaults.
 
 The deal breaker here is actually integration with TestDriven.NET.  Sometimes I use the ReSharper runner because it does a better job of running tests under the debugger, but GUI runners are usually overkill.  I use TD.NET because it's simple, fast, and just fits my daily routine better.  I wouldn't want to use Fixie on my other projects if it meant having to give up on TD.NET.  Fortunately, I found that it can work with third-party test frameworks.
 
@@ -61,7 +61,7 @@ Since each method just throws an exception with a specific message, I'll be able
 
 There was another piece to the puzzle.
 
-The TD.NET blog explains how to complete the detection of custom test runners: <a href="http://weblogs.asp.net/nunitaddin/archive/2009/11/05/testdriven-net-2-24-xcopy-deployable-test-runners.aspx">XCopy Deployable Test Runners</a>.  Over in the plugin project, I added a text file named TestDrivenPoc.dll.tdnet:
+The TD.NET blog explains how to complete the detection of custom test runners: [XCopy Deployable Test Runners](http://weblogs.asp.net/nunitaddin/archive/2009/11/05/testdriven-net-2-24-xcopy-deployable-test-runners.aspx).  Over in the plugin project, I added a text file named TestDrivenPoc.dll.tdnet:
 
 {% gist 5149267 %}
 

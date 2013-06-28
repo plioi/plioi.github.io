@@ -3,29 +3,29 @@ title: Test Discovery
 layout: post
 ---
 
-Over the last few weeks, I've implemented some customization features in <a href="https://github.com/plioi/fixie">the Fixie test framework</a>. The first of these features is now available. Today, we'll see this feature in action. **We're going to tell Fixie what our tests *look like*, and Fixie will then find them and run them.**
+Over the last few weeks, I've implemented some customization features in [the Fixie test framework](https://github.com/plioi/fixie). The first of these features is now available. Today, we'll see this feature in action. **We're going to tell Fixie what our tests *look like*, and Fixie will then find them and run them.**
 
-<blockquote>Today's code samples work against <a href="http://nuget.org/packages/Fixie/0.0.1.49">Fixie 0.0.1.49</a>. The customization API is in its infancy, and is likely to change as I address more involved features in the coming weeks.</blockquote>
+<blockquote>Today's code samples work against [Fixie 0.0.1.49](http://nuget.org/packages/Fixie/0.0.1.49). The customization API is in its infancy, and is likely to change as I address more involved features in the coming weeks.</blockquote>
 
 ## The Default Convention
 
 If you've used NUnit before, you know that you have to mark your test classes with [TestFixture] and your test methods with [Test] in order for NUnit to know that those are your tests.  NUnit uses the presence of those attributes to "discover" your tests before it can run them. NUnit is therefore opinionated about test discovery.
 
-If you've used xUnit before, you know that you have to mark your test methods with [Fact] in order for xUnit to know that those are your tests. xUnit uses the presence of that attribute to "discover" your tests before it can run them. xUnit is therefore opinionated about test discovery.  (We've seen that <a href="http://www.headspring.com/patrick/low-ceremony-xunit/">xUnit is a little more flexible in this regard</a>, but it's still pretty opinionated about what a test is.)
+If you've used xUnit before, you know that you have to mark your test methods with [Fact] in order for xUnit to know that those are your tests. xUnit uses the presence of that attribute to "discover" your tests before it can run them. xUnit is therefore opinionated about test discovery.  (We've seen that [xUnit is a little more flexible in this regard](http://www.headspring.com/patrick/low-ceremony-xunit/), but it's still pretty opinionated about what a test is.)
 
 **Fixie is not opinionated about test discovery.** It has a simple default, but allows you replace that default with your own conventions. By default, Fixie will look for test classes by a naming convention: if a class in your test project has a name ending with "Tests", then it is a test class. After finding these classes, it will then look for test methods as any public instance void-or-async method with zero parameters. In other words, if it looks like a test, walks like a test, and quacks like a test, Fixie will assume it's a <del>duck</del> test by default.
 
-In my implementation, these rules are defined by <a href="https://github.com/plioi/fixie/blob/075d41822e6bee18624bd8329343d68e31d58c54/src/Fixie/Conventions/DefaultConvention.cs">DefaultConvention</a>:
+In my implementation, these rules are defined by [DefaultConvention](https://github.com/plioi/fixie/blob/075d41822e6bee18624bd8329343d68e31d58c54/src/Fixie/Conventions/DefaultConvention.cs):
 
 {% gist 5624801 %}
 
-Let's see this convention in action. This demo assumes you have <a href="http://testdriven.net/">TestDriven.NET</a> installed. I have set up CTRL-T to run whatever test method or test class my cursor is sitting on.
+Let's see this convention in action. This demo assumes you have [TestDriven.NET](http://testdriven.net/) installed. I have set up CTRL-T to run whatever test method or test class my cursor is sitting on.
 
-Create a new Solution in Visual Studio (I called mine "DiscoveryConventions"), and install <a href="http://nuget.org/packages/Fixie/0.0.1.49">Fixie 0.0.1.49</a> in the Package Manager Console:
+Create a new Solution in Visual Studio (I called mine "DiscoveryConventions"), and install [Fixie 0.0.1.49](http://nuget.org/packages/Fixie/0.0.1.49) in the Package Manager Console:
 
 {% gist 5624804 %}
 
-Fixie deliberately has no assertion statements of its own, so install <a href="http://nuget.org/packages/Should">Should</a> too:
+Fixie deliberately has no assertion statements of its own, so install [Should](http://nuget.org/packages/Should) too:
 
 {% gist 5624806 %}
 
@@ -101,7 +101,7 @@ Here, we are saying that our test fixture classes are those which have any metho
 
 NUnit, xUnit, and other test frameworks are very opinionated about two major concepts: how to discover your test classes/methods, and how to go about executing them. Today, we see that Fixie can at least give you an extra degree of freedom around test discovery. You're free to use whatever logic you want to decide whether a class is a test class, and whether a method is a test method. (We'll see how Fixie addresses the second part, test *execution*, in the coming weeks.)
 
-Even if all this accomplished was fewer keystrokes, or an easier path to migrate from another framework *to* Fixie, I'd consider it a net gain. However, I'm already benefiting from the flexibility in more ways. When using Fixie to test Fixie, I use the default convention with a twist: when I need to prove that Fixie will do the right thing in the event of a test *failure*, I want to ask some *other* "phony" test class to run. If the phony test class fails in the way I expect, my real tests pass. Only the real tests need to pass for my build to succeed. The phony tests are identified with the <a href="https://github.com/plioi/fixie/blob/075d41822e6bee18624bd8329343d68e31d58c54/src/Fixie/Conventions/SelfTestConvention.cs">SelfTestConvention</a>:
+Even if all this accomplished was fewer keystrokes, or an easier path to migrate from another framework *to* Fixie, I'd consider it a net gain. However, I'm already benefiting from the flexibility in more ways. When using Fixie to test Fixie, I use the default convention with a twist: when I need to prove that Fixie will do the right thing in the event of a test *failure*, I want to ask some *other* "phony" test class to run. If the phony test class fails in the way I expect, my real tests pass. Only the real tests need to pass for my build to succeed. The phony tests are identified with the [SelfTestConvention](https://github.com/plioi/fixie/blob/075d41822e6bee18624bd8329343d68e31d58c54/src/Fixie/Conventions/SelfTestConvention.cs):
 
 {% gist 5624845 %}
 
@@ -109,7 +109,7 @@ I create phony test classes as nested, private classes with names ending in "Fix
 
 ## How Does it Work?
 
-We've seen that Fixie somehow knows how to look for Convention classes. After finding them, it must be able to use them in some way, so Fixie must somehow construct instances of your Conventions, too. The answer is <a href="http://msdn.microsoft.com/en-us/library/ms173183(v=vs.110).aspx">reflection</a>: code that searches and uses other assemblies at runtime.
+We've seen that Fixie somehow knows how to look for Convention classes. After finding them, it must be able to use them in some way, so Fixie must somehow construct instances of your Conventions, too. The answer is [reflection](http://msdn.microsoft.com/en-us/library/ms173183(v=vs.110).aspx): code that searches and uses other assemblies at runtime.
 
 When I ask Fixie to run all the tests in the test assembly, it needs to reach out and find all the Convention classes and then construct them for use. Where it *used* to just construct a <code>new DefaultConvention()</code> every time, my Runner class *now* does the following:
 

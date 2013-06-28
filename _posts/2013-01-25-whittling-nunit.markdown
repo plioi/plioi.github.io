@@ -3,11 +3,11 @@ title: Whittling NUnit
 layout: post
 ---
 
-Last week, we applied <a href="http://www.headspring.com/patrick/code-whittling/">Code Whittling</a> to learn about <a href="http://www.headspring.com/patrick/whittling-xunit/">xUnit</a>.  This week, we'll do the same for NUnit, and contrast the two testing frameworks.  NUnit has been around a long time, and has accumulated many features.  <a href="http://www.nunitlite.com/">NUnitLight</a> is a recent endeavor to make a smaller version of the core features.  Since my goal is to get to the core features anyway, I'll start with NUnitLight instead of the full NUnit.
+Last week, we applied [Code Whittling](http://www.headspring.com/patrick/code-whittling/) to learn about [xUnit](http://www.headspring.com/patrick/whittling-xunit/).  This week, we'll do the same for NUnit, and contrast the two testing frameworks.  NUnit has been around a long time, and has accumulated many features.  [NUnitLight](http://www.nunitlite.com/) is a recent endeavor to make a smaller version of the core features.  Since my goal is to get to the core features anyway, I'll start with NUnitLight instead of the full NUnit.
 
 ## The Whittle
 
-I started by grabbing a copy of the <a href="https://launchpad.net/nunitlite">NUnitLite source code on Launchpad</a>.
+I started by grabbing a copy of the [NUnitLite source code on Launchpad](https://launchpad.net/nunitlite).
 
 The first thing I noticed is that it has an atypical structure in Solution Explorer.  Project names include .NET version numbers (2.0, 3.5, 4.0), and these projects are placed within solution folders NET-2.0, NET-3.5, and NET-4.0.  Comparing this to the actual file structure on disk, it looks like the same code files are shared by each of these version-based projects.
 
@@ -21,7 +21,7 @@ For my purposes, I picked a single version to focus on, and removed the other ve
 
 When I whittled down xUnit last week, one of the first steps was to remove its own tests, and I did the same here with NUnitLite.  Remember, this is supposed to be a destructive exercise.  The goal is to remove everything that is in the way of my understanding the fundamentals of the project: how tests are discovered, how tests are executed, and how test results are accumulated.  I was left with a single project in the solution: nunitlite-3.5.
 
-Again, as with xUnit, I removed all assertion code, since I use the <a href="http://nuget.org/packages/Should">Should</a> assertion library instead.  This was actually a much larger undertaking than with xUnit.  NUnit has been around for a long time, and the assertion library grew while keeping backward-compatibility as a priority.  It looks like a significant amount of effort went into avoiding duplication of code in the *implementation* of assertions, even while the main end-user-facing assertion APIs gained support for different styles:
+Again, as with xUnit, I removed all assertion code, since I use the [Should](http://nuget.org/packages/Should) assertion library instead.  This was actually a much larger undertaking than with xUnit.  NUnit has been around for a long time, and the assertion library grew while keeping backward-compatibility as a priority.  It looks like a significant amount of effort went into avoiding duplication of code in the *implementation* of assertions, even while the main end-user-facing assertion APIs gained support for different styles:
 
 {% gist 4457213 %}
 

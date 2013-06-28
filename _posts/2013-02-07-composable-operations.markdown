@@ -3,11 +3,11 @@ title: Composable Operations
 layout: post
 ---
 
-Last week, we took a peek at the <a href="http://www.headspring.com/patrick/whittling-parsley/">low-level pattern recognition classes</a> that make up the core of Parsley.  The final example showed how you can walk through some untrustworthy text in small and deliberate steps, looking for expected input along the way.  At each step, the step either succeeds or fails.  On success, the remaining unparsed text is passed along to the next step.
+Last week, we took a peek at the [low-level pattern recognition classes](http://www.headspring.com/patrick/whittling-parsley/) that make up the core of Parsley.  The final example showed how you can walk through some untrustworthy text in small and deliberate steps, looking for expected input along the way.  At each step, the step either succeeds or fails.  On success, the remaining unparsed text is passed along to the next step.
 
 This process was the epitome of imperative coding: *Do this, and then do this, and then do that.*  Despite this imperative core, I'd describe the intended usage of Parsley as declarative: *Here's what valid input looks like, figure out the details for me.*
 
-I said I'd reveal this week how this shift from low-level imperative coding to high-level declarative coding can be implemented, but I've decided to split it into two posts.  This week, we'll see how Parsley builds on the frustrating foundation by baking in a few fundamental and composable imperative operations.  Next week, we'll see how that more-useful layer can be extended into a high-level <a href="http://martinfowler.com/bliki/DomainSpecificLanguage.html">Domain Specific Language</a> (DSL).
+I said I'd reveal this week how this shift from low-level imperative coding to high-level declarative coding can be implemented, but I've decided to split it into two posts.  This week, we'll see how Parsley builds on the frustrating foundation by baking in a few fundamental and composable imperative operations.  Next week, we'll see how that more-useful layer can be extended into a high-level [Domain Specific Language](http://martinfowler.com/bliki/DomainSpecificLanguage.html) (DSL).
 
 **A declarative API needs to give your end users a suite of useful and familiar words, in such a way that the words can be easily combined to form larger declarations.**  We're going to take some important imperative operations, give them useful names, and package them up in such a way that they will compose well with each other.
 
@@ -32,7 +32,7 @@ If our API can exhibit these three properties, we can say it is "highly composab
 
 ## What Hurt Last Week
 
-The big example at the end of the <a href="http://www.headspring.com/patrick/whittling-parsley/">last post</a> just had to tell the user whether or not a string was a single letter surrounded by parentheses.  Despite being a simple pattern, the code involved was quite large and annoying to write.
+The big example at the end of the [last post](http://www.headspring.com/patrick/whittling-parsley/) just had to tell the user whether or not a string was a single letter surrounded by parentheses.  Despite being a simple pattern, the code involved was quite large and annoying to write.
 
 Recall the Parser&lt;T&gt; interface:
 
@@ -48,7 +48,7 @@ First, though, the suite should provide some primitive operations to get started
 
 ## Parsley's Default Parsers
 
-The default parser implementations are as frustrating to write as the sample from last week, since they are written in terms of the awkward low-level API.  However, they make things easier on the end user, as we'll see next week.  They are found under the <a href="https://github.com/plioi/parsley/tree/cb69098da8135f7ac5fb1b0f84071e0e8b94b8a0/src/Parsley/Primitives">Primitives</a> folder.  Four of these are relevant to today's discussion:
+The default parser implementations are as frustrating to write as the sample from last week, since they are written in terms of the awkward low-level API.  However, they make things easier on the end user, as we'll see next week.  They are found under the [Primitives](https://github.com/plioi/parsley/tree/cb69098da8135f7ac5fb1b0f84071e0e8b94b8a0/src/Parsley/Primitives) folder.  Four of these are relevant to today's discussion:
 
 **TokenByKindParser** - Last week we wrote a parser that takes an expected token *kind* and demands that the next token in the input be of that kind.  On success, the token is consumed.  For instance, if you are parsing C# you may reach a point where you expect the next token to be an identifier.  You don't care what specific identifier it is, only that it is an identifier as opposed to an operator or number.  The real implementation of that class in Parsley is called TokenByKindParser:
 
@@ -78,7 +78,7 @@ Recall my criticism from last week:
 
 <blockquote>[IsParenthesizedLetter] is nearly as tedious as writing assembly. Each time I wanted to progress a little further, I had to indent again and declare some new local variables. I had to carefully pass along the remaining unparsed tokens at each step, and I had to concern myself with failure at each step.
 
-To make matters worse, this stuff motivates having lots of returns from a single function, making it extremely hard to break the function apart into smaller parts. <a href="http://www.headspring.com/patrick/detect-reflect-decomplect/">Return statements are "Extract Method" fences.</a></blockquote>
+To make matters worse, this stuff motivates having lots of returns from a single function, making it extremely hard to break the function apart into smaller parts. [Return statements are "Extract Method" fences.](http://www.headspring.com/patrick/detect-reflect-decomplect/)</blockquote>
 
 With all the code we've seen so far, we're stuck with implementing all sequence patterns in this way, producing a convoluted morass of nested if statements.  We don't even have the option of Extract Method refactorings to ease the pain.  We've coded ourselves into a corner!
 

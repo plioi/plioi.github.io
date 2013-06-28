@@ -3,9 +3,9 @@ title: From Imperative to Declarative
 layout: post
 ---
 
-Two weeks ago, we took a peek at the <a href="http://www.headspring.com/patrick/whittling-parsley/">low-level pattern recognition classes</a> that make up the core of <a href="https://github.com/plioi/parsley">Parsley</a>.  Last week, we saw how pattern recognition involves 3 pivotal <a href="http://www.headspring.com/patrick/composable-operations/">composable operations</a>: repetition, choice, and sequence.  We saw how Parsley implements basic repetition and choice operations, but sequence was still too hard to address.
+Two weeks ago, we took a peek at the [low-level pattern recognition classes](http://www.headspring.com/patrick/whittling-parsley/) that make up the core of [Parsley](https://github.com/plioi/parsley).  Last week, we saw how pattern recognition involves 3 pivotal [composable operations](http://www.headspring.com/patrick/composable-operations/): repetition, choice, and sequence.  We saw how Parsley implements basic repetition and choice operations, but sequence was still too hard to address.
 
-Today, we'll finally see how to extract a useful sequence operation into a useful class, finally giving us the last of the necessary composable operations, and freeing us to finish our high-level <a href="http://martinfowler.com/bliki/DomainSpecificLanguage.html">DSL</a>.
+Today, we'll finally see how to extract a useful sequence operation into a useful class, finally giving us the last of the necessary composable operations, and freeing us to finish our high-level [DSL](http://martinfowler.com/bliki/DomainSpecificLanguage.html).
 
 ## Manual Sequence Recognition
 
@@ -25,7 +25,7 @@ Our goal is to extract the "success check and unparsed token hand-off" action so
 
 **I apologize for this.**  This was hands-down the most difficult 12 lines of code I have written or will ever write.  The pattern in play here is so difficult, so abstract, that *I don't even know what to name some of the variables.*
 
-This is the <a href="http://blogs.msdn.com/b/wesdyer/archive/2008/01/11/the-marvels-of-monads.aspx">Monad</a> pattern.  It can be performed in any language that has lambda expressions in which the lambda body can refer to variables in the surrounding scope, like C#, Javascript, and Python, but is only ever used in practice when the language *also* has special syntax for its usages.  In C#, the special syntax which makes this pattern compelling is the <code>from/select</code> LINQ syntax.
+This is the [Monad](http://blogs.msdn.com/b/wesdyer/archive/2008/01/11/the-marvels-of-monads.aspx) pattern.  It can be performed in any language that has lambda expressions in which the lambda body can refer to variables in the surrounding scope, like C#, Javascript, and Python, but is only ever used in practice when the language *also* has special syntax for its usages.  In C#, the special syntax which makes this pattern compelling is the <code>from/select</code> LINQ syntax.
 
 This special syntax lets us "flatten" our nested if statements into a series of 'from' clauses.  When using the complete Parsley DSL, we can rewrite IsParenthesizedLetter without any nesting:
 
@@ -45,7 +45,7 @@ In other words, our SelectMany method's job is to hook a single from clause into
 
 C# rewrites a flat query into calls to the SelectMany extension method, which in turn does the success check and the passing along of remaining unparsed tokens, so all the same *work* is going on here as in the origial imperative code.  Thankfully, we're no longer the ones doing that work!
 
-Rather than trying to make sense of ParserQuery itself, it may be more illuminating to read <a href="https://github.com/plioi/parsley/blob/cb69098da8135f7ac5fb1b0f84071e0e8b94b8a0/src/Parsley.Test/ParserQueryTests.cs">ParserQuery's unit tests</a>.
+Rather than trying to make sense of ParserQuery itself, it may be more illuminating to read [ParserQuery's unit tests](https://github.com/plioi/parsley/blob/cb69098da8135f7ac5fb1b0f84071e0e8b94b8a0/src/Parsley.Test/ParserQueryTests.cs).
 
 ## So Where Are We?
 

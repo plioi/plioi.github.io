@@ -3,7 +3,7 @@ title: Cutting Scope
 layout: post
 ---
 
-Over the last week, I've implemented support for <code>async</code>/<code>await</code> in the <a href="https://github.com/plioi/fixie">Fixie test framework</a>. Thanks to a suggestion from <a href="https://twitter.com/pedroreys">Pedro Reys</a>, I found that this project was susceptible to a serious bug, one that NUnit and xUnit both encountered and addressed back when the <code>async</code>/<code>await</code> keywords were introduced in C# 5.
+Over the last week, I've implemented support for <code>async</code>/<code>await</code> in the [Fixie test framework](https://github.com/plioi/fixie). Thanks to a suggestion from [Pedro Reys](https://twitter.com/pedroreys), I found that this project was susceptible to a serious bug, one that NUnit and xUnit both encountered and addressed back when the <code>async</code>/<code>await</code> keywords were introduced in C# 5.
 
 While developing the fix, I relearned an important lesson: cutting scope is not a sign of defeat. Sometimes less really is more.
 
@@ -51,7 +51,7 @@ The third requirement is problematic. If a test method is declared <code>async v
 
 I started to question the train of thought which led to the original 3 requirements.  All async methods have to be declared as returning <code>void</code>, <code>Task</code>, or <code>Task&lt;T&gt;</code>, otherwise they won't compile, and **I was naively assuming that all three of these variations were good test declarations.**
 
-It turns out that declaring methods <code>async void</code> is frowned upon for exactly the same reason they were giving me trouble: it is crazy weird and difficult to correctly wait on a <code>Task</code> when the <code>Task</code> itself is inaccessible to you! <code>async void</code> declarations say, "I want to fire and forget", but a test author does *not* want the test framework to forget what's going on! The only reason <code>async void</code> even *exists* is for a specific edge case: <a href="http://stackoverflow.com/questions/8043296/whats-the-difference-between-returning-void-and-returning-a-task">async event handlers have no choice but to be declared void</a>.
+It turns out that declaring methods <code>async void</code> is frowned upon for exactly the same reason they were giving me trouble: it is crazy weird and difficult to correctly wait on a <code>Task</code> when the <code>Task</code> itself is inaccessible to you! <code>async void</code> declarations say, "I want to fire and forget", but a test author does *not* want the test framework to forget what's going on! The only reason <code>async void</code> even *exists* is for a specific edge case: [async event handlers have no choice but to be declared void](http://stackoverflow.com/questions/8043296/whats-the-difference-between-returning-void-and-returning-a-task).
 
 <blockquote>The *actual* requirement I needed to meet was to **provide accurate pass/fail reporting**: a test passes if and only if the test framework executes it in full without throwing exceptions.</blockquote>
 

@@ -3,17 +3,17 @@ title: Whittling xUnit
 layout: post
 ---
 
-Last week, we saw how <a href="http://www.headspring.com/patrick/code-whittling/">Code Whittling</a> lets you learn about an unfamiliar open-source project, using <a href="http://www.headspring.com/patrick/whittling-rhino-licensing/">Rhino Licensing</a> as an example.  This week, we'll walk through the process I took when whittling xUnit.  xUnit is a unit testing framework similar to NUnit.  I wanted to get a feel for how a test framework really works: how it traverses your test project to discover test cases, how it executes individual test cases, how it tallies results, and how it integrates with the TestDriven.net plugin for Visual Studio.
+Last week, we saw how [Code Whittling](http://www.headspring.com/patrick/code-whittling/) lets you learn about an unfamiliar open-source project, using [Rhino Licensing](http://www.headspring.com/patrick/whittling-rhino-licensing/) as an example.  This week, we'll walk through the process I took when whittling xUnit.  xUnit is a unit testing framework similar to NUnit.  I wanted to get a feel for how a test framework really works: how it traverses your test project to discover test cases, how it executes individual test cases, how it tallies results, and how it integrates with the TestDriven.net plugin for Visual Studio.
 
 ## The Whittle
 
-I started by grabbing a copy of the <a href="http://xunit.codeplex.com/SourceControl/BrowseLatest">xUnit source code on CodePlex</a>.
+I started by grabbing a copy of the [xUnit source code on CodePlex](http://xunit.codeplex.com/SourceControl/BrowseLatest).
 
 Not surprisingly, this project has a lot of test coverage.  Since code whittling is decidedly *not* about safe forward development, and since unit tests pose an obstacle to quickly whittling a project down to its essentials, the first thing I removed were all the unit tests.  It's OK, we're not going to make any permanent changes.  This is an exercise in quick discovery, not slow-and-steady accuracy.
 
 I tend to use a console test runner and a TestDriven.Net test runner, but none of the other runners.  My next victims were the projects for the runners I don't happen to use: xunit.gui, xunit.runner.visualstudio, and xunit.runner.msbuild.
 
-Since I use the <a href="http://nuget.org/packages/Should">Should</a> assertion library, I had no need for any of xUnit's own assertion code, allowing me to remove a huge chunk of code I had no interest in.  I deleted the <a href="http://xunit.codeplex.com/SourceControl/changeset/view/2e806844c3c1#src/xunit/Assert.cs">Assert</a> class, its usages, and the many associated exception classes.
+Since I use the [Should](http://nuget.org/packages/Should) assertion library, I had no need for any of xUnit's own assertion code, allowing me to remove a huge chunk of code I had no interest in.  I deleted the [Assert](http://xunit.codeplex.com/SourceControl/changeset/view/2e806844c3c1#src/xunit/Assert.cs) class, its usages, and the many associated exception classes.
 
 I generally don't use the [Theory] attribute in my xUnit tests, so I removed that and its usages next.  Lots of support classes for [Theory] were no longer in my way.
 
@@ -39,7 +39,7 @@ For **Phase 1**, it builds up a tree of objects representing the test methods in
 
 Plain old reflection walks through all the methods in the test assembly, picking out the ones that are marked as tests with the [Fact] attribute.
 
-For **Phase 2**, it traverses the tree of tests to execute them and accumulate results.  <a href="http://xunit.codeplex.com/SourceControl/changeset/view/2e806844c3c1#src/xunit/Sdk/Commands/ClassCommands/TestClassCommandRunner.cs">TestClassCommandRunner</a> has the main execution logic.  For a given class, it processes the list of method in random order.  For each method, xUnit gets one or more ITestCommands to execute.  Each test command is invoked, giving a MethodResult which gets included in the overall ClassResult.
+For **Phase 2**, it traverses the tree of tests to execute them and accumulate results.  [TestClassCommandRunner](http://xunit.codeplex.com/SourceControl/changeset/view/2e806844c3c1#src/xunit/Sdk/Commands/ClassCommands/TestClassCommandRunner.cs) has the main execution logic.  For a given class, it processes the list of method in random order.  For each method, xUnit gets one or more ITestCommands to execute.  Each test command is invoked, giving a MethodResult which gets included in the overall ClassResult.
 
 A single test command to execute, for a test identified with the [Fact] attribute, looks like this:
 

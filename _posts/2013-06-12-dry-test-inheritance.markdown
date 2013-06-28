@@ -3,9 +3,9 @@ title: DRY Test Inheritance
 layout: post
 ---
 
-Over the last two weeks, we've seen how <a href="https://github.com/plioi/fixie">Fixie</a> can be configured to <a href="http://www.headspring.com/fixies-life-bicycle/">mimic NUnit</a> and to <a href="http://www.headspring.com/the-sincerest-form-of-flattery/">mimic xUnit</a>.  That's a neat little trick, but doesn't provide much value.  This week, we'll see how Fixie's convention API can be used to *improve* upon NUnit.
+Over the last two weeks, we've seen how [Fixie](https://github.com/plioi/fixie) can be configured to [mimic NUnit](http://www.headspring.com/fixies-life-bicycle/) and to [mimic xUnit](http://www.headspring.com/the-sincerest-form-of-flattery/).  That's a neat little trick, but doesn't provide much value.  This week, we'll see how Fixie's convention API can be used to *improve* upon NUnit.
 
-<blockquote>Today's code samples work against <a href="http://nuget.org/packages/Fixie/0.0.1.62">Fixie 0.0.1.62</a>. The customization API is in its infancy, and is likely to change in the coming weeks.</blockquote>
+<blockquote>Today's code samples work against [Fixie 0.0.1.62](http://nuget.org/packages/Fixie/0.0.1.62). The customization API is in its infancy, and is likely to change in the coming weeks.</blockquote>
 
 Today's sample convention addresses two problems in NUnit:
 <ol>
@@ -35,7 +35,7 @@ The order of execution during test setup is important. How bizarre would it be i
 
 ## A Low-Ceremony Alternative Convention
 
-DRY stands for "Don't Repeat Yourself", not "[DontRepeatYourself] Don't Repeat Yourself"! Allowing redundancy has opened the door to complexity. Let's improve upon the NUnit style by defining a simpler, <a href="https://github.com/plioi/fixie/blob/a74078dfe3c8f415fd0663af104b75adfb90d29d/src/Fixie.Samples/LowCeremony/CustomConvention.cs">low-ceremony test class convention</a> with Fixie:
+DRY stands for "Don't Repeat Yourself", not "[DontRepeatYourself] Don't Repeat Yourself"! Allowing redundancy has opened the door to complexity. Let's improve upon the NUnit style by defining a simpler, [low-ceremony test class convention](https://github.com/plioi/fixie/blob/a74078dfe3c8f415fd0663af104b75adfb90d29d/src/Fixie.Samples/LowCeremony/CustomConvention.cs) with Fixie:
 
 {% gist 5762372 %}
 

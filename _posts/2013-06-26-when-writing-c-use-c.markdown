@@ -3,9 +3,9 @@ title: When Writing C#, Use C#
 layout: post
 ---
 
-Recently, Jimmy Bogard described several <a href="http://lostechies.com/jimmybogard/2013/06/18/strategies-for-isolating-the-database-in-tests/">strategies for isolating a database in tests</a>.  Today, we'll see how one of these strategies can be implemented.  We'll start with a common implementation under NUnit, then we'll identify some issues with that implementation, and lastly we'll translate it into a Fixie convention to address those issues.
+Recently, Jimmy Bogard described several [strategies for isolating a database in tests](http://lostechies.com/jimmybogard/2013/06/18/strategies-for-isolating-the-database-in-tests/).  Today, we'll see how one of these strategies can be implemented.  We'll start with a common implementation under NUnit, then we'll identify some issues with that implementation, and lastly we'll translate it into a Fixie convention to address those issues.
 
-<blockquote>Today's code samples work against <a href="http://nuget.org/packages/Fixie/0.0.1.63">Fixie 0.0.1.63</a>. The customization API is in its infancy, and is likely to change in the coming weeks.</blockquote>
+<blockquote>Today's code samples work against [Fixie 0.0.1.63](http://nuget.org/packages/Fixie/0.0.1.63). The customization API is in its infancy, and is likely to change in the coming weeks.</blockquote>
 
 ## Transactions Under NUnit
 One of the strategies from Jimmy's post involves starting up a transaction before a test and rolling back that transaction at the end of the test.  If we're using NUnit, a common technique is to stow this concept away in a test fixture base class like so:
@@ -18,7 +18,7 @@ This approach has a few problems.
 
 First, we've got a bit of a temporal coupling issue: this works because we trust that SetUp() and TearDown() will be called in a particular order. Ok, so it's not an example of temporal coupling gone horribly wrong - NUnit *will* call them in the right order. Still, it's a bit of a code smell in that it motivates us to explicitly call Dispose(), despite the fact that C# already has a keyword ("using") devoted to automating that call safely. NUnit's lifecycle attributes are like a mini language built on top of C#, and **we're writing this code in NUnit-the-language instead of writing it in C#**.
 
-Second, relying on [SetUp] and [TearDown] in a base class can get a little ugly when the child test class also needs to have a [SetUp] or [TearDown], as we saw in <a href="http://www.headspring.com/dry-test-inheritance/">DRY Test Inheritance</a>.  Should we mark these methods <code>virtual</code> so child classes don't have to come up with new names for their own [SetUp]s and [TearDown]s? If child classes override them, they could easily forget to call base.SetUp() and base.TearDown(). Even if they remember to, that's more boilerplate than feels necessary.
+Second, relying on [SetUp] and [TearDown] in a base class can get a little ugly when the child test class also needs to have a [SetUp] or [TearDown], as we saw in [DRY Test Inheritance](http://www.headspring.com/dry-test-inheritance/).  Should we mark these methods <code>virtual</code> so child classes don't have to come up with new names for their own [SetUp]s and [TearDown]s? If child classes override them, they could easily forget to call base.SetUp() and base.TearDown(). Even if they remember to, that's more boilerplate than feels necessary.
 
 **Yikes. I just wanted to wrap my tests in transactions. Let's do that instead.**
 

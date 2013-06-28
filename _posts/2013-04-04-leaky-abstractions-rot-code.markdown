@@ -3,7 +3,7 @@ title: Leaky Abstractions Rot Code
 layout: post
 ---
 
-Over the past month, we've seen the inception and early development of my ongoing side project, <a href="https://github.com/plioi/fixie">the Fixie test framework</a>.  As of last week, it was far enough along to run all of its own tests. Although I'm pleased with the progress so far, last week's success introduced an exceptionally leaky abstraction.  Today, we'll see how I patched up the leak.
+Over the past month, we've seen the inception and early development of my ongoing side project, [the Fixie test framework](https://github.com/plioi/fixie).  As of last week, it was far enough along to run all of its own tests. Although I'm pleased with the progress so far, last week's success introduced an exceptionally leaky abstraction.  Today, we'll see how I patched up the leak.
 
 A software abstraction, such as an interface or abstract class, "leaks" when it fails to hide implementation details. Leaky abstractions are annoying enough when the damage is local to a small area of a project, but **when the leak has a high risk of spreading, it can cause your code to rot.**  An abstraction's leak can spread when the calling code takes on too much knowledge of the leaked information, to the point where the calling code becomes a new source of that leaked information.
 
@@ -13,7 +13,7 @@ Once the information you intended to hide has spread, everything it touches is n
 
 ## Fixie's Leaky Abstraction
 
-By the end of last week's post, I had developed <a href="http://www.headspring.com/patrick/bootstrapping/">a roughly-usable test framework</a>. This version had an abstraction called Convention which is fundamental to the project: I want the end user to be able to tell me what their test fixtures and test cases look like.  I want you to be able to say things like "My test fixtures are the classes whose names end with 'Tests'", or "My test fixtures are the classes marked with some [Attribute]".  If you don't provide such a description, you'll get the <a href="https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie/DefaultConvention.cs">default convention</a>:
+By the end of last week's post, I had developed [a roughly-usable test framework](http://www.headspring.com/patrick/bootstrapping/). This version had an abstraction called Convention which is fundamental to the project: I want the end user to be able to tell me what their test fixtures and test cases look like.  I want you to be able to say things like "My test fixtures are the classes whose names end with 'Tests'", or "My test fixtures are the classes marked with some [Attribute]".  If you don't provide such a description, you'll get the [default convention](https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie/DefaultConvention.cs):
 
 {% gist 5307031 %}
 
@@ -29,13 +29,13 @@ With this design, anyone who took advantage of Convention to customize their tes
 
 ## The Fix
 
-Let's jump to the improved abstraction, and then see how it works.  Here's the new version of <a href="https://github.com/plioi/fixie/blob/cb649450e5d42a6eb83faeb58dafc3b9511d92d1/src/Fixie/DefaultConvention.cs">DefaultConvention</a>:
+Let's jump to the improved abstraction, and then see how it works.  Here's the new version of [DefaultConvention](https://github.com/plioi/fixie/blob/cb649450e5d42a6eb83faeb58dafc3b9511d92d1/src/Fixie/DefaultConvention.cs):
 
 {% gist 5307051 %}
 
 Much better. It says exactly what test fixtures and test cases look like by default, and suggests how you might specify your own similar rules. There's no suspicious asymmetry now: both test fixtures and test cases are discovered using very similar statements.  It's declarative, so the end user doesn't have to be concerned with *how* the discovery will be honored; they can focus on simply stating what success looks like.
 
-The Fixtures property is an instance of <a href="https://github.com/plioi/fixie/blob/cb649450e5d42a6eb83faeb58dafc3b9511d92d1/src/Fixie/ClassFilter.cs">ClassFilter</a>, and the Cases property is an instance of <a href="https://github.com/plioi/fixie/blob/cb649450e5d42a6eb83faeb58dafc3b9511d92d1/src/Fixie/MethodFilter.cs">MethodFilter</a>:
+The Fixtures property is an instance of [ClassFilter](https://github.com/plioi/fixie/blob/cb649450e5d42a6eb83faeb58dafc3b9511d92d1/src/Fixie/ClassFilter.cs), and the Cases property is an instance of [MethodFilter](https://github.com/plioi/fixie/blob/cb649450e5d42a6eb83faeb58dafc3b9511d92d1/src/Fixie/MethodFilter.cs):
 
 {% gist 5307060 %}
 

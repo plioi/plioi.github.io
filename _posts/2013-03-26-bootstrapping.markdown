@@ -3,7 +3,7 @@ title: Bootstrapping
 layout: post
 ---
 
-Last week, I covered <a href="http://www.headspring.com/patrick/socks-then-shoes/">the first several commits to Fixie</a>, resulting in a reliable build script.  This week, we'll see how I've "bootstrapped" Fixie to the point where it can run all of its own tests.
+Last week, I covered [the first several commits to Fixie](http://www.headspring.com/patrick/socks-then-shoes/), resulting in a reliable build script.  This week, we'll see how I've "bootstrapped" Fixie to the point where it can run all of its own tests.
 
 Bootstrapping comes from an old saying.  To "pull oneself up by one's bootstraps", though literally absurd, is to improve without outside assistance.  For software, bootstrapping involves getting a new system off the ground by first leveraging the less-desirable system you had to start with.
 
@@ -39,7 +39,7 @@ The point here is that some problems lend themselves to being curiously self-suf
 
 ## Bootstrapping Fixie
 
-<a href="https://github.com/plioi/fixie">Fixie</a>, my test framework project, is Curiously Self-Sufficient.
+[Fixie](https://github.com/plioi/fixie), my test framework project, is Curiously Self-Sufficient.
 
 I always want to write code with support from automated tests, even on this project, so I had to start implementing it with some *other* test framework in place.  Now that I have implemented enough features for it to run its own tests, I can simply use it to test-drive all the remaining features.
 
@@ -59,26 +59,26 @@ By leveraging the existing system (xUnit) in this way, I've been able to get rea
 
 By approaching this task with a bootstrapping mindset, I've successfully gotten a useful-enough test framework up and running in a very short time.  It's not fancy enough to write home about, but that wasn't the goal in this phase of development.  Let's see what this minimal test framework looks like.
 
-First, <a href="https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/default.ps1">Fixie's build script</a> runs all the tests using Fixie and then runs all the tests using xUnit.  In order to compare their output in the case of failing tests, only xUnit failures actually cause the build to fail.  Fixie test failures are output, but don't prevent the build script from progressing to the xUnit run.
+First, [Fixie's build script](https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/default.ps1) runs all the tests using Fixie and then runs all the tests using xUnit.  In order to compare their output in the case of failing tests, only xUnit failures actually cause the build to fail.  Fixie test failures are output, but don't prevent the build script from progressing to the xUnit run.
 
-The <a href="https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie/DefaultConvention.cs">default convention</a> (and currently the only convention), describes how to tell whether a class is a test fixture, and whether a method is a test case.  A class is a test fixture if its name ends with "Tests" and it has a default constructor; a method is a test case if it's a public instance void method with zero parameters:
+The [default convention](https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie/DefaultConvention.cs) (and currently the only convention), describes how to tell whether a class is a test fixture, and whether a method is a test case.  A class is a test fixture if its name ends with "Tests" and it has a default constructor; a method is a test case if it's a public instance void method with zero parameters:
 
 {% gist 5242692 %}
 
-This convention helps to reach out and find all the fixture classes and test case methods in your test assembly, so it can construct Fixture and Case objects describing the work to be performed.  A <a href="https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie/Fixture.cs">Fixture</a> is a named executable thing, a <a href="https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie/Case.cs">Case</a> is a named executable thing, and they both rely on a <a href="https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie/Listener.cs">Listener</a> to report test failures:
+This convention helps to reach out and find all the fixture classes and test case methods in your test assembly, so it can construct Fixture and Case objects describing the work to be performed.  A [Fixture](https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie/Fixture.cs) is a named executable thing, a [Case](https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie/Case.cs) is a named executable thing, and they both rely on a [Listener](https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie/Listener.cs) to report test failures:
 
 {% gist 5242698 %}
 
-For this bootstrapping phase, all fixtures correspond with classes, so the only implementation of Fixture is <a href="https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie/ClassFixture.cs">ClassFixture</a>.  ClassFixture takes one of the Types discovered by the DefaultConvention, and owns the test fixture lifecycle in its Execute method:
+For this bootstrapping phase, all fixtures correspond with classes, so the only implementation of Fixture is [ClassFixture](https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie/ClassFixture.cs).  ClassFixture takes one of the Types discovered by the DefaultConvention, and owns the test fixture lifecycle in its Execute method:
 
 {% gist 5242707 %}
 
 Note the elaborate try/catch block.  Activator.CreateInstance(fixtureClass) calls your test fixture's default constructor via reflection.  If your test fixture constructor throws an exception, we perceive that here as a TargetInvocationException that *wraps* the original exception.  We don't want to report that wrapper to the user, otherwise every single test failure will hide the original with the unhelpful message, "Exception has been thrown by the target of an invocation."  We unpack the wrapped original exception and report *that* to the listener.
 
-For this bootstrapping phase, all test cases correspond with methods, so the only implementation of Case is <a href="https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie/MethodCase.cs">MethodCase</a>.  MethodCase takes one of the MethodInfos discovered by the default Convention, and owns the execution of that method with a similar exception handler:
+For this bootstrapping phase, all test cases correspond with methods, so the only implementation of Case is [MethodCase](https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie/MethodCase.cs).  MethodCase takes one of the MethodInfos discovered by the default Convention, and owns the execution of that method with a similar exception handler:
 
 {% gist 5242711 %}
 
-That's all the real work.  The remaining classes include <a href="https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie/Suite.cs">Suite</a>, which loops through all the Fixtures and asks them to run themselves, <a href="https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie.Console/ConsoleListener.cs">ConsoleListener</a>, which is a Listener that outputs failures to the console, and <a href="https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie.Console/Program.cs">Program</a>, whose Main method builds up and executes a Suite with a ConsoleListener for a given Assembly.
+That's all the real work.  The remaining classes include [Suite](https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie/Suite.cs), which loops through all the Fixtures and asks them to run themselves, [ConsoleListener](https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie.Console/ConsoleListener.cs), which is a Listener that outputs failures to the console, and [Program](https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie.Console/Program.cs), whose Main method builds up and executes a Suite with a ConsoleListener for a given Assembly.
 
 By approaching this effort from a bootstrapping point of view, I now have a test framework powerful enough to drive the rest of its own features.  I've kept scope creep in check while laying a reasonable foundation, and even in the early stages I was able to have meaningful code coverage via xUnit.  Now that I'm about to embark on the more significant features, I already have a meaningful set of test cases to rely on.

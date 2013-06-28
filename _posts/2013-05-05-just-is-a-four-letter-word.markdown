@@ -7,7 +7,7 @@ I'm often guilty of this myself, but I cringe whenever I hear a software develop
 
 ## The Feature
 
-Working on the <a href="https://github.com/plioi/fixie">Fixie test framework</a> this week, I pulled the next task from my backlog.  It read:
+Working on the [Fixie test framework](https://github.com/plioi/fixie) this week, I pulled the next task from my backlog.  It read:
 
 <blockquote>Honor Dispose() when present.</blockquote>
 
@@ -29,7 +29,7 @@ To satisfy the requirement, "Honor Dipose() when present," I ***just*** had to w
 
 ## The Easy Part
 
-The <a href="https://github.com/plioi/fixie/commit/16f079b08131026e75d5ae5075dfbf5ec7e1df1b">primary commit for this feature</a> is exactly what I expected.  My acceptance test for this feature involved a sample fixture that implemented IDisposable along with two tests, one that passes and one that fails.  My real test fixture would run that sample test fixture, inspecting the results.  This pattern of having a real fixture wrap a private sample fixture allows me to have sample fixtures with failing tests. Only failures in the outer real fixture cause my build to fail:
+The [primary commit for this feature](https://github.com/plioi/fixie/commit/16f079b08131026e75d5ae5075dfbf5ec7e1df1b) is exactly what I expected.  My acceptance test for this feature involved a sample fixture that implemented IDisposable along with two tests, one that passes and one that fails.  My real test fixture would run that sample test fixture, inspecting the results.  This pattern of having a real fixture wrap a private sample fixture allows me to have sample fixtures with failing tests. Only failures in the outer real fixture cause my build to fail:
 
 {% gist 5521216 %}
 
@@ -61,7 +61,7 @@ In this case, the DeclaredType for the Dispose() method is HasDisposeButNotIDisp
 
 {% gist 5521240 %}
 
-Finally, I could <a href="https://github.com/plioi/fixie/commit/3f9dc52a3e4570c7baa197773ae8a1983abc50f8">use that helper method to exclude IDisposable.Dispose()</a> from being treated as a test case.  Running the sample fixture produced one pass and one expected failure, and Dispose was called the right number of times.
+Finally, I could [use that helper method to exclude IDisposable.Dispose()](https://github.com/plioi/fixie/commit/3f9dc52a3e4570c7baa197773ae8a1983abc50f8) from being treated as a test case.  Running the sample fixture produced one pass and one expected failure, and Dispose was called the right number of times.
 
 All done.
 

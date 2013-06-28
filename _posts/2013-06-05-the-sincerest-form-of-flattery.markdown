@@ -3,11 +3,11 @@ title: The Sincerest Form of Flattery
 layout: post
 ---
 
-Last week, we saw how to define <a href="http://www.headspring.com/fixies-life-bicycle/">an NUnit-imitating convention</a> with the Fixie test framework: when the custom Convention class was present in our test project, the default rules for finding and running tests were replaced, allowing us to write test classes with a familiar NUnit class lifecycle.
+Last week, we saw how to define [an NUnit-imitating convention](http://www.headspring.com/fixies-life-bicycle/) with the Fixie test framework: when the custom Convention class was present in our test project, the default rules for finding and running tests were replaced, allowing us to write test classes with a familiar NUnit class lifecycle.
 
 This week, we'll see how to customize Fixie to imitate the xUnit lifecycle.
 
-<blockquote>Today's code samples work against <a href="http://nuget.org/packages/Fixie/0.0.1.56">Fixie 0.0.1.56</a>. The customization API is in its infancy, and is likely to change in the coming weeks.</blockquote>
+<blockquote>Today's code samples work against [Fixie 0.0.1.56](http://nuget.org/packages/Fixie/0.0.1.56). The customization API is in its infancy, and is likely to change in the coming weeks.</blockquote>
 
 ## Review: The NUnit Lifecycle
 
@@ -33,7 +33,7 @@ That's a mouthful.  Let's see a sample xUnit test fixture exercising the whole t
 
 In order to mimic xUnit, we first have to tell Fixie how to find [Fact] methods.  Then, we'll need to tell it to find all of the IUseFixture&lt;T&gt; declarations to construct the shared instances of whatever type was provided as the "T".  After that prep work, we can start the actual test lifecycle: for each [Fact] method, we want to construct an instance of the test class, inject the T objects into that instance, call the [Fact], and call Dispose().  After performing that cycle for each [Fact], we need to clean up the shared instances of the Ts.
 
-Here's the Fixie Convention class which accomplishes this lifecycle.  The details have been omitted to focus on the Convention API, but the <a href="https://github.com/plioi/fixie/blob/7fa012d1c63016b7b2e6061fa91cca90fbbc3326/src/Fixie.Samples/xUnitStyle/CustomConvention.cs">xUnit-style CustomConvention class</a> can be found on GitHub under the Samples namespace:
+Here's the Fixie Convention class which accomplishes this lifecycle.  The details have been omitted to focus on the Convention API, but the [xUnit-style CustomConvention class](https://github.com/plioi/fixie/blob/7fa012d1c63016b7b2e6061fa91cca90fbbc3326/src/Fixie.Samples/xUnitStyle/CustomConvention.cs) can be found on GitHub under the Samples namespace:
 
 {% gist 5710922 %}
 

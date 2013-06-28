@@ -3,9 +3,9 @@ title: Streamlined Integration Tests
 layout: post
 ---
 
-Last week, we saw how <a href="http://plioi.github.io/fixie/">Fixie</a> can be used to <a href="http://www.headspring.com/dry-test-inheritance/">simplify NUnit's treatment of inheritance</a>.  This week, we'll see how to use it to streamline integration tests in systems that leverage IoC containers.
+Last week, we saw how [Fixie](http://plioi.github.io/fixie/) can be used to [simplify NUnit's treatment of inheritance](http://www.headspring.com/dry-test-inheritance/).  This week, we'll see how to use it to streamline integration tests in systems that leverage IoC containers.
 
-<blockquote>Today's code samples work against <a href="http://nuget.org/packages/Fixie/0.0.1.62">Fixie 0.0.1.62</a>. The customization API is in its infancy, and is likely to change in the coming weeks.</blockquote>
+<blockquote>Today's code samples work against [Fixie 0.0.1.62](http://nuget.org/packages/Fixie/0.0.1.62). The customization API is in its infancy, and is likely to change in the coming weeks.</blockquote>
 
 ## Setting the Scene
 

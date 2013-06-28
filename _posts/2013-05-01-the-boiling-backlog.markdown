@@ -7,14 +7,14 @@ Software development processes tend to be too prescriptive, leading to waste. Fo
 
 The only prescriptive advice I can give is to **ruthlessly remove waste from your process**. What remains ought to communicate useful information to the team and its stakeholders. Anything more than that is just software development *theater*. Approach your development process the same way you approach a bit of ugly code: refactor away anything redundant or overly-complex.
 
-Each project's process is going to vary in response to the project's constraints. The process I've been using on <a href="https://github.com/plioi/fixie">my side project</a> is especially low-tech. It is only ideal for this particular project. If I blindly applied it to some other project, I'd be falling into the same trap as everyone who ever sold a prescriptive Agile ScrumMaster certificate. On this project, my constraints are:
+Each project's process is going to vary in response to the project's constraints. The process I've been using on [my side project](https://github.com/plioi/fixie) is especially low-tech. It is only ideal for this particular project. If I blindly applied it to some other project, I'd be falling into the same trap as everyone who ever sold a prescriptive Agile ScrumMaster certificate. On this project, my constraints are:
 
 <ol>
 <li>The team is very small (1 person).</li>
 <li>The overall vision is well known. Even with little planning, I know where I'm heading.</li>
-<li>The high risk requirements were vetted early on with a <a href="http://www.headspring.com/patrick/strongly-typed-whiteboarding/">proof of concept</a>.</li></ol>
+<li>The high risk requirements were vetted early on with a [proof of concept](http://www.headspring.com/patrick/strongly-typed-whiteboarding/).</li></ol>
 
-Fitting these constraints, the <a href="http://c2.com/cgi/wiki?EinsteinPrinciple">"simple as possible, but no simpler"</a> process that has served me well the last 2 months is a specific variation on Kanban. My Kanban board has four swim lanes: Backlog, Doing, Publish, and Done:
+Fitting these constraints, the ["simple as possible, but no simpler"](http://c2.com/cgi/wiki?EinsteinPrinciple) process that has served me well the last 2 months is a specific variation on Kanban. My Kanban board has four swim lanes: Backlog, Doing, Publish, and Done:
 
 <a href="http://www.headspring.com/wp-content/uploads/2013/05/kanban.png"><img src="http://www.headspring.com/wp-content/uploads/2013/05/kanban.png" alt="Fixie&#039;s Kanban has four lanes: Backlog, Doing, Publish, and Done" width="363" height="271" class="aligncenter size-full wp-image-6525" /></a>
 
