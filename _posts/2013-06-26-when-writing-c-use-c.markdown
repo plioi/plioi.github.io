@@ -5,12 +5,12 @@ layout: post
 
 Recently, Jimmy Bogard described several <a href="http://lostechies.com/jimmybogard/2013/06/18/strategies-for-isolating-the-database-in-tests/">strategies for isolating a database in tests</a>.  Today, we'll see how one of these strategies can be implemented.  We'll start with a common implementation under NUnit, then we'll identify some issues with that implementation, and lastly we'll translate it into a Fixie convention to address those issues.
 
-<blockquote>Today’s code samples work against <a href="http://nuget.org/packages/Fixie/0.0.1.63">Fixie 0.0.1.63</a>. The customization API is in its infancy, and is likely to change in the coming weeks.</blockquote>
+<blockquote>Today's code samples work against <a href="http://nuget.org/packages/Fixie/0.0.1.63">Fixie 0.0.1.63</a>. The customization API is in its infancy, and is likely to change in the coming weeks.</blockquote>
 
 <h2>Transactions Under NUnit</h2>
 One of the strategies from Jimmy's post involves starting up a transaction before a test and rolling back that transaction at the end of the test.  If we're using NUnit, a common technique is to stow this concept away in a test fixture base class like so:
 
-[gist id=5864032]
+{% gist 5864032 %}
 
 Our integration tests can inherit this base class, allowing each test to run in isolation.  Each test gets to work against the same state.
 
@@ -26,11 +26,11 @@ Second, relying on [SetUp] and [TearDown] in a base class can get a little ugly 
 
 As I've demonstrated in recent weeks, Fixie conventions allow you to describe test <em>discovery</em> as well as test<em>execution</em>. In this case, we'll stick with the simple style of test discovery that Fixie uses by default, but we'll also augment test execution with a transaction:
 
-[gist id=5864039]
+{% gist 5864039 %}
 
 The Fixtures and Cases code resembles what Fixie offers in its DefaultConvention.  Like the DefaultConvention, we also get one instance of the test class for each test being executed.  The relevant bit is the last section:
 
-[gist id=5864050]
+{% gist 5864050 %}
 
 Here, we are saying that the normal behavior for each test class instance ("run the test") should be wrapped in a new TransactionScope. In other words, "within a transaction, proceed with the test execution".
 
