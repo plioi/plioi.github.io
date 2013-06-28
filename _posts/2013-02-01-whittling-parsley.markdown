@@ -81,7 +81,7 @@ The tokenizer hands us the tokens to evaluate:
 
 {% gist 4688919 %}
 
-We want to write a function which receives these Token objects and tells us whether or not it is a parenthesized letter.  If it is, we want to report what the letter was.  If it isn't, we want to tell them exactly what went wrong.  Before we do that, we'll need to provide a useful implementation of the Parser<T> interface.  For our needs, we want a parser that produces strings on success, so that we can report what the letter was on success.  We'll also define a convenience method for creating instances of this class:
+We want to write a function which receives these Token objects and tells us whether or not it is a parenthesized letter.  If it is, we want to report what the letter was.  If it isn't, we want to tell them exactly what went wrong.  Before we do that, we'll need to provide a useful implementation of the Parser&lt;T&gt; interface.  For our needs, we want a parser that produces strings on success, so that we can report what the letter was on success.  We'll also define a convenience method for creating instances of this class:
 
 {% gist 4688947 %}
 
