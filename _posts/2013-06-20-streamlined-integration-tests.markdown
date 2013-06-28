@@ -11,7 +11,7 @@ Last week, we saw how <a href="http://plioi.github.io/fixie/">Fixie</a> can be u
 
 Assume, for the sake of argument, that you've already weighed the pros and cons of using IoC containers and have decided to use one in an ASP.NET MVC application.  During app startup, the IoC container is configured to provide the real implementations of your dependencies, but at test time you have the option of providing fakes.  You've also configured MVC to defer to the container whenever MVC wishes to instantiate a controller.
 
-Voilà!  Now your controllers can declare their dependencies by simply accepting them via constructor parameters:
+Voila!  Now your controllers can declare their dependencies by simply accepting them via constructor parameters:
 
 {% gist 5819891 %}
 
