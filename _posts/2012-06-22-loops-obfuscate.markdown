@@ -1,0 +1,38 @@
+---
+title: Loops Obfuscate
+layout: post
+---
+
+Most of the world's loops have already been written, and their names are "Where" and "Select".
+
+Loops are so commonplace in software that it barely deserves mentioning.  It's like saying "saws are ubiquitous in woodworking" or "epic guitar solos are ubiquitous in Journey albums".  Although there is nothing good or bad about loop constructs themselves, LINQ has changed the way I think about them over the last few years.<!--more-->
+
+Let's start with some typical, monotonous loops:
+
+[gist id="2969701"]
+
+There's nothing Earth-shattering about these methods, and there's nothing particularly wrong with them.  Let's assume, though, that as requirements change the condition for <em>valuable-ness</em> and the means of formatting items become more comlex.  Keeping that logic inside these methods would start to feel a little wrong, as it would <a href="http://en.wiktionary.org/wiki/complect">complect</a> the low-level details of iteration and list-building with the high-level business concepts of product value and formatting.
+
+<strong>I don't want to think about iteration and list-building when I'm also trying to think about business concepts.</strong>
+
+Let's say that once these rules got complicated enough, and reading them as monolithic methods got a little too painful, we simplify by doing an Extract-Method refactoring on them:
+
+[gist id="2969706"]
+
+Now it's easier to see that we're building up <code>List</code> objects just so that we can return them for <code>IEnumerable</code> iteration.  Armed with the <code>yield</code> keyword, we clean up further:
+
+[gist id="2969708"]
+
+Imagine we have performed a similar refactoring all over a large project.  Our code would be littered with these annoying loop methods that are all suspiciously similar to each other.  All the methods like <code>ValuableProducts</code> would take a collection, loop through it, and apply a filter condition function to each item. All the methods like <code>FormattedProducts</code> would take a collection, loop through it, and apply some transforming function on each item.
+
+They're all so similar that you might be tempted to reach for your copy/paste shortcuts to write them, and that should tell us something about the value of writing that code: <strong>the operations of iterating, filtering, and transforming collections are so fundamental that we shouldn't have to write them out.</strong>
+
+Using delegates and generics, we can pluck out the tiny parts that vary from one copy/pasted loop method to another, collapsing all those methods down to two:
+
+[gist id="2969718"]
+
+At this point we have accidentally reinvented the <code>Enumerable</code> extension methods <code>Where</code> and <code>Select</code>, so even these two methods can be removed.  We're left with the now-commonplace alternatives:
+
+[gist id="2969719"]
+
+Once you start writing in this style rather than the original imperative style, <strong>the surface area of your code that corresponds with your actual goals increases compared to that of your infrastructure</strong>.  The focus is on <em>what</em> your goal is, and not on <em>how</em> you intend to trick a box of wires into reaching that goal.

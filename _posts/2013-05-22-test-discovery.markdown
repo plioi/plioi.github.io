@@ -1,0 +1,120 @@
+---
+title: Test Discovery
+layout: post
+---
+
+Over the last few weeks, I've implemented some customization features in <a href="https://github.com/plioi/fixie">the Fixie test framework</a>. The first of these features is now available. Today, we'll see this feature in action. <strong>We're going to tell Fixie what our tests <em>look like</em>, and Fixie will then find them and run them.</strong>
+
+<blockquote>Today's code samples work against <a href="http://nuget.org/packages/Fixie/0.0.1.49">Fixie 0.0.1.49</a>. The customization API is in its infancy, and is likely to change as I address more involved features in the coming weeks.</blockquote>
+
+<h2>The Default Convention</h2>
+
+If you've used NUnit before, you know that you have to mark your test classes with [TestFixture] and your test methods with [Test] in order for NUnit to know that those are your tests.  NUnit uses the presence of those attributes to "discover" your tests before it can run them. NUnit is therefore opinionated about test discovery.
+
+If you've used xUnit before, you know that you have to mark your test methods with [Fact] in order for xUnit to know that those are your tests. xUnit uses the presence of that attribute to "discover" your tests before it can run them. xUnit is therefore opinionated about test discovery.  (We've seen that <a href="http://www.headspring.com/patrick/low-ceremony-xunit/">xUnit is a little more flexible in this regard</a>, but it's still pretty opinionated about what a test is.)
+
+<strong>Fixie is not opinionated about test discovery.</strong> It has a simple default, but allows you replace that default with your own conventions. By default, Fixie will look for test classes by a naming convention: if a class in your test project has a name ending with "Tests", then it is a test class. After finding these classes, it will then look for test methods as any public instance void-or-async method with zero parameters. In other words, if it looks like a test, walks like a test, and quacks like a test, Fixie will assume it's a <del>duck</del> test by default.
+
+In my implementation, these rules are defined by <a href="https://github.com/plioi/fixie/blob/075d41822e6bee18624bd8329343d68e31d58c54/src/Fixie/Conventions/DefaultConvention.cs">DefaultConvention</a>:
+
+[gist id=5624801]
+
+Let's see this convention in action. This demo assumes you have <a href="http://testdriven.net/">TestDriven.NET</a> installed. I have set up CTRL-T to run whatever test method or test class my cursor is sitting on.
+
+Create a new Solution in Visual Studio (I called mine "DiscoveryConventions"), and install <a href="http://nuget.org/packages/Fixie/0.0.1.49">Fixie 0.0.1.49</a> in the Package Manager Console:
+
+[gist id=5624804]
+
+Fixie deliberately has no assertion statements of its own, so install <a href="http://nuget.org/packages/Should">Should</a> too:
+
+[gist id=5624806]
+
+Add a Calculator class. We're going to write some tests for this in a moment:
+
+[gist id=5624810]
+
+Add a test class using the default convention:
+
+[gist id=5624813]
+
+Place your cursor in either test method and hit your TestDriven.NET shortcut (for me, that's CRTL-T). You'll see TestDriven.NET ran that test with output like so:
+
+[gist id=5624820]
+
+Place your cursor <em>between</em> the ShouldAdd and ShouldSubtract methods and run TestDriven.NET again. You'll see it ran all the tests in the class with output like so:
+
+[gist id=5624822]
+
+So far, so boring.  This is a similar experience to using NUnit and xUnit. The only thing I've saved you is a few keystrokes for the attributes.
+
+<h2>Custom Conventions</h2>
+
+What if you don't like the default convention?  What if you have a different naming convention for your test classes and test methods?  What if you like the way attributes jump out at you? Thankfully, you can set aside the default convention and substitute your own. If you place your own implementation of Convention in your test assembly, Fixie will discover and use that one <em>instead</em> of DefaultConvention.
+
+<blockquote>Let's try this customization out by first making it work more like NUnit, and then making it work more like xUnit. Lastly, we'll see how Fixie accomplishes this behavior.</blockquote>
+
+<h2>Immitating NUnit</h2>
+
+Rename CalculatorTests to CalculatorTestFixture. Since the class no longer ends with "Tests", it no longer matches the default convention. If you try to run the tests again, TestDriven.NET <em>will</em> run it, but it will say "(Ad hoc)" instead of "(Fixie 0.0.1.49)", which means that TestDriven.NET has no idea that this class is a test class anymore, and it just called the method as best as it could. That's nice, but it won't be enough when we get into things like test classes that have SetUps and TearDowns in the weeks ahead, so today we need to ensure that even when we stray from the default convention, TestDriven.NET should still be able to know that it's looking at a Fixie test class!
+
+Let's define some NUnit-style attributes:
+
+[gist id=5624826]
+
+Apply these to CalculatorTestFixture as you would with NUnit tests:
+
+[gist id=5624830]
+
+Trying to run these tests, we see that TestDriven.NET is <em>still</em> using the lame "(Ad hoc)" test runner.  TestDriven.NET is still unaware that it is looking at a test class! <strong>Teach it to care about these attributes by adding a new Convention subclass to the project:</strong>
+
+[gist id=5624832]
+
+Here, we are saying that our test fixture classes are those which have [TestFixture] attributes, and our test case methods are those which have [Test] attributes. Running our tests again, we see that TestDriven.NET is finally aware that CalculatorTestFixture is a Fixie test class, so it was able to use Fixie again to actually run the tests:
+
+[gist id=5624835]
+
+<strong>We have changed the way that Fixie discovers our tests by telling it what our tests look like.</strong>
+
+<h2>Immitating xUnit</h2>
+
+xUnit works a little differently from NUnit. You don't have to put an attribute on the test class, but you do have to put a [Fact] on each test method. Any class that happens to have a [Fact] method is assumed to be a test class.
+
+Delete the NUnit-style TestFixtureAttribute and TestAttribute classes, and replace them with a [Fact] attribute:
+
+[gist id=5624837]
+
+Update CalculatorTestFixture to use xUnit-style test decoration:
+
+[gist id=5624838]
+
+Update the CustomConvention to use xUnit-style rules:
+
+[gist id=5624842]
+
+Here, we are saying that our test fixture classes are those which have any methods that have [Fact] attributes, and our test case methods are those which have [Fact] attributes. Running our tests again, we see that TestDriven.NET is again aware that CalculatorTestFixture is a Fixie test class, so it was able to use Fixie again to actually run the tests:
+
+[gist id=5624843]
+
+<strong>We again changed the way that Fixie discovers our tests by telling it what our tests look like.</strong>
+
+<h2>Neat Trick. What's the Point?</h2>
+
+NUnit, xUnit, and other test frameworks are very opinionated about two major concepts: how to discover your test classes/methods, and how to go about executing them. Today, we see that Fixie can at least give you an extra degree of freedom around test discovery. You're free to use whatever logic you want to decide whether a class is a test class, and whether a method is a test method. (We'll see how Fixie addresses the second part, test <em>execution</em>, in the coming weeks.)
+
+Even if all this accomplished was fewer keystrokes, or an easier path to migrate from another framework <em>to</em> Fixie, I'd consider it a net gain. However, I'm already benefiting from the flexibility in more ways. When using Fixie to test Fixie, I use the default convention with a twist: when I need to prove that Fixie will do the right thing in the event of a test <em>failure</em>, I want to ask some <em>other</em> "phony" test class to run. If the phony test class fails in the way I expect, my real tests pass. Only the real tests need to pass for my build to succeed. The phony tests are identified with the <a href="https://github.com/plioi/fixie/blob/075d41822e6bee18624bd8329343d68e31d58c54/src/Fixie/Conventions/SelfTestConvention.cs">SelfTestConvention</a>:
+
+[gist id=5624845]
+
+I create phony test classes as nested, private classes with names ending in "Fixture". The wrapper classes follow the DefaultConvention and must pass, while the must-pass tests do their work by asking the SelfTestConvention to run a phony test class. Without these conventions, it would be too hard for me to test that I can properly handle <em>failing</em> tests.
+
+<h2>How Does it Work?</h2>
+
+We've seen that Fixie somehow knows how to look for Convention classes. After finding them, it must be able to use them in some way, so Fixie must somehow construct instances of your Conventions, too. The answer is <a href="http://msdn.microsoft.com/en-us/library/ms173183(v=vs.110).aspx">reflection</a>: code that searches and uses other assemblies at runtime.
+
+When I ask Fixie to run all the tests in the test assembly, it needs to reach out and find all the Convention classes and then construct them for use. Where it <em>used</em> to just construct a <code>new DefaultConvention()</code> every time, my Runner class <em>now</em> does the following:
+
+[gist id=5624849]
+
+Here, we search the test assembly for types that are subclasses of Convention, and create an instance of each.  If we didn't find any, we'll assume the DefaultConvention.
+
+By reaching out into your code with reflection, Fixie enables you to tell it what your test classes and test methods look like.

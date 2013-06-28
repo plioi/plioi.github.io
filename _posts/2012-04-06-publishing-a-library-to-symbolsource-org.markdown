@@ -1,0 +1,44 @@
+---
+title: Publishing a Library to SymbolSource.org
+layout: post
+---
+
+Last week, we saw how to <a href="http://www.headspring.com/2012/03/publishing-a-library-with-nuget">publish a library with NuGet</a>.  By including DLL files in our NuGet package under the special "lib" folder, NuGet knows to install them as assembly references in the target project.  This is a great way to get your open-source library into the hands of your audience, but it also provides them with a pretty lame debugging scenario.<!--more-->
+
+<h2>Black Box Debugging</h2>
+
+Using that NuGet package from last week, I installed <a href="https://github.com/plioi/parsley">Parsley</a> into another project that consumes it.  While trying to debug <em>that</em> project, I got to a point where I wanted to just step the debugger into one of Parsley's methods.  Even with the PDB file included in the NuGet package, Visual Studio just plain didn't have enough information to let me step through Parsley's code.
+
+Too much information about the original source gets lost when a PDB is produced.  We need to make the source code available to the consumer when they install our packages, and we need to so in a way that Visual Studio can take advantage of at debugging time.
+
+<h2>Publishing a Symbol Package</h2>
+
+Fortunately there is a free service, <a href="http://SymbolSource.org">SymbolSource.org</a>, which is easy to integrate with both NuGet (for the publisher) and Visual Studio (for the consumer).  Although getting a SymbolSource account is an option, you won't actually need one.  You'll be able to publish a special variant of your NuGet package to NuGet.org, and then NuGet.org shakes hands with SymbolSource.org on your behalf.  All it takes is a slight tweak to your <code>.nuspec</code> file, and an extra command-line argument when converting that <code>.nuspec</code> into a <code>.nupkg</code>!
+
+The previous version of my <code>.nuspec</code>'s <code>files</code> tag just copied DLLs and PDBs into the package's special "lib" folder:
+
+[gist id="2231973"]
+
+The new version also copies all of the source code to the package's special "src" folder.  We don't need to copy auxiliary files like <code>.csproj</code> or <code>.sln</code>.  We just need to copy the code files that the debugger will need to display, namely all the *.cs files:
+
+[gist id="2288725"]
+
+I used this single <code>.nuspec</code> to produce <em>two</em> <code>.nupkg</code> files, by including the <code>-Symbols</code> command line argument:
+
+<blockquote>
+  $ nuget pack Parsley.nuspec -Symbols
+</blockquote>
+
+This produced Parsley.0.0.2.nupkg like normal, but it also produced Parsley.0.0.2.symbols.nupkg.  NuGet.exe is smart enough to know that the first package only needed the DLLs (used at installation time), and that the symbol package needs to contain the PDBs and C# files (used at debugging time).  When I pushed the main package to NuGet.org, NuGet.exe noticed the symbol package was also present, and submitted that one too:
+
+<blockquote>
+  <p>$ nuget push Parsley.0.0.2.nupkg
+    Pushing Parsley 0.0.2 to the NuGet gallery (https://www.nuget.org)...
+    Your package was pushed.
+    Pushing Parsley 0.0.2 to the symbol server (http://nuget.gw.symbolsource/Public/NuGet)...
+    Your package was pushed.</p>
+</blockquote>
+
+I then followed the instructions for <a href="http://www.symbolsource.org/Public/Home/VisualStudio">configuring Visual Studio to work with SymbolSource.org</a>.  Remember, you don't have to follow the suggestion to create a SymbolSource account.
+
+I updated the package in the consumer project, which installed the DLLs.  The next time I tried to step into a Parsley method, I got a quick dialog that said it was downloading the relevant files from SymbolSource, and then I was able to step through the read-only C# files found within the symbol package!
