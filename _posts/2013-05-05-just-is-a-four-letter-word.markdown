@@ -11,11 +11,11 @@ Working on the [Fixie test framework](https://github.com/plioi/fixie) this week,
 
 <blockquote>Honor Dispose() when present.</blockquote>
 
-When a test fixture class happens to implement IDisposable, the test framework should treat Dispose() as special.  After constructing your fixture and calling its test methods, and before it discards the fixture instance, it should be sure to call Dispose().  For example, the xUnit test framework uses Dispose() in the same way that NUnit uses [TearDown] methods.  In both of those frameworks, you have a chance to perform cleanup after tests execute, and I wanted Fixie to support Dispose() too.
+When a test fixture class happens to implement IDisposable, the test framework should treat Dispose() as special.  After constructing your fixture and calling its test methods, and before it discards the fixture instance, it should be sure to call Dispose().  For example, the xUnit test framework uses Dispose() in the same way that NUnit uses \[TearDown\] methods.  In both of those frameworks, you have a chance to perform cleanup after tests execute, and I wanted Fixie to support Dispose() too.
 
 ## Initial Analysis
 
-To get a better idea of what I would have to do, I took a look at the way C# <code>using</code> blocks work.  When you write a block like this:
+To get a better idea of what I would have to do, I took a look at the way C\# <code>using</code> blocks work.  When you write a block like this:
 
 {% gist 5521208 %}
 
@@ -67,7 +67,7 @@ All done.
 
 ## The Plot Thickens
 
-Wait.  What if someone's test fixture has a Dispose() that throws exceptions?  Just like an NUnit [TearDown], we want exceptions here to cause the corresponding tests to fail, and we want the disposal exception to be included in the output.  I ***just*** have to wrap the disposal in a try/catch and emit a failure when Dispose() throws, like I already do when a test method throws:
+Wait.  What if someone's test fixture has a Dispose() that throws exceptions?  Just like an NUnit \[TearDown\], we want exceptions here to cause the corresponding tests to fail, and we want the disposal exception to be included in the output.  I ***just*** have to wrap the disposal in a try/catch and emit a failure when Dispose() throws, like I already do when a test method throws:
 
 {% gist 5521243 %}
 
@@ -75,7 +75,7 @@ When a test method passes but Dispose() throws, this code does the right thing b
 
 To address that detail, I had to dramatically restructure the test execution code so that it would accumulate potentially-many exceptions throughout the test lifecycle.  Only at the end of the lifecycle would it decide whether the test passed or failed.  If any exceptions had been accumulated, the test would fail and the reasons would list all the exceptions.
 
-<blockquote>I'm glad I ran into this problem now, because it will surely come up again when I address other test lifecycle methods, corresponding with NUnit concepts like [TestFixtureSetUp], [TestFixtureTearDown], [SetUp], and [TearDown]. The new code makes it easy to have multiple steps in the test lifecycle, all possibly contributing reasons for the test to fail.</blockquote>
+<blockquote>I'm glad I ran into this problem now, because it will surely come up again when I address other test lifecycle methods, corresponding with NUnit concepts like \[TestFixtureSetUp\], \[TestFixtureTearDown\], \[SetUp\], and \[TearDown\]. The new code makes it easy to have multiple steps in the test lifecycle, all possibly contributing reasons for the test to fail.</blockquote>
 
 ## 4 Hours Later
 

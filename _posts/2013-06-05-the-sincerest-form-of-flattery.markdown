@@ -11,11 +11,11 @@ This week, we'll see how to customize Fixie to imitate the xUnit lifecycle.
 
 ## Review: The NUnit Lifecycle
 
-With NUnit, one instance of your [TestFixture] class is constructed, and that instance is shared across all of that class's [Test] methods.  Test discovery is based on the presence of these attributes.  You can identify methods as [SetUp] and [TearDown] in order to run common code before and after each individual test.  You can also identify methods as [TestFixtureSetUp] and [TestFixtureTearDown], in order to perform class-wide initialization and cleanup steps at the start and end of the class's lifespan.  You can use fields in the class to hold state that lives across all of the tests.  At the end, if the class is IDisposable, the Dispose() method is called once.
+With NUnit, one instance of your \[TestFixture\] class is constructed, and that instance is shared across all of that class's \[Test\] methods.  Test discovery is based on the presence of these attributes.  You can identify methods as \[SetUp\] and \[TearDown\] in order to run common code before and after each individual test.  You can also identify methods as \[TestFixtureSetUp\] and \[TestFixtureTearDown\], in order to perform class-wide initialization and cleanup steps at the start and end of the class's lifespan.  You can use fields in the class to hold state that lives across all of the tests.  At the end, if the class is IDisposable, the Dispose() method is called once.
 
 ## The xUnit Lifecycle
 
-xUnit is based on NUnit, but they both have different rules about what a test is, and how to run a test once it is found.  xUnit test methods are marked with a [Fact] attribute, and test classes don't need any attribute since it is implied by the presence of [Fact]s.  More importantly, xUnit test classes are constructed again and again, once for each [Fact].
+xUnit is based on NUnit, but they both have different rules about what a test is, and how to run a test once it is found.  xUnit test methods are marked with a \[Fact\] attribute, and test classes don't need any attribute since it is implied by the presence of \[Fact\]s.  More importantly, xUnit test classes are constructed again and again, once for each \[Fact\].
 
 Frequent reconstruction of the test class has a few consequences from the point of view of NUnit users.  
 
@@ -23,7 +23,7 @@ The first consequence affects how to go about implementing basic setup and teard
 
 The second consequence of this frequent reconstruction is that test class fields are forgotten from one test to the next, which raises the obvious question, what if I *just plain want* some state to live across all the tests?  I may have an integration test, for instance, with database setup steps that are costly in time.  I don't want to be forced to redo that setup for each test simply to satisfy the strong opinions of a test framework!
 
-Thankfully, xUnit gives us an escape hatch in the form of IUseFixture&lt;T&gt;.  Your test class can implement this interface for some type T, and xUnit will in turn construct one shared instance of that T.  After reconstructing the test class and before running the next [Fact] method, xUnit injects that T into your test class instance.  When all the [Facts] are done, xUnit will likewise dispose of the T, giving you something like NUnit's [TestFixtureTearDown].
+Thankfully, xUnit gives us an escape hatch in the form of IUseFixture&lt;T&gt;.  Your test class can implement this interface for some type T, and xUnit will in turn construct one shared instance of that T.  After reconstructing the test class and before running the next \[Fact\] method, xUnit injects that T into your test class instance.  When all the \[Facts\] are done, xUnit will likewise dispose of the T, giving you something like NUnit's \[TestFixtureTearDown\].
 
 That's a mouthful.  Let's see a sample xUnit test fixture exercising the whole test lifecycle:
 
@@ -31,7 +31,7 @@ That's a mouthful.  Let's see a sample xUnit test fixture exercising the whole t
 
 ## Customizing Fixie to Mimic xUnit
 
-In order to mimic xUnit, we first have to tell Fixie how to find [Fact] methods.  Then, we'll need to tell it to find all of the IUseFixture&lt;T&gt; declarations to construct the shared instances of whatever type was provided as the "T".  After that prep work, we can start the actual test lifecycle: for each [Fact] method, we want to construct an instance of the test class, inject the T objects into that instance, call the [Fact], and call Dispose().  After performing that cycle for each [Fact], we need to clean up the shared instances of the Ts.
+In order to mimic xUnit, we first have to tell Fixie how to find \[Fact\] methods.  Then, we'll need to tell it to find all of the IUseFixture&lt;T&gt; declarations to construct the shared instances of whatever type was provided as the "T".  After that prep work, we can start the actual test lifecycle: for each \[Fact\] method, we want to construct an instance of the test class, inject the T objects into that instance, call the \[Fact\], and call Dispose().  After performing that cycle for each \[Fact\], we need to clean up the shared instances of the Ts.
 
 Here's the Fixie Convention class which accomplishes this lifecycle.  The details have been omitted to focus on the Convention API, but the [xUnit-style CustomConvention class](https://github.com/plioi/fixie/blob/7fa012d1c63016b7b2e6061fa91cca90fbbc3326/src/Fixie.Samples/xUnitStyle/CustomConvention.cs) can be found on GitHub under the Samples namespace:
 

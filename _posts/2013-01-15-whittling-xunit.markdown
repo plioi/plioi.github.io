@@ -13,13 +13,13 @@ Not surprisingly, this project has a lot of test coverage.  Since code whittling
 
 I tend to use a console test runner and a TestDriven.Net test runner, but none of the other runners.  My next victims were the projects for the runners I don't happen to use: xunit.gui, xunit.runner.visualstudio, and xunit.runner.msbuild.
 
-Since I use the [Should](http://nuget.org/packages/Should) assertion library, I had no need for any of xUnit's own assertion code, allowing me to remove a huge chunk of code I had no interest in.  I deleted the [Assert](http://xunit.codeplex.com/SourceControl/changeset/view/2e806844c3c1#src/xunit/Assert.cs) class, its usages, and the many associated exception classes.
+Since I use the [Should](http://nuget.org/packages/Should) assertion library, I had no need for any of xUnit's own assertion code, allowing me to remove a huge chunk of code I had no interest in.  I deleted the [Assert](http://xunit.codeplex.com/SourceControl/changeset/view/2e806844c3c1\#src/xunit/Assert.cs) class, its usages, and the many associated exception classes.
 
-I generally don't use the [Theory] attribute in my xUnit tests, so I removed that and its usages next.  Lots of support classes for [Theory] were no longer in my way.
+I generally don't use the \[Theory\] attribute in my xUnit tests, so I removed that and its usages next.  Lots of support classes for \[Theory\] were no longer in my way.
 
 I'm more interested in how results are tallied and output to the console, and less interested in any XSLT reporting of those results, so I removed all the XSLT-dependent code.
 
-Then I removed a long series of features I rarely or never use: IUseFixture, skipped tests, [AutoRollback], [AssumeIdentity], [FreezeClock], [Trace], ...
+Then I removed a long series of features I rarely or never use: IUseFixture, skipped tests, \[AutoRollback\], \[AssumeIdentity\], \[FreezeClock\], \[Trace\], ...
 
 **Eventually, I goofed up.**  It turns out there is more multithreading code and more dynamic construction (in which a string containing the name of a class is used to instantiate that class) in xUnit than I expected.  I actually expected little or no threading/dynamic stuff, but I ended up removing too much in one step, losing something fundamental in the code path between Main() and actual invocation of a test.
 
@@ -37,11 +37,11 @@ For **Phase 1**, it builds up a tree of objects representing the test methods in
 
 {% gist 4438396 %}
 
-Plain old reflection walks through all the methods in the test assembly, picking out the ones that are marked as tests with the [Fact] attribute.
+Plain old reflection walks through all the methods in the test assembly, picking out the ones that are marked as tests with the \[Fact\] attribute.
 
-For **Phase 2**, it traverses the tree of tests to execute them and accumulate results.  [TestClassCommandRunner](http://xunit.codeplex.com/SourceControl/changeset/view/2e806844c3c1#src/xunit/Sdk/Commands/ClassCommands/TestClassCommandRunner.cs) has the main execution logic.  For a given class, it processes the list of method in random order.  For each method, xUnit gets one or more ITestCommands to execute.  Each test command is invoked, giving a MethodResult which gets included in the overall ClassResult.
+For **Phase 2**, it traverses the tree of tests to execute them and accumulate results.  [TestClassCommandRunner](http://xunit.codeplex.com/SourceControl/changeset/view/2e806844c3c1\#src/xunit/Sdk/Commands/ClassCommands/TestClassCommandRunner.cs) has the main execution logic.  For a given class, it processes the list of method in random order.  For each method, xUnit gets one or more ITestCommands to execute.  Each test command is invoked, giving a MethodResult which gets included in the overall ClassResult.
 
-A single test command to execute, for a test identified with the [Fact] attribute, looks like this:
+A single test command to execute, for a test identified with the \[Fact\] attribute, looks like this:
 
 {% gist 4438431 %}
 

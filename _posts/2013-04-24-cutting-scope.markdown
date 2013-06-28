@@ -3,7 +3,7 @@ title: Cutting Scope
 layout: post
 ---
 
-Over the last week, I've implemented support for <code>async</code>/<code>await</code> in the [Fixie test framework](https://github.com/plioi/fixie). Thanks to a suggestion from [Pedro Reys](https://twitter.com/pedroreys), I found that this project was susceptible to a serious bug, one that NUnit and xUnit both encountered and addressed back when the <code>async</code>/<code>await</code> keywords were introduced in C# 5.
+Over the last week, I've implemented support for <code>async</code>/<code>await</code> in the [Fixie test framework](https://github.com/plioi/fixie). Thanks to a suggestion from [Pedro Reys](https://twitter.com/pedroreys), I found that this project was susceptible to a serious bug, one that NUnit and xUnit both encountered and addressed back when the <code>async</code>/<code>await</code> keywords were introduced in C\# 5.
 
 While developing the fix, I relearned an important lesson: cutting scope is not a sign of defeat. Sometimes less really is more.
 

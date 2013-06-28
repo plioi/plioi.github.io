@@ -27,7 +27,7 @@ Suddenly, you're not the expensive team that's been toiling away for years witho
 
 The second class of bootstrapping projects is a little more interesting from a developer's point of view, in that their implementation can be a little mind-bending: a system appears to be built upon itself.  The best example of this seemingly-impossible state is when a compiler for a language is writting in that language.
 
-The current version of the C# compiler was implemented in another language, but the *next* version of the C# compiler is being written in C#.  I don't think I'd call this example bootstrapping, however, since C# has already been established as a full-size language for some time now.  Bootstrapping is more of a technique to get a new language up and running quickly so that it can spend most of its lifetime "self-hosted".
+The current version of the C\# compiler was implemented in another language, but the *next* version of the C\# compiler is being written in C\#.  I don't think I'd call this example bootstrapping, however, since C\# has already been established as a full-size language for some time now.  Bootstrapping is more of a technique to get a new language up and running quickly so that it can spend most of its lifetime "self-hosted".
 
 Many languages' first implementations are written in a preexisting language like C.  After the first version is working, the second version can be written in the new language, compiled with the first version.  Each new version is compiled with the previous version.
 

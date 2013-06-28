@@ -9,9 +9,9 @@ Over the last few weeks, I've implemented some customization features in [the Fi
 
 ## The Default Convention
 
-If you've used NUnit before, you know that you have to mark your test classes with [TestFixture] and your test methods with [Test] in order for NUnit to know that those are your tests.  NUnit uses the presence of those attributes to "discover" your tests before it can run them. NUnit is therefore opinionated about test discovery.
+If you've used NUnit before, you know that you have to mark your test classes with \[TestFixture\] and your test methods with \[Test\] in order for NUnit to know that those are your tests.  NUnit uses the presence of those attributes to "discover" your tests before it can run them. NUnit is therefore opinionated about test discovery.
 
-If you've used xUnit before, you know that you have to mark your test methods with [Fact] in order for xUnit to know that those are your tests. xUnit uses the presence of that attribute to "discover" your tests before it can run them. xUnit is therefore opinionated about test discovery.  (We've seen that [xUnit is a little more flexible in this regard](http://www.headspring.com/patrick/low-ceremony-xunit/), but it's still pretty opinionated about what a test is.)
+If you've used xUnit before, you know that you have to mark your test methods with \[Fact\] in order for xUnit to know that those are your tests. xUnit uses the presence of that attribute to "discover" your tests before it can run them. xUnit is therefore opinionated about test discovery.  (We've seen that [xUnit is a little more flexible in this regard](http://www.headspring.com/patrick/low-ceremony-xunit/), but it's still pretty opinionated about what a test is.)
 
 **Fixie is not opinionated about test discovery.** It has a simple default, but allows you replace that default with your own conventions. By default, Fixie will look for test classes by a naming convention: if a class in your test project has a name ending with "Tests", then it is a test class. After finding these classes, it will then look for test methods as any public instance void-or-async method with zero parameters. In other words, if it looks like a test, walks like a test, and quacks like a test, Fixie will assume it's a <del>duck</del> test by default.
 
@@ -69,7 +69,7 @@ Trying to run these tests, we see that TestDriven.NET is *still* using the lame 
 
 {% gist 5624832 %}
 
-Here, we are saying that our test fixture classes are those which have [TestFixture] attributes, and our test case methods are those which have [Test] attributes. Running our tests again, we see that TestDriven.NET is finally aware that CalculatorTestFixture is a Fixie test class, so it was able to use Fixie again to actually run the tests:
+Here, we are saying that our test fixture classes are those which have \[TestFixture\] attributes, and our test case methods are those which have \[Test\] attributes. Running our tests again, we see that TestDriven.NET is finally aware that CalculatorTestFixture is a Fixie test class, so it was able to use Fixie again to actually run the tests:
 
 {% gist 5624835 %}
 
@@ -77,9 +77,9 @@ Here, we are saying that our test fixture classes are those which have [TestFixt
 
 ## Immitating xUnit
 
-xUnit works a little differently from NUnit. You don't have to put an attribute on the test class, but you do have to put a [Fact] on each test method. Any class that happens to have a [Fact] method is assumed to be a test class.
+xUnit works a little differently from NUnit. You don't have to put an attribute on the test class, but you do have to put a \[Fact\] on each test method. Any class that happens to have a \[Fact\] method is assumed to be a test class.
 
-Delete the NUnit-style TestFixtureAttribute and TestAttribute classes, and replace them with a [Fact] attribute:
+Delete the NUnit-style TestFixtureAttribute and TestAttribute classes, and replace them with a \[Fact\] attribute:
 
 {% gist 5624837 %}
 
@@ -91,7 +91,7 @@ Update the CustomConvention to use xUnit-style rules:
 
 {% gist 5624842 %}
 
-Here, we are saying that our test fixture classes are those which have any methods that have [Fact] attributes, and our test case methods are those which have [Fact] attributes. Running our tests again, we see that TestDriven.NET is again aware that CalculatorTestFixture is a Fixie test class, so it was able to use Fixie again to actually run the tests:
+Here, we are saying that our test fixture classes are those which have any methods that have \[Fact\] attributes, and our test case methods are those which have \[Fact\] attributes. Running our tests again, we see that TestDriven.NET is again aware that CalculatorTestFixture is a Fixie test class, so it was able to use Fixie again to actually run the tests:
 
 {% gist 5624843 %}
 

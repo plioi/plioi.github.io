@@ -126,7 +126,7 @@ I updated the build script to produce a CommonAssemblyInfo.cs file with the buil
 
 {% gist 5192606 %}
 
-I ran the script and confirmed the contents of CommonAssemblyInfo.cs.  Next, I needed to make both Projects in the Solution actually use this file instead of the defaults.  In both Projects, I removed most of the contents of Properties/AssemblyInfo.cs (leaving only the Project-specific [AssemblyName] attribute), right-clicked the Project to Add \ Existing Item, browsed to CommonAssemblyInfo.cs *and clicked the down-arrow within the Add button to select Add As Link* so that a single copy of the file would be used by all projects.  Once these links were created, I dragged them into the Properties folders to get them out of the way.  Whenever I add a new project to the solution, I'll need to repeat this step.
+I ran the script and confirmed the contents of CommonAssemblyInfo.cs.  Next, I needed to make both Projects in the Solution actually use this file instead of the defaults.  In both Projects, I removed most of the contents of Properties/AssemblyInfo.cs (leaving only the Project-specific \[AssemblyName\] attribute), right-clicked the Project to Add \\ Existing Item, browsed to CommonAssemblyInfo.cs *and clicked the down-arrow within the Add button to select Add As Link* so that a single copy of the file would be used by all projects.  Once these links were created, I dragged them into the Properties folders to get them out of the way.  Whenever I add a new project to the solution, I'll need to repeat this step.
 
 [Commit](https://github.com/plioi/fixie/commit/d861ff8fb6bc5621c7066a855fa96733cbe7eebf).
 

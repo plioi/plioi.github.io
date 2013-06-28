@@ -77,8 +77,8 @@ To sum up, when creating a test framework that needs to integrate with TD.NET:
 <ul>
     <li>Reference TestDriven.Framework.dll.</li>
     <li>Implement TestDriven.Framework.ITestRunner.</li>
-    <li>Include a *.tdnet text file whose name matches the test framework's DLL, and whose contents identify the plugin's DLL and ITestRunner class. (In my case, these two DLLs were one and the same.)</li>
-    <li>Consumers must reference the test framework and must have the *.tdnet file present.</li>
+    <li>Include a \*.tdnet text file whose name matches the test framework's DLL, and whose contents identify the plugin's DLL and ITestRunner class. (In my case, these two DLLs were one and the same.)</li>
+    <li>Consumers must reference the test framework and must have the \*.tdnet file present.</li>
 </ul>
 
 ## Eliminate Any Remaining Risks

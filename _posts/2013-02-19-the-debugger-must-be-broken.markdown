@@ -17,13 +17,13 @@ This first pass was bug-free, and the <code>ToPersons</code> method passed our u
 
 {% gist 4982711 %}
 
-Easy.  C# 101 stuff.  Of course it passed.
+Easy.  C\# 101 stuff.  Of course it passed.
 
 Some hours later, I had reason to convert <code>Person</code> from an interface to a concrete class:
 
 {% gist 4982716 %}
 
-Suddenly, this and many other tests started failing.  <code>persons[0].Name</code> was null!  We set up a breakpoint on the return statement within <code>ToPersons</code>, and saw that each student being returned did in fact get populated correctly.  **Surely, the debugger must be broken!  We clearly populate an object, and when we next look at it it is unpopulated!  Those punks at Microsoft really grind my gears.**
+Suddenly, this and many other tests started failing.  <code>persons\[0\].Name</code> was null!  We set up a breakpoint on the return statement within <code>ToPersons</code>, and saw that each student being returned did in fact get populated correctly.  **Surely, the debugger must be broken!  We clearly populate an object, and when we next look at it it is unpopulated!  Those punks at Microsoft really grind my gears.**
 
 **Ok, Patrick, take a step back.  What assumption is leading me to believe the debugger is wrong?**  I'm claiming that a clearly-populated property is null the next time I look at it.  Therefore, I should start to doubt whether I am actually inspecting the same property both times.
 
@@ -31,7 +31,7 @@ In the debugger, we had already seen the <code>Student.Name</code> property set 
 
 Oh, right.
 
-This is one of those details you learn about C# early on and then immediately forget, as it so rarely shows up in practice.  Usually, when a subclass defines members with the same name and signature as its parent class, we are in a abstract/override or virtual/override situation, in which you are knowingly and explicitly stating that the subclass provides its own definition of the parent class's behavior.  When a subclass instead defines the same members as its parent *without* overriding, you get *two* different implementations at runtime.  It's basically just a *coincidence* that they have the same name.
+This is one of those details you learn about C\# early on and then immediately forget, as it so rarely shows up in practice.  Usually, when a subclass defines members with the same name and signature as its parent class, we are in a abstract/override or virtual/override situation, in which you are knowingly and explicitly stating that the subclass provides its own definition of the parent class's behavior.  When a subclass instead defines the same members as its parent *without* overriding, you get *two* different implementations at runtime.  It's basically just a *coincidence* that they have the same name.
 
 In this situation, when you look at an instance through a variable declared as the parent type, you see the parent type's properties.  When you look at an instance through a variable declared as the subtype, you see the subtype's properties.  As we looked at the student variable being returned from the lambda, the debugger showed us the populated <code>Student.Name</code>, and when our test assertion looked at the person returned from the lambda, the test experienced the unpopulated <code>Parent.Name</code>.
 

@@ -15,13 +15,13 @@ I said I'd reveal this week how this shift from low-level imperative coding to h
 
 Parsley can recognize patterns not unlike those recognized by regexes.  When working with regexes, we're constantly composing three fundamental operations: repetition, choice, and sequence.
 
-With **repetition**, we say, "I've got this regex here, and I want it to be repeated."  The regex "A" recognizes a single letter "A", and we can produce a more interesting regex "A*" to recognize zero-or-more As, or "A+" to recognize one-or-more As.  A more complex pattern like "(A+B+)" can likewise be made more interesting via repetition: "(A+B+)*" which recognizes zero-or-more occurrences of As-followed-by-Bs.
+With **repetition**, we say, "I've got this regex here, and I want it to be repeated."  The regex "A" recognizes a single letter "A", and we can produce a more interesting regex "A\*" to recognize zero-or-more As, or "A+" to recognize one-or-more As.  A more complex pattern like "(A+B+)" can likewise be made more interesting via repetition: "(A+B+)\*" which recognizes zero-or-more occurrences of As-followed-by-Bs.
 
 With **choice**, we can combine some small patterns into a larger one by saying, "Any one of these subpatterns could happen next."  The regex "A|B" recognizes either an "A" or a "B".
 
 With **sequence**, we can combine some small patterns into a larger one by saying, "The first pattern, followed by the second, followed by the third."  Regexes achieve this by just squishing them together in order: the regex "ABC" recognizes an A, followed by a B, followed by a C.  They all have to appear, and in that order.
 
-These three operations *compose* very well.  The regex @"[_a-zA-Z]+[_a-zA-Z0-9]*" recognizes variable names.  We have repetition: the pattern has one-or-more leading characters and zero-or-more trailing characters.  We have choice: each character is an underscore or a letter or a digit.  We have sequence: to enforce that names don't start with a digit, we have a two-part sequence of leading characters *followed by* trailing characters.  We say these operations "compose well" because:
+These three operations *compose* very well.  The regex @"\[\_a-zA-Z\]+\[\_a-zA-Z0-9\]\*" recognizes variable names.  We have repetition: the pattern has one-or-more leading characters and zero-or-more trailing characters.  We have choice: each character is an underscore or a letter or a digit.  We have sequence: to enforce that names don't start with a digit, we have a two-part sequence of leading characters *followed by* trailing characters.  We say these operations "compose well" because:
 <ol>
 <li>They can be applied to any pattern.</li>
 <li>Doing so takes very little code.</li>
@@ -44,21 +44,21 @@ To write the Parser of Parenthesized Letters, we first needed to write an implem
 
 It hurts to have to write so much for so little gain.  I'd rather Parsley contain a suite of useful Parser&lt;T&gt; implementations out of the box, so I could just dive in and focus on detecting the pattern I'm interested in.  This suite of useful Parser&lt;T&gt; implementations ought to include our 3 fundamental/composable pattern-recognition operations: repetition, choice, and sequence.
 
-First, though, the suite should provide some primitive operations to get started with.  Compared to our regex examples, we need to be able to express things like "A" before we can augment them into interesting patterns like "A*".
+First, though, the suite should provide some primitive operations to get started with.  Compared to our regex examples, we need to be able to express things like "A" before we can augment them into interesting patterns like "A\*".
 
 ## Parsley's Default Parsers
 
 The default parser implementations are as frustrating to write as the sample from last week, since they are written in terms of the awkward low-level API.  However, they make things easier on the end user, as we'll see next week.  They are found under the [Primitives](https://github.com/plioi/parsley/tree/cb69098da8135f7ac5fb1b0f84071e0e8b94b8a0/src/Parsley/Primitives) folder.  Four of these are relevant to today's discussion:
 
-**TokenByKindParser** - Last week we wrote a parser that takes an expected token *kind* and demands that the next token in the input be of that kind.  On success, the token is consumed.  For instance, if you are parsing C# you may reach a point where you expect the next token to be an identifier.  You don't care what specific identifier it is, only that it is an identifier as opposed to an operator or number.  The real implementation of that class in Parsley is called TokenByKindParser:
+**TokenByKindParser** - Last week we wrote a parser that takes an expected token *kind* and demands that the next token in the input be of that kind.  On success, the token is consumed.  For instance, if you are parsing C\# you may reach a point where you expect the next token to be an identifier.  You don't care what specific identifier it is, only that it is an identifier as opposed to an operator or number.  The real implementation of that class in Parsley is called TokenByKindParser:
 
 {% gist 4728010 %}
 
-**TokenByLiteralParser** - Sometimes you have a more specific expectation of what will appear next in the input.  Rather than only caring about what kind of token appears next, you'll expect that the token will be a specific known string.  When parsing C#, you may reach a point where you know the next token must be a ";" character.  TokenByLiteralParser serves this purpose.  As with TokenByKindParser, we simply inspect the current token and return success or failure, advancing one token on success:
+**TokenByLiteralParser** - Sometimes you have a more specific expectation of what will appear next in the input.  Rather than only caring about what kind of token appears next, you'll expect that the token will be a specific known string.  When parsing C\#, you may reach a point where you know the next token must be a ";" character.  TokenByLiteralParser serves this purpose.  As with TokenByKindParser, we simply inspect the current token and return success or failure, advancing one token on success:
 
 {% gist 4728017 %}
 
-**ZeroOrMoreParser** - This class gives us our much-needed repetition operation.  Note that this class is constructed *with another Parser&lt;T&gt;* to be augmented, just as the regex "A" augmented by "*" becomes the regex "A*".  The parser works by attempting the given parser against the input.  On success, we repeat from the new position in the input, collecting each intermediate result into a list.  As soon as the item-parser finally fails, we are finished and can return a successful result containing all the items collected along the way.  Note that this is a Parser&lt;IEnumerable&lt;T&gt;&gt;, meaning that after consuming a bunch of tokens, the result you get is a collection of things, where each thing was recognized by the initial input Parser&lt;T&gt;.  That's our first hint at composabilty:
+**ZeroOrMoreParser** - This class gives us our much-needed repetition operation.  Note that this class is constructed *with another Parser&lt;T&gt;* to be augmented, just as the regex "A" augmented by "\*" becomes the regex "A\*".  The parser works by attempting the given parser against the input.  On success, we repeat from the new position in the input, collecting each intermediate result into a list.  As soon as the item-parser finally fails, we are finished and can return a successful result containing all the items collected along the way.  Note that this is a Parser&lt;IEnumerable&lt;T&gt;&gt;, meaning that after consuming a bunch of tokens, the result you get is a collection of things, where each thing was recognized by the initial input Parser&lt;T&gt;.  That's our first hint at composabilty:
 
 {% gist 4728052 %}
 
@@ -68,7 +68,7 @@ The default parser implementations are as frustrating to write as the sample fro
 
 ZeroOrMoreParser and ChoiceParser make up a part of the composability we are shooting for here.  They take in Parsers as their input and are themselves Parsers.  That means you could feed one into the other: you might have two ZeroOrMoreParser instances, and pass them into a ChoiceParser: I expect zero-or-more As or else I expect zero-or-more Bs.
 
-There's a subtle gotcha within both ZeroOrMoreParser and ChoiceParser.  By default, Parsley distinguishes between a parser that fails **without** advancing in the input and a parser that fails **after** advancing in the input.  If you are parsing C# and you know that the next thing in the input is a choice between a foreach statement or an if statement, but the input is "if $typo$", we don't just want to say that the choice failed; we want to say that your if statement is broken.  This is why these two classes care so much about detecting changes in position along the way.
+There's a subtle gotcha within both ZeroOrMoreParser and ChoiceParser.  By default, Parsley distinguishes between a parser that fails **without** advancing in the input and a parser that fails **after** advancing in the input.  If you are parsing C\# and you know that the next thing in the input is a choice between a foreach statement or an if statement, but the input is "if $typo$", we don't just want to say that the choice failed; we want to say that your if statement is broken.  This is why these two classes care so much about detecting changes in position along the way.
 
 ## What About Sequence?
 
@@ -76,7 +76,7 @@ TokenByKindParser and TokenByLiteralParser give us our trivial starting point, l
 
 Recall my criticism from last week:
 
-<blockquote>[IsParenthesizedLetter] is nearly as tedious as writing assembly. Each time I wanted to progress a little further, I had to indent again and declare some new local variables. I had to carefully pass along the remaining unparsed tokens at each step, and I had to concern myself with failure at each step.
+<blockquote>\[IsParenthesizedLetter\] is nearly as tedious as writing assembly. Each time I wanted to progress a little further, I had to indent again and declare some new local variables. I had to carefully pass along the remaining unparsed tokens at each step, and I had to concern myself with failure at each step.
 
 To make matters worse, this stuff motivates having lots of returns from a single function, making it extremely hard to break the function apart into smaller parts. [Return statements are "Extract Method" fences.](http://www.headspring.com/patrick/detect-reflect-decomplect/)</blockquote>
 

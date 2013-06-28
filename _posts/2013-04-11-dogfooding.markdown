@@ -3,7 +3,7 @@ title: Dogfooding
 layout: post
 ---
 
-As soon as your software project has a useful feature or two, it's time to start [eating your own dogfood](http://en.wikipedia.org/wiki/Eating_your_own_dog_food). The usual advice is to use your own software in order to get early feedback, but there's another major benefit to dogfooding that usually goes unmentioned:
+As soon as your software project has a useful feature or two, it's time to start [eating your own dogfood](http://en.wikipedia.org/wiki/Eating\_your\_own\_dog\_food). The usual advice is to use your own software in order to get early feedback, but there's another major benefit to dogfooding that usually goes unmentioned:
 
 <blockquote>To dogfood your software, you have to treat its *deployment* as a first-class feature.</blockquote>
 

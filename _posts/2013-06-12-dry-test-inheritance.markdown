@@ -19,23 +19,23 @@ If you use NUnit, you probably see a lot of test classes like this:
 
 {% gist 5762364 %}
 
-My [SetUp] methods are always named "SetUp", my [TearDown] methods are always named "TearDown", etc. It's annoying to sacrifice whole lines to that noise.  When 99% of your test fixtures use naming conventions like mine, the attributes stop telling you something.  These attributes start to fill the same role as excessive comments:
+My \[SetUp\] methods are always named "SetUp", my \[TearDown\] methods are always named "TearDown", etc. It's annoying to sacrifice whole lines to that noise.  When 99% of your test fixtures use naming conventions like mine, the attributes stop telling you something.  These attributes start to fill the same role as excessive comments:
 
 {% gist 5762368 %}
 
 ## NUnit Inheritance is Needlessly Complex
 
-The use of attributes for these "lifecycle" hooks poses more serious problems when your test classes take part in inheritance.  Since they don't *have* to be placed on methods with the same name, you could have completely unrelated [SetUp]s, for instance, at different levels of the hierarchy.
+The use of attributes for these "lifecycle" hooks poses more serious problems when your test classes take part in inheritance.  Since they don't *have* to be placed on methods with the same name, you could have completely unrelated \[SetUp\]s, for instance, at different levels of the hierarchy.
 
-What order do they run in? Should the child class's [SetUp] call the base?  Should the base [SetUp] call an abstract method you have to implement instead of providing your own [SetUp] in the child? [SetUp]s get complicated very quickly in the presence of inheritance.
+What order do they run in? Should the child class's \[SetUp\] call the base?  Should the base \[SetUp\] call an abstract method you have to implement instead of providing your own \[SetUp\] in the child? \[SetUp\]s get complicated very quickly in the presence of inheritance.
 
-The order of execution during test setup is important. How bizarre would it be if there were no guarantee about the order of *constructor* execution in a class hierarchy?  With NUnit lifecycle hooks, order becomes a problem.  Sure, NUnit has rules of its own for the order, **but it doesn't matter what they are** because even having to ask the question means it's already too complex. In addition, having more than one [SetUp] in the same level of the class hierarchy is allowed but ambiguous: there's no guarantee what order they'll run in. Worse yet, over the years I've seen the behavior differ across different test *runners*.
+The order of execution during test setup is important. How bizarre would it be if there were no guarantee about the order of *constructor* execution in a class hierarchy?  With NUnit lifecycle hooks, order becomes a problem.  Sure, NUnit has rules of its own for the order, **but it doesn't matter what they are** because even having to ask the question means it's already too complex. In addition, having more than one \[SetUp\] in the same level of the class hierarchy is allowed but ambiguous: there's no guarantee what order they'll run in. Worse yet, over the years I've seen the behavior differ across different test *runners*.
 
 <blockquote>The preparation of state under test should be remarkably dull.  We're trying to confirm our assumptions about the behavior of our system, and we can't do so with confidence if we aren't confident about what all we've set up in the first place.</blockquote>
 
 ## A Low-Ceremony Alternative Convention
 
-DRY stands for "Don't Repeat Yourself", not "[DontRepeatYourself] Don't Repeat Yourself"! Allowing redundancy has opened the door to complexity. Let's improve upon the NUnit style by defining a simpler, [low-ceremony test class convention](https://github.com/plioi/fixie/blob/a74078dfe3c8f415fd0663af104b75adfb90d29d/src/Fixie.Samples/LowCeremony/CustomConvention.cs) with Fixie:
+DRY stands for "Don't Repeat Yourself", not "\[DontRepeatYourself\] Don't Repeat Yourself"! Allowing redundancy has opened the door to complexity. Let's improve upon the NUnit style by defining a simpler, [low-ceremony test class convention](https://github.com/plioi/fixie/blob/a74078dfe3c8f415fd0663af104b75adfb90d29d/src/Fixie.Samples/LowCeremony/CustomConvention.cs) with Fixie:
 
 {% gist 5762372 %}
 

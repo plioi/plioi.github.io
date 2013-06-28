@@ -22,7 +22,7 @@ Parsley is an [internal DSL for creating external DSLs](http://martinfowler.com/
 
 Parsley can be broken down into 2 distinct subsystems: tokenization and grammars.  The grammar subsystem includes a low-level means of processing the input as well as a high-level DSL to make it all pretty like the example above.
 
-In a tokenization phase, a JSON string like "[1, 10, 100]" is chopped up into a series of substrings: "[", "1", "10", "100", and "]".  Note that tokens can be multiple characters, as long as they represent a single meaningful thing in JSON.  A token could be an operator, a keyword, a number, or a whole quoted string literal.  Cutting any of these things into a smaller substring would remove its meaning, so we say "that's small enough" and stop there.  We also remember what *kind* of token each substring is, so in our example the tokenizer really turns "[1, 10, 100]" into ("[", OpenArray), ("1", Number), (",", Comma), ("10", Number), (",", Comma), ("100", Number), ("]", CloseArray).
+In a tokenization phase, a JSON string like "\[1, 10, 100\]" is chopped up into a series of substrings: "\[", "1", "10", "100", and "\]".  Note that tokens can be multiple characters, as long as they represent a single meaningful thing in JSON.  A token could be an operator, a keyword, a number, or a whole quoted string literal.  Cutting any of these things into a smaller substring would remove its meaning, so we say "that's small enough" and stop there.  We also remember what *kind* of token each substring is, so in our example the tokenizer really turns "\[1, 10, 100\]" into ("\[", OpenArray), ("1", Number), (",", Comma), ("10", Number), (",", Comma), ("100", Number), ("\]", CloseArray).
 
 This collection of token objects is then handed off to the second subsystem, in which a grammar for our language is declared.  Parsley takes the collection of tokens, applies the grammar to it, and out pops plain old .NET objects like arrays, dictionaries, or instances of your own classes.
 
@@ -53,7 +53,7 @@ Only a few classes survived this attack, representing the bottom-right portion o
 
 {% gist 4688648 %}
 
-**Position** - This class is a pair of integers representing the line # and column # that a token was found at.  It inherits from Value, which just provides a basic equality and GetHashCode implementation:
+**Position** - This class is a pair of integers representing the line \# and column \# that a token was found at.  It inherits from Value, which just provides a basic equality and GetHashCode implementation:
 
 {% gist 4688659 %}
 
@@ -61,7 +61,7 @@ Only a few classes survived this attack, representing the bottom-right portion o
 
 {% gist 4688687 %}
 
-**TokenStream** - Admittedly weird, [TokenStream](https://github.com/plioi/parsley/blob/cb69098da8135f7ac5fb1b0f84071e0e8b94b8a0/src/Parsley/TokenStream.cs) takes the arbitrary collection of Tokens produced by the tokenizer subsystem and presents them to the grammar subsystem in a way that provides traversal without needing state change.  If you ask this to advance to the next token, *the object doesn't change*; instead you get a new TokenStream representing everything except for the token you are advancing beyond.  This action resembles the <code>Skip(int) IEnumerable</code> extension method.  Rather than dwell on the weird implementation, it's easier to just see its usage within [TokenStreamTests](https://github.com/plioi/parsley/blob/cb69098da8135f7ac5fb1b0f84071e0e8b94b8a0/src/Parsley.Test/TokenStreamTests.cs).  When you have a TokenStream containing the tokens "[", "10", and "]", and you call .Advance(), you'll get a TokenStream containing only the tokens "10" and "]".
+**TokenStream** - Admittedly weird, [TokenStream](https://github.com/plioi/parsley/blob/cb69098da8135f7ac5fb1b0f84071e0e8b94b8a0/src/Parsley/TokenStream.cs) takes the arbitrary collection of Tokens produced by the tokenizer subsystem and presents them to the grammar subsystem in a way that provides traversal without needing state change.  If you ask this to advance to the next token, *the object doesn't change*; instead you get a new TokenStream representing everything except for the token you are advancing beyond.  This action resembles the <code>Skip(int) IEnumerable</code> extension method.  Rather than dwell on the weird implementation, it's easier to just see its usage within [TokenStreamTests](https://github.com/plioi/parsley/blob/cb69098da8135f7ac5fb1b0f84071e0e8b94b8a0/src/Parsley.Test/TokenStreamTests.cs).  When you have a TokenStream containing the tokens "\[", "10", and "\]", and you call .Advance(), you'll get a TokenStream containing only the tokens "10" and "\]".
 
 **Parser, Reply, Parsed, and Error** - These are our fundamental building blocks.  A Parser is anything that consumes *some* Tokens from the stream and produces a Reply.  A Reply is either successful (Parsed), or unsuccessful (Error).  When successful, a Reply holds a Value, the .NET object you wanted to pull out of the original plain text.  Successful or not, the Reply also holds a reference to the *remaining, not yet consumed* Tokens.  A Reply basically says "I worked, and now we're *here*," or "I failed, and we're still *there*."  The whittled and simplified versions of these classes appear below:
 
@@ -85,7 +85,7 @@ We want to write a function which receives these Token objects and tells us whet
 
 {% gist 4688947 %}
 
-Finally, we have enough to write IsParenthesizedLetter(Token[]):
+Finally, we have enough to write IsParenthesizedLetter(Token\[\]):
 
 {% gist 4688927 %}
 

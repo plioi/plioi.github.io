@@ -25,7 +25,7 @@ Optional attributes appear in square brackets.  Here, we give one of our edges a
 
 <a href="http://www.headspring.com/wp-content/uploads/2013/02/fancy.png"><img src="http://www.headspring.com/wp-content/uploads/2013/02/fancy.png" alt="fancy" width="179" height="275" class="aligncenter size-full wp-image-6424" /></a>
 
-One can imagine generating these dot files programmatically with a StringBuilder.  Doing so would be a little monotonous, especially when the optional attributes like shapes and colors are included.  You have to busy yourself with the dot format's quoting rules as well as C#'s quoting rules.  Even when you succeed, you'll be left with some ugly code.  I'd much rather generate the above two dot files like so:
+One can imagine generating these dot files programmatically with a StringBuilder.  Doing so would be a little monotonous, especially when the optional attributes like shapes and colors are included.  You have to busy yourself with the dot format's quoting rules as well as C\#'s quoting rules.  Even when you succeed, you'll be left with some ugly code.  I'd much rather generate the above two dot files like so:
 
 {% gist 5014233 %}
 
@@ -33,7 +33,7 @@ One can imagine generating these dot files programmatically with a StringBuilder
 
 ## Implementing the Digraph Class
 
-First, it'll be handy to define an extension method to apply the dot quoting rules to any .NET value.  The double-quote character is special in dot files and must be preceded with a slash.  Of course, double-quotes and slashes are also meaningful in C# strings, so we have to double-escape these in the substitution:
+First, it'll be handy to define an extension method to apply the dot quoting rules to any .NET value.  The double-quote character is special in dot files and must be preceded with a slash.  Of course, double-quotes and slashes are also meaningful in C\# strings, so we have to double-escape these in the substitution:
 
 {% gist 5014242 %}
 

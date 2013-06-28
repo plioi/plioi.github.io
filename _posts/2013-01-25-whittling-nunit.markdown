@@ -11,7 +11,7 @@ I started by grabbing a copy of the [NUnitLite source code on Launchpad](https:/
 
 The first thing I noticed is that it has an atypical structure in Solution Explorer.  Project names include .NET version numbers (2.0, 3.5, 4.0), and these projects are placed within solution folders NET-2.0, NET-3.5, and NET-4.0.  Comparing this to the actual file structure on disk, it looks like the same code files are shared by each of these version-based projects.
 
-Why have multiple projects containing the exact same files?  Viewing project properties, I see that each project has version-specific "conditional compilation symbols" like NET_2_0 or CLR_4_0 to distinguish them.  Within the code, there are lots of tests against these symbols:
+Why have multiple projects containing the exact same files?  Viewing project properties, I see that each project has version-specific "conditional compilation symbols" like NET\_2\_0 or CLR\_4\_0 to distinguish them.  Within the code, there are lots of tests against these symbols:
 
 {% gist 4457122 %}
 
@@ -27,7 +27,7 @@ Again, as with xUnit, I removed all assertion code, since I use the [Should](htt
 
 Behind this API lies a large family of classes called Constraints, which represent concepts like is-equal-to-x.  Both lines in the sample above would ultimately rely on the same constraint class to perform the comparison.
 
-Next, I removed several attributes I never use, so I could instead focus on the main lifecycle attributes: [TestFixture], [TestFixtureSetUp], [TestFixtureTearDown], [SetUp], [TearDown], and [Test].
+Next, I removed several attributes I never use, so I could instead focus on the main lifecycle attributes: \[TestFixture\], \[TestFixtureSetUp\], \[TestFixtureTearDown\], \[SetUp\], \[TearDown\], and \[Test\].
 
 I made a mostly-random pass through the solution, removing things that were no longer reachable.  When interfaces eventually had a single implementation, I'd phase out the interface.  Once it got down to a manageable size, I tweaked and simplified some of the types and methods as the mood struck me.  Now that I was familiar with the overall solution structure, I took a closer look at the test discovery and execution code.
 
@@ -43,11 +43,11 @@ NUnitLiteTestAssemblyBuilder's job is to traverse the assembly, discover the tes
 
 {% gist 4457304 %}
 
-The CanBuildFrom(Type) method returns true if the Type has a [TestFixture] attribute or if any of its methods have a [Test] attribute.  The BuildFrom method then builds a test fixture description by reflecting on the Type's methods, converting each test method into a Test:
+The CanBuildFrom(Type) method returns true if the Type has a \[TestFixture\] attribute or if any of its methods have a \[Test\] attribute.  The BuildFrom method then builds a test fixture description by reflecting on the Type's methods, converting each test method into a Test:
 
 {% gist 4457322 %}
 
-To build a single test case, it performs a similar CanBuildFrom/BuildFrom pair as we saw for the fixture as a whole.  In this case, CanBuildFrom tests whether the given method has a [Test] attribute, and BuildFrom constructs a new TestMethod instance, which simply describes the test to be executed.
+To build a single test case, it performs a similar CanBuildFrom/BuildFrom pair as we saw for the fixture as a whole.  In this case, CanBuildFrom tests whether the given method has a \[Test\] attribute, and BuildFrom constructs a new TestMethod instance, which simply describes the test to be executed.
 
 All of the above lets us go from a given Assembly to a tree of all the tests that need to be executed.
 

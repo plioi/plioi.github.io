@@ -16,7 +16,7 @@ Each project's process is going to vary in response to the project's constraints
 
 Fitting these constraints, the ["simple as possible, but no simpler"](http://c2.com/cgi/wiki?EinsteinPrinciple) process that has served me well the last 2 months is a specific variation on Kanban. My Kanban board has four swim lanes: Backlog, Doing, Publish, and Done:
 
-<a href="http://www.headspring.com/wp-content/uploads/2013/05/kanban.png"><img src="http://www.headspring.com/wp-content/uploads/2013/05/kanban.png" alt="Fixie&#039;s Kanban has four lanes: Backlog, Doing, Publish, and Done" width="363" height="271" class="aligncenter size-full wp-image-6525" /></a>
+<a href="http://www.headspring.com/wp-content/uploads/2013/05/kanban.png"><img src="http://www.headspring.com/wp-content/uploads/2013/05/kanban.png" alt="Fixie&\#039;s Kanban has four lanes: Backlog, Doing, Publish, and Done" width="363" height="271" class="aligncenter size-full wp-image-6525" /></a>
 
 Since this is a one-person project, tools like JIRA, PivotalTracker, or Trello are overkill. Sticky notes will always be faster to work with than issue tracking software, as long as all (1) team members have access to the board. I often dramatically reorder the backlog in a few seconds to match my current plans, which would be tedious with a mouse.
 

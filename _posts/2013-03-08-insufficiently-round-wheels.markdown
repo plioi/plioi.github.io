@@ -31,7 +31,7 @@ The insufficiently round wheel I'd like to reinvent is the unit test framework.
 **Seriously?** Yes.
 **No, really.** Yes.
 **Those have been around forever.** You could say the same thing about music or turducken, but we've only really started to get those right in the last few years.
-**But Patrick, that is a sufficiently round wheel and you shouldn't be reinventing the wheel.  Do something cool instead!** First, all "reinventing the wheel" remarks shall be met with a friendly "That's kind of the point," followed by a not-so-friendly [EPIC EYE-ROLL](http://www.youtube.com/watch?v=fRiiiKA1xUI#t=13s).  Second, I think we really can add something cool to the mix.
+**But Patrick, that is a sufficiently round wheel and you shouldn't be reinventing the wheel.  Do something cool instead!** First, all "reinventing the wheel" remarks shall be met with a friendly "That's kind of the point," followed by a not-so-friendly [EPIC EYE-ROLL](http://www.youtube.com/watch?v=fRiiiKA1xUI\#t=13s).  Second, I think we really can add something cool to the mix.
 
 If you must, think of it as a big code review of the current state of the art, followed by some advice on building *any* old open source project you have in mind.
 </blockquote>
@@ -42,17 +42,17 @@ I have happily used NUnit for several years on several projects.  I'm using it o
 
 Still, these are complex systems, so there is always room for constructive criticism.
 
-**NUnit has a complex test fixture lifecycle.**  You can have code run before and after each fixture, and before and after each test case.  You specify these setup and teardown actions via [Attributes].  One instance of your fixture class is constructed and shared across the test cases, in order to support the fixture-level setup and teardown.
+**NUnit has a complex test fixture lifecycle.**  You can have code run before and after each fixture, and before and after each test case.  You specify these setup and teardown actions via \[Attributes\].  One instance of your fixture class is constructed and shared across the test cases, in order to support the fixture-level setup and teardown.
 
 I've run into a lot of frustrating surprises with this lifecycle.  First, I couldn't tell you exactly how these attributes behave in the presence of inheritance (in fact, I believe the rules changed a few times throughout the history of NUnit).  Second, I have seen this behave differently across different *test runners*.  It's pretty jarring to find your SetUp methods blatantly ignored.  **The lifecycle is complex.  I lack control over it, and I lack insight into it when things go weird.**
 
 xUnit was a reaction to NUnit, and it has a much simpler fixture lifecycle.  You get one instance of the fixture class *per test case*, a regular constructor is used for setup, a regular Dispose() is used for teardown, and if you really really want fixture state, you can still do that using an interface dedicated to that purpose.  I like the simplicity of using already-available language concepts like constructors and interfaces for these lifecycle steps.  I never get confused when my xUnit fixture classes take part in inheritance.
 
-<blockquote>I find that when fixture-wide state is downplayed like it is in xUnit, *I don't miss it at all*.  When I use NUnit, on the other hand, I use [TestFixtureSetUp] all the time.  Once you open the door to a little complexity, vagabonds and feral cats are free to walk right in.</blockquote>
+<blockquote>I find that when fixture-wide state is downplayed like it is in xUnit, *I don't miss it at all*.  When I use NUnit, on the other hand, I use \[TestFixtureSetUp\] all the time.  Once you open the door to a little complexity, vagabonds and feral cats are free to walk right in.</blockquote>
 
 xUnit is meant to be more customizable with regard to how fixtures and test cases are discovered, but **the means of customization is opinionated**.  I've had some success customizing xUnit in the past, but I ran into two problems: I still had to put an attribute on each of my fixture classes, and the means of customization is an [ISP violation](http://www.headspring.com/patrick/low-ceremony-xunit/).
 
-Okay, so it was a little hard to customize, buy why is it bad that I still had to put an attribute on my fixture classes?  I actually have a use case in mind for one of my other projects, in which some test fixtures would originate from folders of plain text files rather than C# classes.  If my fixture isn't also a class, *where do I put xUnit's required class attribute*?  **I want to have total control over the means of discovering test fixtures and test cases.**
+Okay, so it was a little hard to customize, buy why is it bad that I still had to put an attribute on my fixture classes?  I actually have a use case in mind for one of my other projects, in which some test fixtures would originate from folders of plain text files rather than C\# classes.  If my fixture isn't also a class, *where do I put xUnit's required class attribute*?  **I want to have total control over the means of discovering test fixtures and test cases.**
 
 ## Degrees of Freedom
 
@@ -70,9 +70,9 @@ If we pluck those responsibilities out, what's left?  Test frameworks should onl
 
 I'd like to announce [Fixie](https://github.com/plioi/fixie), a test framework with the goals of having low-ceremony defaults, and extra degrees of freedom around the test lifecycle.  We'll see this project grow here over the next few months.
 
-<blockquote>A [fixie](http://en.wikipedia.org/wiki/Fixed-gear_bicycle) is what you get when you start with a bike and remove everything that isn't a bike.  I want Fixie to be what's left when you start with a test framework and remove everything that isn't a test framework.</blockquote>
+<blockquote>A [fixie](http://en.wikipedia.org/wiki/Fixed-gear\_bicycle) is what you get when you start with a bike and remove everything that isn't a bike.  I want Fixie to be what's left when you start with a test framework and remove everything that isn't a test framework.</blockquote>
 
-**Low-ceremony defaults:** No required attributes, no required inheritance.  A test fixture is a class in your test assembly whose name ends in Tests.  A test case is any public method in one of those classes.  I will likely include an answer to NUnit's [[TestCaseSource]](http://nunit.org/index.php?p=testCaseSource&r=2.6.2), but only if I can keep it similarly low-ceremony.  Like xUnit, you'll get one fixture instance per test case.
+**Low-ceremony defaults:** No required attributes, no required inheritance.  A test fixture is a class in your test assembly whose name ends in Tests.  A test case is any public method in one of those classes.  I will likely include an answer to NUnit's [\[TestCaseSource\]](http://nunit.org/index.php?p=testCaseSource&r=2.6.2), but only if I can keep it similarly low-ceremony.  Like xUnit, you'll get one fixture instance per test case.
 
 **Degrees of freedom:**  If the defaults aren't enough, I want you to be able to customize the test fixture and test case discovery steps, as well as customize the test fixture lifecycle itself.  Making this customization *easy* will be challenging, but fun.
 

@@ -13,7 +13,7 @@ Once the information you intended to hide has spread, everything it touches is n
 
 ## Fixie's Leaky Abstraction
 
-By the end of last week's post, I had developed [a roughly-usable test framework](http://www.headspring.com/patrick/bootstrapping/). This version had an abstraction called Convention which is fundamental to the project: I want the end user to be able to tell me what their test fixtures and test cases look like.  I want you to be able to say things like "My test fixtures are the classes whose names end with 'Tests'", or "My test fixtures are the classes marked with some [Attribute]".  If you don't provide such a description, you'll get the [default convention](https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie/DefaultConvention.cs):
+By the end of last week's post, I had developed [a roughly-usable test framework](http://www.headspring.com/patrick/bootstrapping/). This version had an abstraction called Convention which is fundamental to the project: I want the end user to be able to tell me what their test fixtures and test cases look like.  I want you to be able to say things like "My test fixtures are the classes whose names end with 'Tests'", or "My test fixtures are the classes marked with some \[Attribute\]".  If you don't provide such a description, you'll get the [default convention](https://github.com/plioi/fixie/blob/6a01e382f30c3c598cf7d3d3a3bde450ad684297/src/Fixie/DefaultConvention.cs):
 
 {% gist 5307031 %}
 

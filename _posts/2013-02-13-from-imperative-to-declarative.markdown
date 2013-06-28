@@ -9,7 +9,7 @@ Today, we'll finally see how to extract a useful sequence operation into a usefu
 
 ## Manual Sequence Recognition
 
-Recall the horrible imperative code necessary to recognize the trivial three-token sequence of [left-parenthesis, letter, right-parenthesis]:
+Recall the horrible imperative code necessary to recognize the trivial three-token sequence of \[left-parenthesis, letter, right-parenthesis\]:
 
 {% gist 4688927 %}
 
@@ -25,7 +25,7 @@ Our goal is to extract the "success check and unparsed token hand-off" action so
 
 **I apologize for this.**  This was hands-down the most difficult 12 lines of code I have written or will ever write.  The pattern in play here is so difficult, so abstract, that *I don't even know what to name some of the variables.*
 
-This is the [Monad](http://blogs.msdn.com/b/wesdyer/archive/2008/01/11/the-marvels-of-monads.aspx) pattern.  It can be performed in any language that has lambda expressions in which the lambda body can refer to variables in the surrounding scope, like C#, Javascript, and Python, but is only ever used in practice when the language *also* has special syntax for its usages.  In C#, the special syntax which makes this pattern compelling is the <code>from/select</code> LINQ syntax.
+This is the [Monad](http://blogs.msdn.com/b/wesdyer/archive/2008/01/11/the-marvels-of-monads.aspx) pattern.  It can be performed in any language that has lambda expressions in which the lambda body can refer to variables in the surrounding scope, like C\#, Javascript, and Python, but is only ever used in practice when the language *also* has special syntax for its usages.  In C\#, the special syntax which makes this pattern compelling is the <code>from/select</code> LINQ syntax.
 
 This special syntax lets us "flatten" our nested if statements into a series of 'from' clauses.  When using the complete Parsley DSL, we can rewrite IsParenthesizedLetter without any nesting:
 
@@ -43,7 +43,7 @@ Although complicated, there's no magic here.  If we ask ReSharper to translate t
 
 In other words, our SelectMany method's job is to hook a single from clause into the chain of execution.
 
-C# rewrites a flat query into calls to the SelectMany extension method, which in turn does the success check and the passing along of remaining unparsed tokens, so all the same *work* is going on here as in the origial imperative code.  Thankfully, we're no longer the ones doing that work!
+C\# rewrites a flat query into calls to the SelectMany extension method, which in turn does the success check and the passing along of remaining unparsed tokens, so all the same *work* is going on here as in the origial imperative code.  Thankfully, we're no longer the ones doing that work!
 
 Rather than trying to make sense of ParserQuery itself, it may be more illuminating to read [ParserQuery's unit tests](https://github.com/plioi/parsley/blob/cb69098da8135f7ac5fb1b0f84071e0e8b94b8a0/src/Parsley.Test/ParserQueryTests.cs).
 
@@ -77,7 +77,7 @@ It's also very common to expect the input to contain a repetition of items *sepa
 
 Finally, a little payoff for all this infrastructure!  Imagine how horrifyingly verbose and error-prone these methods would be, if we had to implement them directly in terms of the low-level imperative style.
 
-Lastly, there's one more built-in operation worth discussing as it directly affects the IsParenthesizedLetter method from the start of this post.  We often need to recognize that something important appears *between* two other, less important things.  A JSON array is zero or more items *between* the "[" and "]" symbols.  We care that the "[" and "]" are present, but the meaningful data we want to extract from that is the part in the middle:
+Lastly, there's one more built-in operation worth discussing as it directly affects the IsParenthesizedLetter method from the start of this post.  We often need to recognize that something important appears *between* two other, less important things.  A JSON array is zero or more items *between* the "\[" and "\]" symbols.  We care that the "\[" and "\]" are present, but the meaningful data we want to extract from that is the part in the middle:
 
 {% gist 4916812 %}
 
