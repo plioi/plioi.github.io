@@ -3,26 +3,3 @@ title: Bugs of Omission
 layout: post
 ---
 
-When your software includes faulty logic or conflicting requirements, you're very likely to run into unexpected behavior.  These bugs are relatively easy to trigger and diagnose.
-
-A bug of omission, on the other hand, in which you <em>should</em> have included code to cover an edge case, might sit around lurking for quite a while.  When such a bug finally does surface, the behavior may be so counter to your expectations  that you'll wonder if maybe, just maybe, a rogue pixie or trickster demigod has cursed your machine.<!--more-->
-
-"This has been working <em>forever</em> and nobody has changed it!"  It can seem like things as fundamental as your language's own operators can no longer be taken for granted.  Of course, the bug later turns out to be the fault of mere mortals; a particularly rare set of circumstances reveals the gap that was always there.
-
-Case in point: in <a href="http://www.headspring.com/blog/developer-deep-dive/building-rich-enums/">Building Rich Enums</a> we saw the Headspring <a href="https://github.com/Headspringlabs/Enumeration">Enumeration</a> class as a rich alternative to the <code>enum</code> keyword.  This base class makes it easy to create a finite set of named instances of your class.  This week, <em>all of a sudden and without overt provocation</em>, equality comparisons between Enumerations stopped working for us on one project.
-
-<h2>This has been working <em>forever</em>...</h2>
-Until this week, equality comparisons have worked perfectly fine for our Enumerations.  Consider a typical <code>Enumeration</code>:
-
-[gist id="3759210"]
-
-The constructor is private, so you will only be working with the three trusted instances.  If you store these to a database as their underlying integers, you can read them back out with the <code>FromInt32(int)</code> method to get a hold of the corresponding instance.  We even overrode the <code>Equals(object)</code> method just in case you ever passed these around as <code>object</code> instead of the concrete type and still needed to compare them.
-
-The default behavior of the <code>==</code> operator has been enough to date, because reference equality has been a safe assumption: any instance you ever get your hands on will come from one of the three explicit <code>Color</code> constructor calls in the class definition… <strong>but that's a lie</strong> or, if we're being generous, an untruth of omission.
-
-<h2>…<em>except</em> for this new set of circumstances.</h2>
-This week, we started comparing instances of an <code>Enumeration</code> like <code>Color</code> and got unexpected results.  Instances that appeared to be the same were coming back as 'not equal'.  Stepping through with the debugger, we saw that the instances on the left and right of the <code>==</code> operator contained the same int Value, and the implementation of <code>Equals</code> was written to compare exactly those ints.  Where did we go wrong?
-
-For the first time, we were making comparisons between instances after some instances were serialized-to-JSON and subsequently deserialized-from-JSON.  Deserializing an Enumeration from a string of JSON effectively bypasses all of C#'s "protective" measures like <code>private</code> constructors.  We were producing multiple distinct instances which happened to contain the same int Value, and our reliance on reference equality was no longer enough.
-
-Fortunately, <a href="https://github.com/HeadspringLabs/Enumeration/commit/66afd7471f6588ce52653fa361c445815dc035fa">the fix was simple.</a>  We had omitted overloading the <code>==</code> operator to favor value equality over reference equality.  Now, whether your equal instances are literally the same object or not, you get the equality semantics you'd expect.
