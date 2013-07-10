@@ -5,7 +5,7 @@ layout: post
 
 Recently, Jimmy Bogard described several <a href="http://lostechies.com/jimmybogard/2013/06/18/strategies-for-isolating-the-database-in-tests/">strategies for isolating a database in tests</a>.  Today, we'll see how one of these strategies can be implemented.  We'll start with a common implementation under NUnit, then we'll identify some issues with that implementation, and lastly we'll translate it into a Fixie convention to address those issues.
 
-<blockquote>Today’s code samples work against <a href="http://nuget.org/packages/Fixie/0.0.1.63">Fixie 0.0.1.63</a>. The customization API is in its infancy, and is likely to change in the coming weeks.</blockquote>
+<blockquote>Today's code samples work against <a href="http://nuget.org/packages/Fixie/0.0.1.63">Fixie 0.0.1.63</a>. The customization API is in its infancy, and is likely to change in the coming weeks.</blockquote>
 
 <h2>Transactions Under NUnit</h2>
 One of the strategies from Jimmy's post involves starting up a transaction before a test and rolling back that transaction at the end of the test.  If we're using NUnit, a common technique is to stow this concept away in a test fixture base class like so:
