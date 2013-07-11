@@ -3,26 +3,17 @@ title: Scope Creep
 layout: post
 ---
 
-Two weeks back, I said that I was encountering <a href="http://www.headspring.com/blog/developer-deep-dive/essential-vs-incidental-complexity/">Incidental Complexity</a> in a hobby project, and last week I demonstrated <a href="http://www.headspring.com/blog/developer-deep-dive/identifying-incidental-complexity/">the first of several revisions</a> meant to identify and remove that incidental complexity.
-
-Last week focused on identifying an abstraction that was providing no value at all and needed to be removed.  This week, we'll see an abstraction that was right in its inception, but had become increasingly complex as it took on more and more functionality.<!--more-->
-
+<p>Two weeks back, I said that I was encountering <a href="http://www.headspring.com/blog/developer-deep-dive/essential-vs-incidental-complexity/">Incidental Complexity</a> in a hobby project, and last week I demonstrated <a href="http://www.headspring.com/blog/developer-deep-dive/identifying-incidental-complexity/">the first of several revisions</a> meant to identify and remove that incidental complexity.</p>
+<p>Last week focused on identifying an abstraction that was providing no value at all and needed to be removed.  This week, we'll see an abstraction that was right in its inception, but had become increasingly complex as it took on more and more functionality.<!--more--></p>
 <h2>Rook's Representation of Scope</h2>
-We all take scope for granted.  A locally-declared variable is visible only within the block it was declared, a method only exists within the class block it is declared in, function parameters only exist within their function, etc.  When we're looking at a line of code and we refer to a variable that <em>wasn't</em> declared in the closest containing block, we instinctively look to the next outer block, and the next outer block, until we find it.
-
-If you're writing a compiler, you need some way to represent this concept.  For any point in a given program, you need to be able to look up the type of an identifier applicable at that point.
-
-It turns out that you can easily represent nested scopes using a stack of dictionaries.  Each item in the stack is a dictionary, and a single such dictionary includes the identifier/type pairs that are defined in a single code block.  When the compiler encounters a new block with its own local variables, for instance, it pushes a new dictionary onto the top of the stack and fills it with those declarations.  Upon exiting the block the compiler pops that dictionary off of the stack because those names no longer exist.
-
-When inspecting an expression, the compiler can look up the type of any identifier by starting at the top: if the top dictionary has the identifer, we're done; if it doesn't, the search continues down the stack until it is found.
-
-<blockquote>In other words, when a human looks for an identifier by moving their eyes to the next-outer-block, the compiler accomplishes the same thing by inspecting the next dictionary down the stack.</blockquote>
-
+<p>We all take scope for granted.  A locally-declared variable is visible only within the block it was declared, a method only exists within the class block it is declared in, function parameters only exist within their function, etc.  When we're looking at a line of code and we refer to a variable that <em>wasn't</em> declared in the closest containing block, we instinctively look to the next outer block, and the next outer block, until we find it.</p>
+<p>If you're writing a compiler, you need some way to represent this concept.  For any point in a given program, you need to be able to look up the type of an identifier applicable at that point.</p>
+<p>It turns out that you can easily represent nested scopes using a stack of dictionaries.  Each item in the stack is a dictionary, and a single such dictionary includes the identifier/type pairs that are defined in a single code block.  When the compiler encounters a new block with its own local variables, for instance, it pushes a new dictionary onto the top of the stack and fills it with those declarations.  Upon exiting the block the compiler pops that dictionary off of the stack because those names no longer exist.</p>
+<p>When inspecting an expression, the compiler can look up the type of any identifier by starting at the top: if the top dictionary has the identifer, we're done; if it doesn't, the search continues down the stack until it is found.</p>
+<blockquote><p>In other words, when a human looks for an identifier by moving their eyes to the next-outer-block, the compiler accomplishes the same thing by inspecting the next dictionary down the stack.</p></blockquote>
 <h2>The Troubled Implementation</h2>
-That's exactly how Rook's own Scope type started: a basic stack of dictionaries, in which key lookup walks through the stack until a match is found.  This served me well, until it started absorbing lots of special cases.  
-
-First, take a quick scan through <a href="https://github.com/plioi/rook/blob/e5ba86001a06b28bdae3e4eb41d31641d08d1d4c/src/Rook.Compiling/Scope.cs">the troubled Scope implementation.</a>  It's not the ugliest thing in the world, but it's certainly not <em>clean</em>.  A few problems jump out at me:
-
+<p>That's exactly how Rook's own Scope type started: a basic stack of dictionaries, in which key lookup walks through the stack until a match is found.  This served me well, until it started absorbing lots of special cases.  </p>
+<p>First, take a quick scan through <a href="https://github.com/plioi/rook/blob/e5ba86001a06b28bdae3e4eb41d31641d08d1d4c/src/Rook.Compiling/Scope.cs">the troubled Scope implementation.</a>  It's not the ugliest thing in the world, but it's certainly not <em>clean</em>.  A few problems jump out at me:</p>
 <ol>
 <li><strong>It's null-happy:</strong> Since <em>all</em> Scope objects have a reference to their surrounding 'parent' scope (aka the next scope down the stack), we have to store parent=null in the global scope.  In several methods, we have to inspect whether parent is null in order to know what <em>kind</em> of scope we're dealing with.  There's nothing about "parent == null" that says "this is the global scope", so while reading through this you have to constantly remind yourself what null means.</li>
 <li><strong>The localNonGenericTypeVariables field is weird and confusing:</strong> even if you read through all its usages, it's really hard to know what this member field is even used for.  Why does it exist?  What <em>kind</em> of scope is it applicable for?  What if I call <code>TreatAsNonGeneric</code> against the wrong <em>kind</em> of scope?  Ugh.</li>
@@ -30,79 +21,48 @@ First, take a quick scan through <a href="https://github.com/plioi/rook/blob/e5b
 <li><strong>Inconsistency in construction:</strong> depending on what <em>kind</em> of scope you want, you'll either call a static factory (<code>CreateRoot</code>), an instance factory (<code>CreateLocalScope</code>), or a 'Try' instance method with an <code>out</code> parameter (<code>TryGetMemberScope</code>).</li>
 <li><strong>What in the heck is a 'root' scope, anyway?</strong></li>
 </ol>
-
 <h2>Recognizing the Problem</h2>
-All in all, it is exceedingly easy to misunderstand and misuse this class because it has accumulated so many mixed up concepts over time.
-
-I emphasized the word 'kind' a few times now, and that's a clue as to what the real problem is.  When working within this class, and when using this class from elsewhere in the system...
-
+<p>All in all, it is exceedingly easy to misunderstand and misuse this class because it has accumulated so many mixed up concepts over time.</p>
+<p>I emphasized the word 'kind' a few times now, and that's a clue as to what the real problem is.  When working within this class, and when using this class from elsewhere in the system...</p>
 <ul>
 <li>you must constantly think about what <em>kind</em> of scope you are dealing with.</li>
 <li>you must constantly think about what <em>category</em> of scope you are dealing with.</li>
 <li>you must constantly think about what <em>class</em> of scope you are dealing with.</li>
 </ul>
-
-Aha!  We've got one class that is trying to represent several classes of scopes!  This isn't the only thing wrong with Scope, and we'll get to the rest in future posts, but the problem to solve this week is to split this class into a few meaningful classes, and clean up as much as we can in the process.  The result won't be perfect, but it will put us into a better position for future refactorings.
-
-<blockquote>We'll split <code>Scope</code> into several classes over the course of several commits.  Each commit will have a small... um... <em>scope</em> in order to let our source control document the train of thought.</blockquote>
-
+<p>Aha!  We've got one class that is trying to represent several classes of scopes!  This isn't the only thing wrong with Scope, and we'll get to the rest in future posts, but the problem to solve this week is to split this class into a few meaningful classes, and clean up as much as we can in the process.  The result won't be perfect, but it will put us into a better position for future refactorings.</p>
+<blockquote><p>We'll split <code>Scope</code> into several classes over the course of several commits.  Each commit will have a small... um... <em>scope</em> in order to let our source control document the train of thought.</p></blockquote>
 <h2>Commit #1</h2>
-<a href="https://github.com/plioi/rook/blob/5b18f455b79b956f8933c73aedfcf33434f55cf1/src/Rook.Compiling/Scope.cs">Extract LambdaScope subclass from Scope, as it is the only kind of scope that can treat type variables as non-generic.</a>
-
-It turns out that type checking lambda expressions is unusual compared to other kinds of expressions.  The fact that lambda expression parameters don't have explicit type declarations means that we have to infer them from how the lambda is <em>used</em> and we have to generate some temporary placeholders for those as-yet-unknown types before we've collected enough info to nail them down.
-
-The details are irrelevant for this post, but the important part is the realization that <strong>the <code>TreatAsNonGeneric</code> method and the <code>localNonGenericTypeVariables</code> list were only ever used when we knew we were dealing with a lambda declaration's scope.</strong>  Therefore, I extracted <code>LambdaScope</code> as a subclass of Scope.  This special method and list now live only in <code>LambdaScope</code>, which at least gives some clue as to their purpose.
-
+<p><a href="https://github.com/plioi/rook/blob/5b18f455b79b956f8933c73aedfcf33434f55cf1/src/Rook.Compiling/Scope.cs">Extract LambdaScope subclass from Scope, as it is the only kind of scope that can treat type variables as non-generic.</a></p>
+<p>It turns out that type checking lambda expressions is unusual compared to other kinds of expressions.  The fact that lambda expression parameters don't have explicit type declarations means that we have to infer them from how the lambda is <em>used</em> and we have to generate some temporary placeholders for those as-yet-unknown types before we've collected enough info to nail them down.</p>
+<p>The details are irrelevant for this post, but the important part is the realization that <strong>the <code>TreatAsNonGeneric</code> method and the <code>localNonGenericTypeVariables</code> list were only ever used when we knew we were dealing with a lambda declaration's scope.</strong>  Therefore, I extracted <code>LambdaScope</code> as a subclass of Scope.  This special method and list now live only in <code>LambdaScope</code>, which at least gives some clue as to their purpose.</p>
 <h2>Commit #2</h2>
-<a href="https://github.com/plioi/rook/blob/fb9fa6c9853fd1af1b069f5e83246ba806baf266/src/Rook.Compiling/Scope.cs">Rename 'root' scope to 'global' scope because that's what it is.</a>
-
-The 'root' scope was special because it contains built-in definitions, like operators, which should be visible to all parts of a program being compiled.  It never deserved to be called 'root', and should have always been called 'global' to match common terminology and communicate intent.
-
+<p><a href="https://github.com/plioi/rook/blob/fb9fa6c9853fd1af1b069f5e83246ba806baf266/src/Rook.Compiling/Scope.cs">Rename 'root' scope to 'global' scope because that's what it is.</a></p>
+<p>The 'root' scope was special because it contains built-in definitions, like operators, which should be visible to all parts of a program being compiled.  It never deserved to be called 'root', and should have always been called 'global' to match common terminology and communicate intent.</p>
 <h2>Commit #3</h2>
-<a href="https://github.com/plioi/rook/blob/d4628e28608437500fe80a4df45f8befdb42bed8/src/Rook.Compiling/Scope.cs">Extract GlobalScope subclass from Scope.</a>
-
-Since global scope objects are special due to their initial contents, I extracted another subclass.  The old static factory method CreatGlobalScope became the constructor of the new <code>GlobalScope</code> class.
-
+<p><a href="https://github.com/plioi/rook/blob/d4628e28608437500fe80a4df45f8befdb42bed8/src/Rook.Compiling/Scope.cs">Extract GlobalScope subclass from Scope.</a></p>
+<p>Since global scope objects are special due to their initial contents, I extracted another subclass.  The old static factory method CreatGlobalScope became the constructor of the new <code>GlobalScope</code> class.</p>
 <h2>Commit #4</h2>
-<a href="https://github.com/plioi/rook/blob/5038da7a86aff5b42d1818cc8af83ba20c764d06/src/Rook.Compiling/Scope.cs">Extract TypeMemberScope subclass from Scope.</a>
-
-Back when I started this series of posts, I mentioned that it was getting harder and harder to add new features due to the growing amount of incidental complexity.  The worst offender was adding the ability to type check method calls.  Type checking function calls ("Function(arg)") had been simple, but type checking method calls ("instance.Method(arg)") had been <em>shockingly</em> difficult, and it all came down to the unhelpful version of the <code>Scope</code> class.
-
-It turns out that type checking method calls involves yet another <em>kind</em> of scope.  When type checking an expression like <code>username.Trim()</code>, we look up the type of <code>username</code> in the local scope, but what if we then tried to look up <code>Trim</code> there too?  If we find "Trim" in the local scope, <em>that's just an unfortunate coincidence!</em>  It would be some local variable that happens to be the same name as the method we're calling.
-
-Before I understood this detail, I was running into mind-boggling behavior.  My tests included a code snippet containing a top-level function whose name and arguments were coincidentally the same as those of an instance method.  Type checking calls to that method would work by accident: we were looking in the wrong scope for the Func type of the code being called, and we found the coincidentally-correct answer by accidentally looking up the type of the top-level function!
-
-<em>Where</em> should we look up method names?  Well, we can consider the known type of the instance to the left of the "." operator.  For any type, there is a sort of "member scope" containing the names of all types members and their associated Func types.
-
-The offending method here was <code>TryGetMemberScope</code>, which constructs this kind of scope.  This method is further complicated by the notion that it might fail for unknown types, so it uses the 'Try' pattern with an <code>out</code> parameter.  To make things worse, it doesn't even really make use of any member variables, so it doesn't even need to live in this class!
-
-With this commit, I first moved this method to the one place it was actually used, and then extracted <code>TypeMemberScope</code> as another scope.  Like <code>GlobalScope</code>, these don't have a 'parent' to defer to when lookups fail.
-
-One really cool thing about this refactoring was that after moving the method over to the class it belonged in, it sort of simplified-and-collapsed-into the only method that made use of it.
-
-<blockquote>
+<p><a href="https://github.com/plioi/rook/blob/5038da7a86aff5b42d1818cc8af83ba20c764d06/src/Rook.Compiling/Scope.cs">Extract TypeMemberScope subclass from Scope.</a></p>
+<p>Back when I started this series of posts, I mentioned that it was getting harder and harder to add new features due to the growing amount of incidental complexity.  The worst offender was adding the ability to type check method calls.  Type checking function calls ("Function(arg)") had been simple, but type checking method calls ("instance.Method(arg)") had been <em>shockingly</em> difficult, and it all came down to the unhelpful version of the <code>Scope</code> class.</p>
+<p>It turns out that type checking method calls involves yet another <em>kind</em> of scope.  When type checking an expression like <code>username.Trim()</code>, we look up the type of <code>username</code> in the local scope, but what if we then tried to look up <code>Trim</code> there too?  If we find "Trim" in the local scope, <em>that's just an unfortunate coincidence!</em>  It would be some local variable that happens to be the same name as the method we're calling.</p>
+<p>Before I understood this detail, I was running into mind-boggling behavior.  My tests included a code snippet containing a top-level function whose name and arguments were coincidentally the same as those of an instance method.  Type checking calls to that method would work by accident: we were looking in the wrong scope for the Func type of the code being called, and we found the coincidentally-correct answer by accidentally looking up the type of the top-level function!</p>
+<p><em>Where</em> should we look up method names?  Well, we can consider the known type of the instance to the left of the "." operator.  For any type, there is a sort of "member scope" containing the names of all types members and their associated Func types.</p>
+<p>The offending method here was <code>TryGetMemberScope</code>, which constructs this kind of scope.  This method is further complicated by the notion that it might fail for unknown types, so it uses the 'Try' pattern with an <code>out</code> parameter.  To make things worse, it doesn't even really make use of any member variables, so it doesn't even need to live in this class!</p>
+<p>With this commit, I first moved this method to the one place it was actually used, and then extracted <code>TypeMemberScope</code> as another scope.  Like <code>GlobalScope</code>, these don't have a 'parent' to defer to when lookups fail.</p>
+<p>One really cool thing about this refactoring was that after moving the method over to the class it belonged in, it sort of simplified-and-collapsed-into the only method that made use of it.</p>
+<blockquote><p>
     You know you've moved a method to its proper home when, upon arrival, it evaporates.  Every part that disappeared was incidental complexity.
-</blockquote>
-
+</p></blockquote>
 <h2>Commit #5</h2>
-<a href="https://github.com/plioi/rook/blob/249d33890a621f4c90a6b80e8c5563fcb0020820/src/Rook.Compiling/Scope.cs">Split Scope class into abstract Scope and concrete LocalScope classes, as the 'parent' field is only applicable in local scopes.</a>
-
-This commit addresses the complaint that the class is 'null happy'.  Local scopes defer to their surrounding scope when they don't find an identifier, but global and type-member scopes don't have any surrounding scope to defer to.  By splitting the class into local and non-local versions, the implementations of both got much simpler.  <code>LocalScope</code>'s methods are all one-liners, and it's pretty clear what they're doing and why they're doing it.
-
+<p><a href="https://github.com/plioi/rook/blob/249d33890a621f4c90a6b80e8c5563fcb0020820/src/Rook.Compiling/Scope.cs">Split Scope class into abstract Scope and concrete LocalScope classes, as the 'parent' field is only applicable in local scopes.</a></p>
+<p>This commit addresses the complaint that the class is 'null happy'.  Local scopes defer to their surrounding scope when they don't find an identifier, but global and type-member scopes don't have any surrounding scope to defer to.  By splitting the class into local and non-local versions, the implementations of both got much simpler.  <code>LocalScope</code>'s methods are all one-liners, and it's pretty clear what they're doing and why they're doing it.</p>
 <h2>Commit #6</h2>
-<a href="https://github.com/plioi/rook/blob/0efcd783fbec0e62624b4a5716d34122dd97cb8a/src/Rook.Compiling/Scope.cs">TypeChecker is responsible for freshening generic type variables upon Name lookups, rather than having Scope perform that operation.</a>
-
-By the end of the previous commit, we had all the classes we needed: abstract <code>Scope</code>, <code>GlobalScope</code>, <code>TypeMemberScope</code>, <code>LocalScope</code>, and <code>LambdaScope</code>.  The abstract base class had one glaring offender left to phase out: the suspicious <code>CreateTypeVariable</code> field mentioned before, which was passed and passed and passed along to get here just so we could use it in the <code>FreshenGenericTypeVariables</code> method.
-
-This 'freshen' method comes into play when type checking calls to functions that have generic type parameters, like <code>IEnumerable&lt;T&gt;</code>'s <code>Select&lt;T&gt;</code> extension method.  I'd explain the details, <strong>but I don't have to</strong>.  We're talking about scope today, and <strong>this operation has as much to with scope as a washing machine does</strong>.  This operation belongs in the <code>TypeChecker</code> class.
-
-<blockquote>Once this method moved back where it belongs, we could drop all the convoluted passing-along of the <code>CreateTypeVariable</code> field.</blockquote>
-
-The results of this commit aren't perfect.  I'm not thrilled that I'm accomplishing this with subclassing: I'd rather Scope be an interface and avoid implementation inheritence.  I hate using <code>override</code> and <code>base</code>.  The benefit of the subclassing approach is that it was a tool to help me separate these concepts from each other in small steps.  Now that things are separated by purpose, I'm left with something I can actually work with.  I may be able to futher clean things up and avoid subclassing down the road.
-
+<p><a href="https://github.com/plioi/rook/blob/0efcd783fbec0e62624b4a5716d34122dd97cb8a/src/Rook.Compiling/Scope.cs">TypeChecker is responsible for freshening generic type variables upon Name lookups, rather than having Scope perform that operation.</a></p>
+<p>By the end of the previous commit, we had all the classes we needed: abstract <code>Scope</code>, <code>GlobalScope</code>, <code>TypeMemberScope</code>, <code>LocalScope</code>, and <code>LambdaScope</code>.  The abstract base class had one glaring offender left to phase out: the suspicious <code>CreateTypeVariable</code> field mentioned before, which was passed and passed and passed along to get here just so we could use it in the <code>FreshenGenericTypeVariables</code> method.</p>
+<p>This 'freshen' method comes into play when type checking calls to functions that have generic type parameters, like <code>IEnumerable&lt;T&gt;</code>'s <code>Select&lt;T&gt;</code> extension method.  I'd explain the details, <strong>but I don't have to</strong>.  We're talking about scope today, and <strong>this operation has as much to with scope as a washing machine does</strong>.  This operation belongs in the <code>TypeChecker</code> class.</p>
+<blockquote><p>Once this method moved back where it belongs, we could drop all the convoluted passing-along of the <code>CreateTypeVariable</code> field.</p></blockquote>
+<p>The results of this commit aren't perfect.  I'm not thrilled that I'm accomplishing this with subclassing: I'd rather Scope be an interface and avoid implementation inheritence.  I hate using <code>override</code> and <code>base</code>.  The benefit of the subclassing approach is that it was a tool to help me separate these concepts from each other in small steps.  Now that things are separated by purpose, I'm left with something I can actually work with.  I may be able to futher clean things up and avoid subclassing down the road.</p>
 <h2>Addressing Scope Creep</h2>
-<a href="http://en.wikipedia.org/wiki/Scope_creep">Scope creep</a> usually deals with the problem of a project's requirements growing and changing in an unwieldy way, but the same thing happens to your classes in response to those requirements changes.
-
-<blockquote>It's important to cultivate a negative vicseral reaction to growing complexity, rather than to just accept it as necessary.</blockquote>
-
-When one of your classes starts to absorb competing concerns, you may be able to turn things around by recognizing what types are hidden in there, wanting to escape and become classes of their own.
+<p><a href="http://en.wikipedia.org/wiki/Scope_creep">Scope creep</a> usually deals with the problem of a project's requirements growing and changing in an unwieldy way, but the same thing happens to your classes in response to those requirements changes.</p>
+<blockquote><p>It's important to cultivate a negative vicseral reaction to growing complexity, rather than to just accept it as necessary.</p></blockquote>
+<p>When one of your classes starts to absorb competing concerns, you may be able to turn things around by recognizing what types are hidden in there, wanting to escape and become classes of their own.</p>

@@ -3,26 +3,15 @@ title: Seamless Delegate Type Casting
 layout: post
 ---
 
-In <a href="http://www.headspring.com/2011/10/seamless-generic-type-casting">Seamless Generic Type Casting</a>, we saw how the <code>in</code> and <code>out</code> keywords can make our generic interfaces polite with respect to casting. A <code>List&lt;string&gt;</code> can be treated as an <code>IEnumerable&lt;object&gt;</code> because a) all strings are objects and b) <code>IEnumerable</code> is declared with the <code>out</code> keyword. Now, we'll see how these keywords can be applied to delegate types in addition to interface types.
-
-Suppose we have a a basic hierarchy of entity classes:<!--more-->
-
-{% gist 1339376 %}
-
-Also, suppose we find ourselves creating/persisting many instances of these in our integration tests, and we create a delegate type with some helper methods for doing so:
-
-{% gist 1339379 %}
-
-In our integration tests, we may use this to quickly get some sample employees into our database:
-
-{% gist 1339417 %}
-
-As we write some tests, we realize that we need some of our sample employees to be populated differently:
-
-{% gist 1339420 %}
-
-Surprise! This won't even compile. The compiler can't assign our <code>EntityCreator&lt;SalesPerson&gt;</code> to the expected type <code>EntityCreator&lt;Employee&gt;</code>. That's strange, since we know that any <code>SalesPerson</code> it ever makes will <strong>obviously</strong> be an Employee. As we saw with similar situations around interfaces, we need to use the <code>out</code> keyword when we define the delegate type, promising to the compiler that the <code>T</code> will only appear in the return value. Armed with this additional promise, the compiler can safely treat all <code>EntityCreator&lt;FieldTechnician&gt;</code> as <code>EntityCreator&lt;Employee&gt;</code>. With the following change, the example compiles as expected:
-
-{% gist 1339421 %}
-
-<a href="http://www.headspring.com/feed" target="_blank">Subscribe to our blog feed</a> for the freshest content.
+<p>In <a href="http://www.headspring.com/2011/10/seamless-generic-type-casting">Seamless Generic Type Casting</a>, we saw how the <code>in</code> and <code>out</code> keywords can make our generic interfaces polite with respect to casting. A <code>List&lt;string&gt;</code> can be treated as an <code>IEnumerable&lt;object&gt;</code> because a) all strings are objects and b) <code>IEnumerable</code> is declared with the <code>out</code> keyword. Now, we'll see how these keywords can be applied to delegate types in addition to interface types.</p>
+<p>Suppose we have a a basic hierarchy of entity classes:<!--more--></p>
+<p>{% gist 1339376 %}</p>
+<p>Also, suppose we find ourselves creating/persisting many instances of these in our integration tests, and we create a delegate type with some helper methods for doing so:</p>
+<p>{% gist 1339379 %}</p>
+<p>In our integration tests, we may use this to quickly get some sample employees into our database:</p>
+<p>{% gist 1339417 %}</p>
+<p>As we write some tests, we realize that we need some of our sample employees to be populated differently:</p>
+<p>{% gist 1339420 %}</p>
+<p>Surprise! This won't even compile. The compiler can't assign our <code>EntityCreator&lt;SalesPerson&gt;</code> to the expected type <code>EntityCreator&lt;Employee&gt;</code>. That's strange, since we know that any <code>SalesPerson</code> it ever makes will <strong>obviously</strong> be an Employee. As we saw with similar situations around interfaces, we need to use the <code>out</code> keyword when we define the delegate type, promising to the compiler that the <code>T</code> will only appear in the return value. Armed with this additional promise, the compiler can safely treat all <code>EntityCreator&lt;FieldTechnician&gt;</code> as <code>EntityCreator&lt;Employee&gt;</code>. With the following change, the example compiles as expected:</p>
+<p>{% gist 1339421 %}</p>
+<p><a href="http://www.headspring.com/feed" target="_blank">Subscribe to our blog feed</a> for the freshest content.</p>

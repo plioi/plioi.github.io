@@ -3,72 +3,38 @@ title: Lean Lambdas
 layout: post
 ---
 
-<strong>Shirley:</strong> Tell me about the Extract-Variable refactoring.
-
-<strong>Albert:</strong> Let's say I have a long expression that has become hard to read, and that I can identify a noteworthy subexpression within it.  I can 'extract' that subexpression from the original by introducing a new local variable.  The variable is initialized to the subexpression, and then the larger original expression is rewritten in terms of the new variable.  Doing so can make things easier to read: the original expression is shorter, and we've given a useful name to the part we took out.  For example:<!--more-->
-
-{% gist 4264666 %}
-
-<strong>Shirley:</strong> Since we're doing this extra step with an extra variable, will the result run a little slower than the original?
-
-<strong>Albert:</strong> No, silly!  We're doing the same amount of work in both versions.  Even with the original version, the compiler had to break down the expression into many smaller steps just like the change we made.  We're just introducing a useful nickname for one of those intermediate steps.
-
-<strong>S:</strong> Is there any way Extract-Variable <em>could</em> make something faster?
-
-<strong>A:</strong> Aren't you listening!?  Oh, wait.  If the expression you are pulling out appears multiple times in the larger expression, and the cost of evaluating it is large enough to notice, then Extract-Variable could actually speed things up, since you'll only evaluate it once.
-
-<strong>S:</strong> If you do that, is there any chance you'll change the runtime behavior?
-
-<strong>A:</strong> Only if the subexpression has side effects.  We used to evaluate it multiple times, and now we evaluate it once.  If the expression <em>does</em> something to the world other than just provide a value, we'd be introducing a breaking change.  That's why you want to keep as much of your code as pure as reasonably possible.
-
-<strong>S:</strong> Pure?
-
-<strong>A:</strong> An expression or function is pure if it depends only on its inputs and has no side effects.  It just looks at the inputs and returns a result.  For the same inputs, it always gives the same output.  <code>x+5</code> is pure, while <code>SendAnEmailToGrandma()</code> isn't.  It's safe to Extract-Variable with pure code, even when the subexpression showed up multiple times beforehand.  Pure stuff is easier to chop up, reorder, and move around.  It's easier to reason about.
-
-<strong>S:</strong> Imagine that we've got a large expression, and that the subexpression we're extracting only appears <em>once</em>.  What if I told you we could <em>still</em> get a performance boost out of it?
-
-<strong>A:</strong> Shirley, you're joking.
-
-<strong>S:</strong> Nope! I've got two situations in mind.  Let's start with the easy one.  This loop is taking way too long to execute:
-
-{% gist 4264673 %}
-
-<strong>A:</strong> Oh, I see what you're getting at.  We saw earlier how you can get a performance boost when extracting a subexpression that appeared multiple times in the original expression.  In this loop, we've got the same problem in a different format.  The subexpression <em>appears</em> once, but it gets <em>evalutated</em> a whole lot, each time with the same result.  We'd fix this with two refactorings: we'd Extract-Variable, and then we'd move that variable declaration <em>before</em> the loop:
-
-{% gist 4264675 %}
-
-<strong>S:</strong> Great! Earlier, I said I was thinking about two examples in which code with a singly-occurring subexpression could be sped up with Extract-Variable.  The easy one was the <code>foreach</code> you just fixed, but the second one's tough.  Let's improve upon the previous example.  Instead of building up a big list of all the values in the column, we'll make a column object that uses a Func&lt;Row&gt; to evaluate each cell only as needed:
-
-{% gist 4264677 %}
-
-<strong>A:</strong> Again, we don't want to keep on performing the costly CompileUserExpression(...) call every time we need to display a grid cell.  The problem is, if I Extract-Variable here, we're left with the same wasteful recompilation:
-
-{% gist 4264685 %}
-
-<strong>S:</strong> If the lambda gets called a bajillion times, how many times will we evaluate the costly part?
-
-<strong>A:</strong> A bajillion.
-
-<strong>S:</strong> Hmmph.
-
-<strong>A:</strong> ...
-
-<strong>S:</strong> How is this any different from the <code>foreach</code> example?
-
-<strong>A:</strong> When the costly bit was in a <code>foreach</code>, we could just move the variable to the outer scope.  Here, we have a lambda.
-
-<strong>S:</strong> Doesn't a lambda introduce a scope too?
-
-<strong>A:</strong> Well, yeah, but if we move <code>compiledExpression</code> outside of the lambda, wouldn't it become available for garbage collection as soon as we returned from <code>CreateCalculatedColumn</code>?  Let's see:
-
-{% gist 4264688 %}
-
-<strong>A:</strong> It works!  Our lambda is referring to a variable in the surrounding scope, and we're returning the lambda.  Lambdas are just objects, so this is just like returning any other object that references a locally-constructed thing.  The garbage collector only cleans up unreachable things, and <code>compiledExpression</code> will be reachable for as long as the lambda is reachable.  We get to avoid all that rework no matter how many times the lambda is called!
-
-<strong>S:</strong> Slick.
-
-<strong>A:</strong> How does one end a Socratic Dialogue?
-
-<strong>S:</strong> How about with a summary?
-
-<strong>A:</strong> Extract-Variable starts out as a simple refactoring to improve the readability of large expressions.  When working with pure code, the change is both safe and easy to perform.  In addition to aiding readability, Extract-Variable can occasionally improve performance, when the extraction keeps us from doing a lot of excess work.  After extracting a variable, we can consider moving it to an outer scope, so long as doing so preserves behavior.  Moving it outside of a loop can prevent wasteful reevaluation across many iterations.  Likewise, moving it outside of a lambda can prevent wasteful reevaluation across many invocations of the lambda.
+<p><strong>Shirley:</strong> Tell me about the Extract-Variable refactoring.</p>
+<p><strong>Albert:</strong> Let's say I have a long expression that has become hard to read, and that I can identify a noteworthy subexpression within it.  I can 'extract' that subexpression from the original by introducing a new local variable.  The variable is initialized to the subexpression, and then the larger original expression is rewritten in terms of the new variable.  Doing so can make things easier to read: the original expression is shorter, and we've given a useful name to the part we took out.  For example:<!--more--></p>
+<p>{% gist 4264666 %}</p>
+<p><strong>Shirley:</strong> Since we're doing this extra step with an extra variable, will the result run a little slower than the original?</p>
+<p><strong>Albert:</strong> No, silly!  We're doing the same amount of work in both versions.  Even with the original version, the compiler had to break down the expression into many smaller steps just like the change we made.  We're just introducing a useful nickname for one of those intermediate steps.</p>
+<p><strong>S:</strong> Is there any way Extract-Variable <em>could</em> make something faster?</p>
+<p><strong>A:</strong> Aren't you listening!?  Oh, wait.  If the expression you are pulling out appears multiple times in the larger expression, and the cost of evaluating it is large enough to notice, then Extract-Variable could actually speed things up, since you'll only evaluate it once.</p>
+<p><strong>S:</strong> If you do that, is there any chance you'll change the runtime behavior?</p>
+<p><strong>A:</strong> Only if the subexpression has side effects.  We used to evaluate it multiple times, and now we evaluate it once.  If the expression <em>does</em> something to the world other than just provide a value, we'd be introducing a breaking change.  That's why you want to keep as much of your code as pure as reasonably possible.</p>
+<p><strong>S:</strong> Pure?</p>
+<p><strong>A:</strong> An expression or function is pure if it depends only on its inputs and has no side effects.  It just looks at the inputs and returns a result.  For the same inputs, it always gives the same output.  <code>x+5</code> is pure, while <code>SendAnEmailToGrandma()</code> isn't.  It's safe to Extract-Variable with pure code, even when the subexpression showed up multiple times beforehand.  Pure stuff is easier to chop up, reorder, and move around.  It's easier to reason about.</p>
+<p><strong>S:</strong> Imagine that we've got a large expression, and that the subexpression we're extracting only appears <em>once</em>.  What if I told you we could <em>still</em> get a performance boost out of it?</p>
+<p><strong>A:</strong> Shirley, you're joking.</p>
+<p><strong>S:</strong> Nope! I've got two situations in mind.  Let's start with the easy one.  This loop is taking way too long to execute:</p>
+<p>{% gist 4264673 %}</p>
+<p><strong>A:</strong> Oh, I see what you're getting at.  We saw earlier how you can get a performance boost when extracting a subexpression that appeared multiple times in the original expression.  In this loop, we've got the same problem in a different format.  The subexpression <em>appears</em> once, but it gets <em>evalutated</em> a whole lot, each time with the same result.  We'd fix this with two refactorings: we'd Extract-Variable, and then we'd move that variable declaration <em>before</em> the loop:</p>
+<p>{% gist 4264675 %}</p>
+<p><strong>S:</strong> Great! Earlier, I said I was thinking about two examples in which code with a singly-occurring subexpression could be sped up with Extract-Variable.  The easy one was the <code>foreach</code> you just fixed, but the second one's tough.  Let's improve upon the previous example.  Instead of building up a big list of all the values in the column, we'll make a column object that uses a Func&lt;Row&gt; to evaluate each cell only as needed:</p>
+<p>{% gist 4264677 %}</p>
+<p><strong>A:</strong> Again, we don't want to keep on performing the costly CompileUserExpression(...) call every time we need to display a grid cell.  The problem is, if I Extract-Variable here, we're left with the same wasteful recompilation:</p>
+<p>{% gist 4264685 %}</p>
+<p><strong>S:</strong> If the lambda gets called a bajillion times, how many times will we evaluate the costly part?</p>
+<p><strong>A:</strong> A bajillion.</p>
+<p><strong>S:</strong> Hmmph.</p>
+<p><strong>A:</strong> ...</p>
+<p><strong>S:</strong> How is this any different from the <code>foreach</code> example?</p>
+<p><strong>A:</strong> When the costly bit was in a <code>foreach</code>, we could just move the variable to the outer scope.  Here, we have a lambda.</p>
+<p><strong>S:</strong> Doesn't a lambda introduce a scope too?</p>
+<p><strong>A:</strong> Well, yeah, but if we move <code>compiledExpression</code> outside of the lambda, wouldn't it become available for garbage collection as soon as we returned from <code>CreateCalculatedColumn</code>?  Let's see:</p>
+<p>{% gist 4264688 %}</p>
+<p><strong>A:</strong> It works!  Our lambda is referring to a variable in the surrounding scope, and we're returning the lambda.  Lambdas are just objects, so this is just like returning any other object that references a locally-constructed thing.  The garbage collector only cleans up unreachable things, and <code>compiledExpression</code> will be reachable for as long as the lambda is reachable.  We get to avoid all that rework no matter how many times the lambda is called!</p>
+<p><strong>S:</strong> Slick.</p>
+<p><strong>A:</strong> How does one end a Socratic Dialogue?</p>
+<p><strong>S:</strong> How about with a summary?</p>
+<p><strong>A:</strong> Extract-Variable starts out as a simple refactoring to improve the readability of large expressions.  When working with pure code, the change is both safe and easy to perform.  In addition to aiding readability, Extract-Variable can occasionally improve performance, when the extraction keeps us from doing a lot of excess work.  After extracting a variable, we can consider moving it to an outer scope, so long as doing so preserves behavior.  Moving it outside of a loop can prevent wasteful reevaluation across many iterations.  Likewise, moving it outside of a lambda can prevent wasteful reevaluation across many invocations of the lambda.</p>

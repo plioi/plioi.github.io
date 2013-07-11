@@ -3,26 +3,15 @@ title: Array Covariance in C#
 layout: post
 ---
 
-When we first learn about inheritance, we're given some plain-English examples with an emphasis on the phrase "is-a". A car <em>is-a</em> vehicle, so a <code>Car</code> class would inherit from a <code>Vehicle</code> class. The idea that class inheritance can so directly map to English is <strong>seriously misleading</strong> and can get you into trouble.
-
-In English, it's fair to say that a bag of apples <em>is-a</em> bag of objects. It may have an odd sound to it, but it's true. This makes it very tempting to say that in C#, a <code>List&lt;Apple&gt;</code> should be assignable to a <code>List&lt;Object&gt;</code>, since all <code>Apple</code> instances are also <code>Object</code> instances:<!--more-->
-
-{% gist 1302300 %}
-
-The sample above won't compile. The compiler is protecting us from potential runtime type exceptions. If this compiled, we could get into trouble like so:
-
-{% gist 1302301 %}
-
-If this compiled, we would be able to attempt to put a string into a collection that simply does not support that operation. The English metaphor for inheritence (<em>is-a</em>) just doesn't adequately match the actual constraints of the type system. We're trying to violate the <a href="http://en.wikipedia.org/wiki/Liskov_substitution_principle">Liskov Substitution Principle</a>. If we declared that <code>List&lt;Apple&gt;</code> is a subtype of <code>List&lt;Object&gt;</code>, we'd be saying that <em>every</em> operation that acts on a <code>List&lt;Object&gt;</code> could be given a <code>List&lt;Apple&gt;</code>, and that's simply not true. In our example, the operations performed on the <code>List&lt;Object&gt;</code> included putting new arbitrary objects into the list, and you just can't do that to a <code>List&lt;Apple&gt;</code>.
-
-<strong>Because <code>List&lt;Apple&gt;</code> has more constraints than <code>List&lt;Object&gt;</code>, <code>List&lt;Apple&gt;</code> is not assignment-compatible with <code>List&lt;Object&gt;</code>.</strong>
-
-Unfortunately, the previous example <strong>does</strong> compile when you replace <code>List&lt;T&gt;</code> with supposedly-strongly-typed arrays. Instead of knowing that you've done something wrong at compile time, you get an exception at runtime:
-
-{% gist 1302325 %}
-
-Because <code>TChild[]</code> can be assigned to <code>TParent[]</code> for any <code>TChild</code> inheriting from <code>TParent</code>, we can say "arrays in C# are covariant".
-
-To sum up, <code>List&lt;Apple&gt;</code> can't be treated as <code>List&lt;Object&gt;</code> <em>because of the operations that <code>List&lt;T&gt;</code> provides</em>. The question, then, is could we ever safely take advantage of this convenient funky-casting for <em>other</em> generic types? The answer to this question falls under the category of "Covariance and Contravariance" and is provided by the C# 4 keywords <code>in</code> and <code>out</code>. In my next post, we'll cover an example where this funky-casting is both convenient and safe.
-
-<a href="http://www.headspring.com/feed" target="_blank">Subscribe to our blog feed</a> for the freshest content.
+<p>When we first learn about inheritance, we're given some plain-English examples with an emphasis on the phrase "is-a". A car <em>is-a</em> vehicle, so a <code>Car</code> class would inherit from a <code>Vehicle</code> class. The idea that class inheritance can so directly map to English is <strong>seriously misleading</strong> and can get you into trouble.</p>
+<p>In English, it's fair to say that a bag of apples <em>is-a</em> bag of objects. It may have an odd sound to it, but it's true. This makes it very tempting to say that in C#, a <code>List&lt;Apple&gt;</code> should be assignable to a <code>List&lt;Object&gt;</code>, since all <code>Apple</code> instances are also <code>Object</code> instances:<!--more--></p>
+<p>{% gist 1302300 %}</p>
+<p>The sample above won't compile. The compiler is protecting us from potential runtime type exceptions. If this compiled, we could get into trouble like so:</p>
+<p>{% gist 1302301 %}</p>
+<p>If this compiled, we would be able to attempt to put a string into a collection that simply does not support that operation. The English metaphor for inheritence (<em>is-a</em>) just doesn't adequately match the actual constraints of the type system. We're trying to violate the <a href="http://en.wikipedia.org/wiki/Liskov_substitution_principle">Liskov Substitution Principle</a>. If we declared that <code>List&lt;Apple&gt;</code> is a subtype of <code>List&lt;Object&gt;</code>, we'd be saying that <em>every</em> operation that acts on a <code>List&lt;Object&gt;</code> could be given a <code>List&lt;Apple&gt;</code>, and that's simply not true. In our example, the operations performed on the <code>List&lt;Object&gt;</code> included putting new arbitrary objects into the list, and you just can't do that to a <code>List&lt;Apple&gt;</code>.</p>
+<p><strong>Because <code>List&lt;Apple&gt;</code> has more constraints than <code>List&lt;Object&gt;</code>, <code>List&lt;Apple&gt;</code> is not assignment-compatible with <code>List&lt;Object&gt;</code>.</strong></p>
+<p>Unfortunately, the previous example <strong>does</strong> compile when you replace <code>List&lt;T&gt;</code> with supposedly-strongly-typed arrays. Instead of knowing that you've done something wrong at compile time, you get an exception at runtime:</p>
+<p>{% gist 1302325 %}</p>
+<p>Because <code>TChild[]</code> can be assigned to <code>TParent[]</code> for any <code>TChild</code> inheriting from <code>TParent</code>, we can say "arrays in C# are covariant".</p>
+<p>To sum up, <code>List&lt;Apple&gt;</code> can't be treated as <code>List&lt;Object&gt;</code> <em>because of the operations that <code>List&lt;T&gt;</code> provides</em>. The question, then, is could we ever safely take advantage of this convenient funky-casting for <em>other</em> generic types? The answer to this question falls under the category of "Covariance and Contravariance" and is provided by the C# 4 keywords <code>in</code> and <code>out</code>. In my next post, we'll cover an example where this funky-casting is both convenient and safe.</p>
+<p><a href="http://www.headspring.com/feed" target="_blank">Subscribe to our blog feed</a> for the freshest content.</p>

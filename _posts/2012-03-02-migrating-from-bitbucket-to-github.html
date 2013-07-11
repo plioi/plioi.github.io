@@ -3,58 +3,38 @@ title: Migrating from Bitbucket to GitHub
 layout: post
 ---
 
-Git and Mercurial certainly have their differences, but in the grand scheme of things they are both equally-viable source control tools.  Bitbucket and GitHub are also both equally-viable hosts for Mercurial and Git projects.
-
-All other things being equal, when it comes to open-source software the Capricious and Arbitrary Popularity Contest kicks in with the deciding vote.  Git, and in particular GitHub, has won the popularity contest in recent years and will own the title of Open Source Thingamabob for the near future.  Something cooler will come along and take its place, but for now GitHub is the place to be.<!--more-->
-
-We still trust Bitbucket with our client work, but we're in the process of migrating our open-source projects to the new <a href="https://github.com/HeadspringLabs">GitHub "HeadspringLabs" organization</a>.
-
-<p>After a few failed attempts and much gnashing of teeth, I successfully migrated the <a href="http://www.headspring.com/2011/11/building-rich-enums">Enumeration</a> project from Bitbucket to GitHub, complete with history.
+<p>Git and Mercurial certainly have their differences, but in the grand scheme of things they are both equally-viable source control tools.  Bitbucket and GitHub are also both equally-viable hosts for Mercurial and Git projects.</p>
+<p>All other things being equal, when it comes to open-source software the Capricious and Arbitrary Popularity Contest kicks in with the deciding vote.  Git, and in particular GitHub, has won the popularity contest in recent years and will own the title of Open Source Thingamabob for the near future.  Something cooler will come along and take its place, but for now GitHub is the place to be.<!--more--></p>
+<p>We still trust Bitbucket with our client work, but we're in the process of migrating our open-source projects to the new <a href="https://github.com/HeadspringLabs">GitHub "HeadspringLabs" organization</a>.</p>
+<p>After a few failed attempts and much gnashing of teeth, I successfully migrated the <a href="http://www.headspring.com/2011/11/building-rich-enums">Enumeration</a> project from Bitbucket to GitHub, complete with history.<br />
 <!--more--></p>
-
 <h2>Installing Hg-Git on Windows</h2>
-
-If you're migrating a Subversion project to GitHub, they already provide an simple import service.  They don't yet offer a tool for importing Mercurial repositories, though, so I found a Mercurial-to-Git bridge called <a href="http://hg-git.github.com/">Hg-Git</a>.
-
-Hg-Git is intended to let you work continuously against a Git repository while using Mercurial tools on the client side.  I didn't need all that, but it can also be used to do the initial push to GitHub from within a Mercurial repository.
-
-The documentation on the Hg-Git's main site is a little brief, and after Googling around I found some good advice as well as some good advice that no longer applied.  To get Hg-Git installed on Windows, here's all you really need to do:
-
+<p>If you're migrating a Subversion project to GitHub, they already provide an simple import service.  They don't yet offer a tool for importing Mercurial repositories, though, so I found a Mercurial-to-Git bridge called <a href="http://hg-git.github.com/">Hg-Git</a>.</p>
+<p>Hg-Git is intended to let you work continuously against a Git repository while using Mercurial tools on the client side.  I didn't need all that, but it can also be used to do the initial push to GitHub from within a Mercurial repository.</p>
+<p>The documentation on the Hg-Git's main site is a little brief, and after Googling around I found some good advice as well as some good advice that no longer applied.  To get Hg-Git installed on Windows, here's all you really need to do:</p>
 <ol>
 <li>Install a recent TortoiseHg if you haven't already.  I used TortoiseHg 2.3 (Mercurial 2.1).</li>
-<li>Open a command window and <code>cd</code> to a development folder.  We'll be creating some repository folders underneath it:
+<li>Open a command window and <code>cd</code> to a development folder.  We'll be creating some repository folders underneath it:<br />
 $ <code>cd C:dev</code></li>
-<li>You install Hg-Git by simply cloning its own repository off of Bitbucket:
-$ <code>hg clone https://bitbucket.org/durin42/hg-git</code>
+<li>You install Hg-Git by simply cloning its own repository off of Bitbucket:<br />
+$ <code>hg clone https://bitbucket.org/durin42/hg-git</code><br />
 This creates a new folder named hg-git under the current directory, and underneath that you'll see a folder named hggit.</li>
-<li>Mercurial needs to be told that this extension exists.  Update C:&#92;Users&#92;&lt;username&gt;&#92;mercurial.ini and add the following (using whatever path you cloned to):
-<code>[extensions]
-bookmarks =
+<li>Mercurial needs to be told that this extension exists.  Update C:&#92;Users&#92;&lt;username&gt;&#92;mercurial.ini and add the following (using whatever path you cloned to):<br />
+<code>[extensions]<br />
+bookmarks =<br />
 hggit = C:devhg-githggit</code></li>
-<li>Confirm that Mercurial knows what hggit is:
+<li>Confirm that Mercurial knows what hggit is:<br />
 $ <code>hg help hggit</code></li>
 </ol>
-
 <h2>Initial Failure</h2>
-
-You'll need to have a new empty repository created on GitHub, and you'll need to have the rights to push to it.  You'll need to have a local clone of the Bitbucket project you wish to migrate.
-
-If you follow the advice on <a href="http://hg-git.github.com">the Hg-Git site</a>, you'll try to issue a special "<code>hg push</code>" command using a git-specific destination URL.  <strong>This can push the history of commits only partially.  The GitHub repository will unforunately fail to show <em>who</em> performed each commit.</strong>  Yikes.  When I got this far, I had to delete the GitHub repo and start over.
-
-The problem is Mercurial uses one string to represent committer identity while Git uses two (name and email).  Additionally, GitHub pays special attention to the email part, allowing the site to recognize existing GitHub users and linking to their user page.  Since Hg-Git wasn't populating email addresses, GitHub had little to go on.
-
+<p>You'll need to have a new empty repository created on GitHub, and you'll need to have the rights to push to it.  You'll need to have a local clone of the Bitbucket project you wish to migrate.</p>
+<p>If you follow the advice on <a href="http://hg-git.github.com">the Hg-Git site</a>, you'll try to issue a special "<code>hg push</code>" command using a git-specific destination URL.  <strong>This can push the history of commits only partially.  The GitHub repository will unforunately fail to show <em>who</em> performed each commit.</strong>  Yikes.  When I got this far, I had to delete the GitHub repo and start over.</p>
+<p>The problem is Mercurial uses one string to represent committer identity while Git uses two (name and email).  Additionally, GitHub pays special attention to the email part, allowing the site to recognize existing GitHub users and linking to their user page.  Since Hg-Git wasn't populating email addresses, GitHub had little to go on.</p>
 <h2>Successfuly Migrating from Bitbucket to GitHub</h2>
-
-<strong>Instead</strong> of using Hg-Git to perform the whole push, we'll follow some <a href="http://www.theleagueofpaul.com/hg-to-git">excellent Hg-Git advice</a> that lets us step in to fix committer identities along the way.
-
-That site has a shell script (which can be executed on Windows using the Git Bash command prompt).  The script will use Hg-Git for only one small part of the process: converting a local Mercurial repository folder into an equivalent local git repository.  The only thing wrong with that git repository will be the user names and email addresses.  The script then takes a chainsaw to that local git history, fixing the identity of each committer.  Finally, the script uses regular git commands to do the final push to GitHub.
-
-The downside is that you have to modify this script with a separate chunk for each real-world person that appears in the Mercurial history.  For instance, let's say we have history in Bitbucket for users named hgjohn and hgjane.  John Doe has a GitHub account already and prefers to be known there as "John Doe" with email address "john@example.com".  Jane Doe doesn't have a GitHub account yet, but later on if she does she'll want to be known as "Jane Doe" and "jane@example.com".  With these transformations ready, we modify the script to the following:
-
-{% gist 1954240 %}
-
-After saving this as "migrate_hg_to_git.sh" in our development folder, we execute the following command (all on one line).  This creates a local folder named 'MyProject', populates it with a Bitbucket clone, converts it to a Git repository, fixes the names, and pushes to GitHub:
-
-$ <code>./migrate_hg_to_git.sh MyProject https://bitbucket.org/johnd/MyProject git@github.com:jdoe/MyProject.git</code>
-
-Now when you view the project on GitHub, John's commits display his photo and link to his user page.
+<p><strong>Instead</strong> of using Hg-Git to perform the whole push, we'll follow some <a href="http://www.theleagueofpaul.com/hg-to-git">excellent Hg-Git advice</a> that lets us step in to fix committer identities along the way.</p>
+<p>That site has a shell script (which can be executed on Windows using the Git Bash command prompt).  The script will use Hg-Git for only one small part of the process: converting a local Mercurial repository folder into an equivalent local git repository.  The only thing wrong with that git repository will be the user names and email addresses.  The script then takes a chainsaw to that local git history, fixing the identity of each committer.  Finally, the script uses regular git commands to do the final push to GitHub.</p>
+<p>The downside is that you have to modify this script with a separate chunk for each real-world person that appears in the Mercurial history.  For instance, let's say we have history in Bitbucket for users named hgjohn and hgjane.  John Doe has a GitHub account already and prefers to be known there as "John Doe" with email address "john@example.com".  Jane Doe doesn't have a GitHub account yet, but later on if she does she'll want to be known as "Jane Doe" and "jane@example.com".  With these transformations ready, we modify the script to the following:</p>
+<p>{% gist 1954240 %}</p>
+<p>After saving this as "migrate_hg_to_git.sh" in our development folder, we execute the following command (all on one line).  This creates a local folder named 'MyProject', populates it with a Bitbucket clone, converts it to a Git repository, fixes the names, and pushes to GitHub:</p>
+<p>$ <code>./migrate_hg_to_git.sh MyProject https://bitbucket.org/johnd/MyProject git@github.com:jdoe/MyProject.git</code></p>
+<p>Now when you view the project on GitHub, John's commits display his photo and link to his user page.</p>

@@ -3,18 +3,11 @@ title: A Game of Throws
 layout: post
 ---
 
-In <a href="http://www.headspring.com/blog/developer-deep-dive/infinite-laziness/">Infinite Laziness</a>, we saw how the <code>yield</code> keyword lets us work with <em>lazy evaluation</em>, in which work is deferred and performed on demand once something else actually needs to consume the result.  Lazy evaluation with <code>yield</code> isn't free, though; it has some unfortunate consequences.
-
-This week, we'll see how lazy evaluation affects exception handling.  Next week, we'll see how <code>yield</code> complects brevity with laziness, resulting in some undesirable patterns.<!--more-->
-
-Let's say you're lazily producing a series of objects, but the creation of each object has a real potential to throw an exception.  The developer calling the lazy method knows that the operation could fail, and attempts to protect the rest of the system:
-
-{% gist 3792131 %}
-
-Despite wrapping the dangerous method call with a <code>try/catch</code> block, callers of SafelyBuildGrenades are in for a surprise.  <strong>The call to BuildGrenades will never throw an ExplosionException, while callers of SafelyBuildGrenades might set off a grenade just by looking at them!</strong>
-
-When you call a <code>yield</code>ing method, <strong>no work is performed and the call returns immediately</strong>.  It returns an object that <em>knows how</em> to produce the list of items on demand.  Those items won't be produced until someone starts looping through them.  In our example above, this quickly-made object is likewise immediately returned by SafelyBuildGrenades.  The <em>consumer</em> of the result of SafelyBuildGrenades is then free to start looping through it, at which point the code in BuildGrenades will start to execute.  Since an ExplosionException could only be thrown way up in that consumer's loop, the consumer's loop is where the exception will start moving up the call stack.
-
-<blockquote><code>yield</code> is an exception smuggler.  <code>yield</code> hides your dangerous code in a harmless-looking package in order to sneak it past unsuspecting <code>try/catch</code> blocks.  The harmful contents can then be unpacked by the recipient.</blockquote>
-
-When using lazy evaluation, which includes the now-ubiquitous IEnumerable extension methods (Select, Where, Take, Skip...), take care.  Work won't be performed until you begin to iterate through the results, so your exception handling will need to take place higher up the call stack.
+<p>In <a href="http://www.headspring.com/blog/developer-deep-dive/infinite-laziness/">Infinite Laziness</a>, we saw how the <code>yield</code> keyword lets us work with <em>lazy evaluation</em>, in which work is deferred and performed on demand once something else actually needs to consume the result.  Lazy evaluation with <code>yield</code> isn't free, though; it has some unfortunate consequences.</p>
+<p>This week, we'll see how lazy evaluation affects exception handling.  Next week, we'll see how <code>yield</code> complects brevity with laziness, resulting in some undesirable patterns.<!--more--></p>
+<p>Let's say you're lazily producing a series of objects, but the creation of each object has a real potential to throw an exception.  The developer calling the lazy method knows that the operation could fail, and attempts to protect the rest of the system:</p>
+<p>{% gist 3792131 %}</p>
+<p>Despite wrapping the dangerous method call with a <code>try/catch</code> block, callers of SafelyBuildGrenades are in for a surprise.  <strong>The call to BuildGrenades will never throw an ExplosionException, while callers of SafelyBuildGrenades might set off a grenade just by looking at them!</strong></p>
+<p>When you call a <code>yield</code>ing method, <strong>no work is performed and the call returns immediately</strong>.  It returns an object that <em>knows how</em> to produce the list of items on demand.  Those items won't be produced until someone starts looping through them.  In our example above, this quickly-made object is likewise immediately returned by SafelyBuildGrenades.  The <em>consumer</em> of the result of SafelyBuildGrenades is then free to start looping through it, at which point the code in BuildGrenades will start to execute.  Since an ExplosionException could only be thrown way up in that consumer's loop, the consumer's loop is where the exception will start moving up the call stack.</p>
+<blockquote><p><code>yield</code> is an exception smuggler.  <code>yield</code> hides your dangerous code in a harmless-looking package in order to sneak it past unsuspecting <code>try/catch</code> blocks.  The harmful contents can then be unpacked by the recipient.</p></blockquote>
+<p>When using lazy evaluation, which includes the now-ubiquitous IEnumerable extension methods (Select, Where, Take, Skip...), take care.  Work won't be performed until you begin to iterate through the results, so your exception handling will need to take place higher up the call stack.</p>

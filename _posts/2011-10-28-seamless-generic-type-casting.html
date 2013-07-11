@@ -3,34 +3,19 @@ title: Seamless Generic Type Casting
 layout: post
 ---
 
-In <a href="http://www.headspring.com/2011/10/array-covariance-in-c">Array Covariance in C#</a>, we saw that a <code>List&lt;Apple&gt;</code> cannot be assigned to a variable declared as <code>List&lt;Object&gt;</code>, even though all <code>Apple</code>s are <code>Object</code>s. If we were allowed to do that, we could get runtime type exceptions as we work with the list contents.
-
-The compiler has to prevent us from these assignments because <code>List&lt;T&gt;</code>'s public interface includes some subtle constraints: <code>List&lt;Apple&gt;</code> is actually a <em>more constrained</em> type than <code>List&lt;Object&gt;</code>. You can put anything into a <code>List&lt;Object&gt;</code> and get it back out again. You can't put just anything into a <code>List&lt;Apple&gt;</code>; what would you expect to happen when you tried to read it back out? <!--more-->Therefore, <code>List&lt;Apple&gt;</code> is more constrained than <code>List&lt;Object&gt;</code> and we can't treat <code>List&lt;Apple&gt;</code> as a subtype of <code>List&lt;Object&gt;</code>.
-
-Still, it's tempting to ask, is there some other generic type <code>Foo&lt;T&gt;</code> where <code>Foo&lt;Apple&gt;</code> <em>can</em> be treated as a <code>Foo&lt;Object&gt;</code>? <strong>It turns out the answer is yes!</strong>
-
-Let's say your application is sending messages to another process over a message bus, and that you've implemented a helper method that sends a whole collection of messages instead of just one:
-
-{% gist 1321180 %}
-
-Unfortunately, this won't even compile. We're trying to send a list of <code>RemoveOrderLineItem</code> messages, but the <code>SendAll</code> method accepts a <code>List&lt;IMessage&gt;</code>. Fortunately, this starts to compile if we change the definition of <code>SendAll</code> to receive an <code>IEnumerable&lt;IMessage&gt;</code> instead of a <code>List&lt;T&gt;</code>:
-
-{% gist 1321168 %}
-
-What's so <em>special</em> about <code>IEnumerable&lt;IMessage&gt;</code> that lets us seamlessly cast from a <code>List&lt;RemoveOrderLineItem&gt;</code>? Remember, the reason that the compile originally failed had to do with the fact that the object we were passing to <code>SendAll</code> had more constraints than the type declared on the receiving end. With <code>IEnumerable&lt;IMessage&gt;</code>, it's a different story. Now, the only thing that <code>SendAll</code> can do with our collection is get values out of it, and we know all such values will be individually compatable with <code>IMessage</code>.
-
-We're able to do this because, as of .NET 4, <code>IEnumerable&lt;T&gt;</code> has an updated definition:
-
-{% gist 1321170 %}
-
-The <code>out</code> keyword was added to the generic type parameter <code>T</code>. Using this keyword is a promise. <strong>"I promise that for all the members in this interface, <code>T</code> will only appear in the return types, never appearing in any inputs."</strong> When we use the <code>out</code> keyword, we're saying that T is "covariant".
-
-The <code>in</code> keyword makes a similar promise: the type parameter <code>T</code> could appear in the types of input arguments, but never in the return types. When we use the <code>in</code> keyword, we're saying that <code>T</code> is "contravariant".
-
-In addition to sanity checking your promise, the compiler is now free to treat any <code>IEnumerable&lt;RemoveOrderLineItem&gt;</code> as a <code>IEnumerable&lt;IMessage&gt;</code>, without having to cast each individual item first. <code>IEnumerable&lt;RemoveOrderLineItem&gt;</code> is truly a subtype of <code>IEnumerable&lt;IMessage&gt;</code>.
-
-Introducing these two keywords to the language was a nonbreaking change, with the main effect being that people encountered fewer compiler errors, usually without knowing it. When you design your own libraries, consider whether your interfaces deserve to take part in this style of casting. Beware, though, that <em>removing</em> the keywords later on can be a breaking change from the point of view of your library's consumer!
-
-In my next post, we'll see how these keywords can be used to glue together delegates.
-
-<a href="http://www.headspring.com/feed" target="_blank">Subscribe to our blog feed</a> for the freshest content.
+<p>In <a href="http://www.headspring.com/2011/10/array-covariance-in-c">Array Covariance in C#</a>, we saw that a <code>List&lt;Apple&gt;</code> cannot be assigned to a variable declared as <code>List&lt;Object&gt;</code>, even though all <code>Apple</code>s are <code>Object</code>s. If we were allowed to do that, we could get runtime type exceptions as we work with the list contents.</p>
+<p>The compiler has to prevent us from these assignments because <code>List&lt;T&gt;</code>'s public interface includes some subtle constraints: <code>List&lt;Apple&gt;</code> is actually a <em>more constrained</em> type than <code>List&lt;Object&gt;</code>. You can put anything into a <code>List&lt;Object&gt;</code> and get it back out again. You can't put just anything into a <code>List&lt;Apple&gt;</code>; what would you expect to happen when you tried to read it back out? <!--more-->Therefore, <code>List&lt;Apple&gt;</code> is more constrained than <code>List&lt;Object&gt;</code> and we can't treat <code>List&lt;Apple&gt;</code> as a subtype of <code>List&lt;Object&gt;</code>.</p>
+<p>Still, it's tempting to ask, is there some other generic type <code>Foo&lt;T&gt;</code> where <code>Foo&lt;Apple&gt;</code> <em>can</em> be treated as a <code>Foo&lt;Object&gt;</code>? <strong>It turns out the answer is yes!</strong></p>
+<p>Let's say your application is sending messages to another process over a message bus, and that you've implemented a helper method that sends a whole collection of messages instead of just one:</p>
+<p>{% gist 1321180 %}</p>
+<p>Unfortunately, this won't even compile. We're trying to send a list of <code>RemoveOrderLineItem</code> messages, but the <code>SendAll</code> method accepts a <code>List&lt;IMessage&gt;</code>. Fortunately, this starts to compile if we change the definition of <code>SendAll</code> to receive an <code>IEnumerable&lt;IMessage&gt;</code> instead of a <code>List&lt;T&gt;</code>:</p>
+<p>{% gist 1321168 %}</p>
+<p>What's so <em>special</em> about <code>IEnumerable&lt;IMessage&gt;</code> that lets us seamlessly cast from a <code>List&lt;RemoveOrderLineItem&gt;</code>? Remember, the reason that the compile originally failed had to do with the fact that the object we were passing to <code>SendAll</code> had more constraints than the type declared on the receiving end. With <code>IEnumerable&lt;IMessage&gt;</code>, it's a different story. Now, the only thing that <code>SendAll</code> can do with our collection is get values out of it, and we know all such values will be individually compatable with <code>IMessage</code>.</p>
+<p>We're able to do this because, as of .NET 4, <code>IEnumerable&lt;T&gt;</code> has an updated definition:</p>
+<p>{% gist 1321170 %}</p>
+<p>The <code>out</code> keyword was added to the generic type parameter <code>T</code>. Using this keyword is a promise. <strong>"I promise that for all the members in this interface, <code>T</code> will only appear in the return types, never appearing in any inputs."</strong> When we use the <code>out</code> keyword, we're saying that T is "covariant".</p>
+<p>The <code>in</code> keyword makes a similar promise: the type parameter <code>T</code> could appear in the types of input arguments, but never in the return types. When we use the <code>in</code> keyword, we're saying that <code>T</code> is "contravariant".</p>
+<p>In addition to sanity checking your promise, the compiler is now free to treat any <code>IEnumerable&lt;RemoveOrderLineItem&gt;</code> as a <code>IEnumerable&lt;IMessage&gt;</code>, without having to cast each individual item first. <code>IEnumerable&lt;RemoveOrderLineItem&gt;</code> is truly a subtype of <code>IEnumerable&lt;IMessage&gt;</code>.</p>
+<p>Introducing these two keywords to the language was a nonbreaking change, with the main effect being that people encountered fewer compiler errors, usually without knowing it. When you design your own libraries, consider whether your interfaces deserve to take part in this style of casting. Beware, though, that <em>removing</em> the keywords later on can be a breaking change from the point of view of your library's consumer!</p>
+<p>In my next post, we'll see how these keywords can be used to glue together delegates.</p>
+<p><a href="http://www.headspring.com/feed" target="_blank">Subscribe to our blog feed</a> for the freshest content.</p>

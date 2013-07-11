@@ -3,40 +3,27 @@ title: Building Rich Enums
 layout: post
 ---
 
-Headspring has recently updated its open-source <a href="https://bitbucket.org/headspringlabs/enumeration">Enumeration</a> class. We recommend this as an alternative to using plain old .NET enums in your domain models. Most of the time, you use a .NET enum in order to define a finite set of named values. <code>Enumeration</code> serves that purpose too.
-
-<!--more-->
-
-What's so bad about enums? They provide a very thin abstraction over integers, and that abstraction is both leaky and insufficient when building a rich domain model.
+<p>Headspring has recently updated its open-source <a href="https://bitbucket.org/headspringlabs/enumeration">Enumeration</a> class. We recommend this as an alternative to using plain old .NET enums in your domain models. Most of the time, you use a .NET enum in order to define a finite set of named values. <code>Enumeration</code> serves that purpose too.</p>
+<p><!--more--></p>
+<p>What's so bad about enums? They provide a very thin abstraction over integers, and that abstraction is both leaky and insufficient when building a rich domain model.</p>
 <h2>The .NET enum abstraction leaks</h2>
-When you define an enum, you are really defining several integer constants.
-
-{% gist 1375478 %}
-
-Whether you declare the integers or not, each enum value is really an integer. Unfortunately, this means that unintended values are allowed:
-
-{% gist 1375483 %}
-
-This is .NET's way of reminding you of its own implementation details. -1 has nothing to do with the roles in my system. Enums fail to limit values to those I consider meaningful, so why am I using them as domain objects?
+<p>When you define an enum, you are really defining several integer constants.</p>
+<p>{% gist 1375478 %}</p>
+<p>Whether you declare the integers or not, each enum value is really an integer. Unfortunately, this means that unintended values are allowed:</p>
+<p>{% gist 1375483 %}</p>
+<p>This is .NET's way of reminding you of its own implementation details. -1 has nothing to do with the roles in my system. Enums fail to limit values to those I consider meaningful, so why am I using them as domain objects?</p>
 <h2>The .NET enum abstraction is insufficient</h2>
-You can think of an enum definition as shorthand for a class. That class effectively inherits from int, exposing public static getters that return each defined constant, including convenience methods for converting to and from strings.
-
-What if the shorthand just isn't enough to describe the class we really wanted to write? What if your type deserves some additional methods, or you need to associate additional metadata with each value? You could resort to attaching metadata via attributes, and provide some extension methods to reflect on them, but that's a long way to go to avoid admitting that we <em>really</em> just wanted to constrain our domain objects to a fixed set of values. It's nice to use ints as the 'unique identifier' for each value in the set, but we don't need that int to be the <em>whole</em> story.
+<p>You can think of an enum definition as shorthand for a class. That class effectively inherits from int, exposing public static getters that return each defined constant, including convenience methods for converting to and from strings.</p>
+<p>What if the shorthand just isn't enough to describe the class we really wanted to write? What if your type deserves some additional methods, or you need to associate additional metadata with each value? You could resort to attaching metadata via attributes, and provide some extension methods to reflect on them, but that's a long way to go to avoid admitting that we <em>really</em> just wanted to constrain our domain objects to a fixed set of values. It's nice to use ints as the 'unique identifier' for each value in the set, but we don't need that int to be the <em>whole</em> story.</p>
 <h2>Using Headspring's Enumeration Class</h2>
-Using <code>Enumeration</code>, we could define a more useful set like so:
-
-{% gist 1375494 %}
-
-Here we see a fixed set of objects, with the convenient int and string representations we're used to having with enums. <code>Role.FromInt32(int)</code> allows you to load the value associated with a given int, such as when reading from a database, but only the fixed set of integers will be allowed. Each value can have arbitrary properties, and the enumeration can contain additional methods.
+<p>Using <code>Enumeration</code>, we could define a more useful set like so:</p>
+<p>{% gist 1375494 %}</p>
+<p>Here we see a fixed set of objects, with the convenient int and string representations we're used to having with enums. <code>Role.FromInt32(int)</code> allows you to load the value associated with a given int, such as when reading from a database, but only the fixed set of integers will be allowed. Each value can have arbitrary properties, and the enumeration can contain additional methods.</p>
 <h2>Enumeration's Generic Type Constraint</h2>
-<code>Enumeration</code> contains an interesting generic constraint. Several of the methods on the base class need to deal with the type of the individual values, so <code>Role</code> is declared to implement <code>Enumeration&lt;Role&gt;</code>. You can think of the <code>Role</code> class as "passing" its own definition up to the base class so <code>Enumeration</code> can make use of it. Similarly, <code>Enumeration</code> needs to be declared in such a way that it can know what's being "passed up" to it:
-
-{% gist 1375498 %}
-
-In other words, <code>Enumeration</code> will be working with any type that is itself declared as an <code>Enumeration</code>. This constraint basically mimics the "shape" of the first line of the <code>Role</code> type. Likewise, it <strong>demands</strong> that any child class be declared with a line of that shape.
-
-At first, it may seem like <code>class Role : Enumeration&lt;Role&gt;</code> should result in a compiler error. It looks like we're trying to <em>use</em> a type before we're even finished <em>defining</em> it. The truth is, the compiler need only compare the "shape" of the two classes' declarations in order to convince itself that the required pattern is being respected, and <em>then</em> it can go on with the business of verifying the <em>content</em> of each class.
+<p><code>Enumeration</code> contains an interesting generic constraint. Several of the methods on the base class need to deal with the type of the individual values, so <code>Role</code> is declared to implement <code>Enumeration&lt;Role&gt;</code>. You can think of the <code>Role</code> class as "passing" its own definition up to the base class so <code>Enumeration</code> can make use of it. Similarly, <code>Enumeration</code> needs to be declared in such a way that it can know what's being "passed up" to it:</p>
+<p>{% gist 1375498 %}</p>
+<p>In other words, <code>Enumeration</code> will be working with any type that is itself declared as an <code>Enumeration</code>. This constraint basically mimics the "shape" of the first line of the <code>Role</code> type. Likewise, it <strong>demands</strong> that any child class be declared with a line of that shape.</p>
+<p>At first, it may seem like <code>class Role : Enumeration&lt;Role&gt;</code> should result in a compiler error. It looks like we're trying to <em>use</em> a type before we're even finished <em>defining</em> it. The truth is, the compiler need only compare the "shape" of the two classes' declarations in order to convince itself that the required pattern is being respected, and <em>then</em> it can go on with the business of verifying the <em>content</em> of each class.</p>
 <h2>Conclusion</h2>
-.NET enums are still useful, such as when you need to <a href="http://msdn.microsoft.com/en-us/library/system.flagsattribute.aspx">pack several bit flags into a single integer</a>, but when using them to define finite sets of objects in your domain model, their brevity and ubiquity may tempt you away from writing rich domain objects. When you reach for the handy dandy <code>enum</code> keyword, consider whether <code>Enumeration</code> is a better fit.
-
-<a href="http://www.headspring.com/feed" target="_blank">Subscribe to our blog feed</a> for the freshest content.
+<p>.NET enums are still useful, such as when you need to <a href="http://msdn.microsoft.com/en-us/library/system.flagsattribute.aspx">pack several bit flags into a single integer</a>, but when using them to define finite sets of objects in your domain model, their brevity and ubiquity may tempt you away from writing rich domain objects. When you reach for the handy dandy <code>enum</code> keyword, consider whether <code>Enumeration</code> is a better fit.</p>
+<p><a href="http://www.headspring.com/feed" target="_blank">Subscribe to our blog feed</a> for the freshest content.</p>

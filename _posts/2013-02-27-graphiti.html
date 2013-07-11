@@ -3,58 +3,31 @@ title: Graphiti
 layout: post
 ---
 
-Back in college, I stumbled across a great tool called <a href="http://www.graphviz.org/">GraphViz</a>.  I used it to generate class diagrams from the source of a PHP application I was working on.  More recently, I've found it useful again for visualizing the <em>runtime</em> relationships between objects.  GraphViz can turn a plaintext description of relationships into a graph image.  Not "graph" as in "charts and graphs", but "graph" as in "computer science graph".  Nodes and edges:
-
-<a href="http://www.headspring.com/wp-content/uploads/2013/02/simple.png"><img src="http://www.headspring.com/wp-content/uploads/2013/02/simple.png" alt="simple" width="179" height="251" class="aligncenter size-medium wp-image-6425" /></a>
-
-Today, we'll see how to easily generate images like this.  Along the way, we'll see an interesting use case for anonymous objects.
-
+<p>Back in college, I stumbled across a great tool called <a href="http://www.graphviz.org/">GraphViz</a>.  I used it to generate class diagrams from the source of a PHP application I was working on.  More recently, I've found it useful again for visualizing the <em>runtime</em> relationships between objects.  GraphViz can turn a plaintext description of relationships into a graph image.  Not "graph" as in "charts and graphs", but "graph" as in "computer science graph".  Nodes and edges:</p>
+<p><a href="http://www.headspring.com/wp-content/uploads/2013/02/simple.png"><img src="http://www.headspring.com/wp-content/uploads/2013/02/simple.png" alt="simple" width="179" height="251" class="aligncenter size-medium wp-image-6425" /></a></p>
+<p>Today, we'll see how to easily generate images like this.  Along the way, we'll see an interesting use case for anonymous objects.</p>
 <h2>The Dot File Format</h2>
-
-The image above can be generated from the following text file, using a GraphViz tool called dot.exe.  Note the use of the word 'digraph'.  A graph is anything made up of nodes and edges; a digraph is a graph where the edges have <em>di</em>rection from a source node to a destination node.
-
-{% gist 5014220 %}
-
-To create the image from the dot file, run the command: <code>dot.exe Simple.dot -Tpng -o Simple.png</code>.
-
-The dot file format supports a lot of options.  For instance, we can customize the original dot file like so:
-
-{% gist 5014224 %}
-
-Optional attributes appear in square brackets.  Here, we give one of our edges a label, alter the colors, and change one of the nodes from an ellipse to a box:
-
-<a href="http://www.headspring.com/wp-content/uploads/2013/02/fancy.png"><img src="http://www.headspring.com/wp-content/uploads/2013/02/fancy.png" alt="fancy" width="179" height="275" class="aligncenter size-full wp-image-6424" /></a>
-
-One can imagine generating these dot files programmatically with a StringBuilder.  Doing so would be a little monotonous, especially when the optional attributes like shapes and colors are included.  You have to busy yourself with the dot format's quoting rules as well as C#'s quoting rules.  Even when you succeed, you'll be left with some ugly code.  I'd much rather generate the above two dot files like so:
-
-{% gist 5014233 %}
-
-{% gist 5014237 %}
-
+<p>The image above can be generated from the following text file, using a GraphViz tool called dot.exe.  Note the use of the word 'digraph'.  A graph is anything made up of nodes and edges; a digraph is a graph where the edges have <em>di</em>rection from a source node to a destination node.</p>
+<p>{% gist 5014220 %}</p>
+<p>To create the image from the dot file, run the command: <code>dot.exe Simple.dot -Tpng -o Simple.png</code>.</p>
+<p>The dot file format supports a lot of options.  For instance, we can customize the original dot file like so:</p>
+<p>{% gist 5014224 %}</p>
+<p>Optional attributes appear in square brackets.  Here, we give one of our edges a label, alter the colors, and change one of the nodes from an ellipse to a box:</p>
+<p><a href="http://www.headspring.com/wp-content/uploads/2013/02/fancy.png"><img src="http://www.headspring.com/wp-content/uploads/2013/02/fancy.png" alt="fancy" width="179" height="275" class="aligncenter size-full wp-image-6424" /></a></p>
+<p>One can imagine generating these dot files programmatically with a StringBuilder.  Doing so would be a little monotonous, especially when the optional attributes like shapes and colors are included.  You have to busy yourself with the dot format's quoting rules as well as C#'s quoting rules.  Even when you succeed, you'll be left with some ugly code.  I'd much rather generate the above two dot files like so:</p>
+<p>{% gist 5014233 %}</p>
+<p>{% gist 5014237 %}</p>
 <h2>Implementing the Digraph Class</h2>
-
-First, it'll be handy to define an extension method to apply the dot quoting rules to any .NET value.  The double-quote character is special in dot files and must be preceded with a slash.  Of course, double-quotes and slashes are also meaningful in C# strings, so we have to double-escape these in the substitution:
-
-{% gist 5014242 %}
-
-Next, take a look at the way the optional parameters were supplied in the earlier code sample: <code>new { label = 1, color="red" }</code>.  This is an anonymous object.  It creates an instance of a class whose name we never see, with read-only properties named "label" and "color".  We pass this to a method that doesn't know what type is being passed to it, but that's OK because we can use reflection to inspect such an object.  Here's a helper that can look at these anonymous objects and turn them into an equivalent dictionary, whose ToString produces the dot syntax for attributes:
-
-{% gist 5014245 %}
-
-I <em>could</em> have instead provided a real named class with all the possible dot properties already defined.  Doing so would be useful as it would give the developer statement completion suggestions, but the <a href="http://www.graphviz.org/doc/info/attrs.html">dot file format is actually quite extensive</a>.  In this case, it's a very reasonable tradeoff to use anonymous objects and reflection for these node and edge attributes.  Even with statement completion, you'd find yourself frequently looking up details in the documentation anyway, so the return on investment would be ridiculous.
-
-We can represent a single node in the graph like so:
-
-{% gist 5014249 %}
-
-An Edge is defined by the two Nodes it connects:
-
-{% gist 5014253 %}
-
-Armed with all of the above classes, we can finally implement the Digraph class with ease:
-
-{% gist 5014257 %}
-
+<p>First, it'll be handy to define an extension method to apply the dot quoting rules to any .NET value.  The double-quote character is special in dot files and must be preceded with a slash.  Of course, double-quotes and slashes are also meaningful in C# strings, so we have to double-escape these in the substitution:</p>
+<p>{% gist 5014242 %}</p>
+<p>Next, take a look at the way the optional parameters were supplied in the earlier code sample: <code>new { label = 1, color="red" }</code>.  This is an anonymous object.  It creates an instance of a class whose name we never see, with read-only properties named "label" and "color".  We pass this to a method that doesn't know what type is being passed to it, but that's OK because we can use reflection to inspect such an object.  Here's a helper that can look at these anonymous objects and turn them into an equivalent dictionary, whose ToString produces the dot syntax for attributes:</p>
+<p>{% gist 5014245 %}</p>
+<p>I <em>could</em> have instead provided a real named class with all the possible dot properties already defined.  Doing so would be useful as it would give the developer statement completion suggestions, but the <a href="http://www.graphviz.org/doc/info/attrs.html">dot file format is actually quite extensive</a>.  In this case, it's a very reasonable tradeoff to use anonymous objects and reflection for these node and edge attributes.  Even with statement completion, you'd find yourself frequently looking up details in the documentation anyway, so the return on investment would be ridiculous.</p>
+<p>We can represent a single node in the graph like so:</p>
+<p>{% gist 5014249 %}</p>
+<p>An Edge is defined by the two Nodes it connects:</p>
+<p>{% gist 5014253 %}</p>
+<p>Armed with all of the above classes, we can finally implement the Digraph class with ease:</p>
+<p>{% gist 5014257 %}</p>
 <h2>Criticism</h2>
-
-Since the scope of this sample program is <em>entirely</em> devoted to generating the dot file format, I don't mind the fact that I mixed state (node and edge definitions) with presentation (string formatting in each ToString override).  An earlier implementation put all of the string formatting in the Digraph class, but it was fairly ugly.  If the requirements expanded such that we needed to use the node/edge structure for things in addition to presentation in dot format, I would want to move all string formatting out of the Node, Edge, and Digraph classes, having a dedicated class just for traversing a Digraph to produce a dot file.
+<p>Since the scope of this sample program is <em>entirely</em> devoted to generating the dot file format, I don't mind the fact that I mixed state (node and edge definitions) with presentation (string formatting in each ToString override).  An earlier implementation put all of the string formatting in the Digraph class, but it was fairly ugly.  If the requirements expanded such that we needed to use the node/edge structure for things in addition to presentation in dot format, I would want to move all string formatting out of the Node, Edge, and Digraph classes, having a dedicated class just for traversing a Digraph to produce a dot file.</p>
