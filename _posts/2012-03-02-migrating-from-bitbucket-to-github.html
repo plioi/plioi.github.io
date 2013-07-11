@@ -51,7 +51,7 @@ That site has a shell script (which can be executed on Windows using the Git Bas
 
 The downside is that you have to modify this script with a separate chunk for each real-world person that appears in the Mercurial history.  For instance, let's say we have history in Bitbucket for users named hgjohn and hgjane.  John Doe has a GitHub account already and prefers to be known there as "John Doe" with email address "john@example.com".  Jane Doe doesn't have a GitHub account yet, but later on if she does she'll want to be known as "Jane Doe" and "jane@example.com".  With these transformations ready, we modify the script to the following:
 
-[gist id="1954240"]
+{% gist 1954240 %}
 
 After saving this as "migrate_hg_to_git.sh" in our development folder, we execute the following command (all on one line).  This creates a local folder named 'MyProject', populates it with a Bitbucket clone, converts it to a Git repository, fixes the names, and pushes to GitHub:
 

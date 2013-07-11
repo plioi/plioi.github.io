@@ -11,11 +11,11 @@ What's so bad about enums? They provide a very thin abstraction over integers, a
 <h2>The .NET enum abstraction leaks</h2>
 When you define an enum, you are really defining several integer constants.
 
-[gist id="1375478"]
+{% gist 1375478 %}
 
 Whether you declare the integers or not, each enum value is really an integer. Unfortunately, this means that unintended values are allowed:
 
-[gist id="1375483"]
+{% gist 1375483 %}
 
 This is .NET's way of reminding you of its own implementation details. -1 has nothing to do with the roles in my system. Enums fail to limit values to those I consider meaningful, so why am I using them as domain objects?
 <h2>The .NET enum abstraction is insufficient</h2>
@@ -25,13 +25,13 @@ What if the shorthand just isn't enough to describe the class we really wanted t
 <h2>Using Headspring's Enumeration Class</h2>
 Using <code>Enumeration</code>, we could define a more useful set like so:
 
-[gist id="1375494"]
+{% gist 1375494 %}
 
 Here we see a fixed set of objects, with the convenient int and string representations we're used to having with enums. <code>Role.FromInt32(int)</code> allows you to load the value associated with a given int, such as when reading from a database, but only the fixed set of integers will be allowed. Each value can have arbitrary properties, and the enumeration can contain additional methods.
 <h2>Enumeration's Generic Type Constraint</h2>
 <code>Enumeration</code> contains an interesting generic constraint. Several of the methods on the base class need to deal with the type of the individual values, so <code>Role</code> is declared to implement <code>Enumeration&lt;Role&gt;</code>. You can think of the <code>Role</code> class as "passing" its own definition up to the base class so <code>Enumeration</code> can make use of it. Similarly, <code>Enumeration</code> needs to be declared in such a way that it can know what's being "passed up" to it:
 
-[gist id="1375498"]
+{% gist 1375498 %}
 
 In other words, <code>Enumeration</code> will be working with any type that is itself declared as an <code>Enumeration</code>. This constraint basically mimics the "shape" of the first line of the <code>Role</code> type. Likewise, it <strong>demands</strong> that any child class be declared with a line of that shape.
 

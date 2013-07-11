@@ -7,7 +7,7 @@ layout: post
 
 <strong>Albert:</strong> Let's say I have a long expression that has become hard to read, and that I can identify a noteworthy subexpression within it.  I can 'extract' that subexpression from the original by introducing a new local variable.  The variable is initialized to the subexpression, and then the larger original expression is rewritten in terms of the new variable.  Doing so can make things easier to read: the original expression is shorter, and we've given a useful name to the part we took out.  For example:<!--more-->
 
-[gist id="4264666"]
+{% gist 4264666 %}
 
 <strong>Shirley:</strong> Since we're doing this extra step with an extra variable, will the result run a little slower than the original?
 
@@ -31,19 +31,19 @@ layout: post
 
 <strong>S:</strong> Nope! I've got two situations in mind.  Let's start with the easy one.  This loop is taking way too long to execute:
 
-[gist id="4264673"]
+{% gist 4264673 %}
 
 <strong>A:</strong> Oh, I see what you're getting at.  We saw earlier how you can get a performance boost when extracting a subexpression that appeared multiple times in the original expression.  In this loop, we've got the same problem in a different format.  The subexpression <em>appears</em> once, but it gets <em>evalutated</em> a whole lot, each time with the same result.  We'd fix this with two refactorings: we'd Extract-Variable, and then we'd move that variable declaration <em>before</em> the loop:
 
-[gist id="4264675"]
+{% gist 4264675 %}
 
 <strong>S:</strong> Great! Earlier, I said I was thinking about two examples in which code with a singly-occurring subexpression could be sped up with Extract-Variable.  The easy one was the <code>foreach</code> you just fixed, but the second one's tough.  Let's improve upon the previous example.  Instead of building up a big list of all the values in the column, we'll make a column object that uses a Func&lt;Row&gt; to evaluate each cell only as needed:
 
-[gist id="4264677"]
+{% gist 4264677 %}
 
 <strong>A:</strong> Again, we don't want to keep on performing the costly CompileUserExpression(...) call every time we need to display a grid cell.  The problem is, if I Extract-Variable here, we're left with the same wasteful recompilation:
 
-[gist id="4264685"]
+{% gist 4264685 %}
 
 <strong>S:</strong> If the lambda gets called a bajillion times, how many times will we evaluate the costly part?
 
@@ -61,7 +61,7 @@ layout: post
 
 <strong>A:</strong> Well, yeah, but if we move <code>compiledExpression</code> outside of the lambda, wouldn't it become available for garbage collection as soon as we returned from <code>CreateCalculatedColumn</code>?  Let's see:
 
-[gist id="4264688"]
+{% gist 4264688 %}
 
 <strong>A:</strong> It works!  Our lambda is referring to a variable in the surrounding scope, and we're returning the lambda.  Lambdas are just objects, so this is just like returning any other object that references a locally-constructed thing.  The garbage collector only cleans up unreachable things, and <code>compiledExpression</code> will be reachable for as long as the lambda is reachable.  We get to avoid all that rework no matter how many times the lambda is called!
 

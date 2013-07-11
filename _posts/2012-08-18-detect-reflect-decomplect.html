@@ -19,13 +19,13 @@ The act of "complecting" two things is to intertwine or braid them together in s
 
 In that post, the original implementation for if-expression type checking looked like this:
 
-[gist id="3151220"]
+{% gist 3151220 %}
 
 This implementation used a needlessly-complex return type which motivated extra-complicated <code>return</code> statements.  That return type <em>complected</em> success (a new tree node with a meaningful Type property) with failure (a list of CompilerError messages to propagate up the tree).  Braiding those two ideas led to some verbose sanity checks after each step the method performed, and led to some verbose error-message-propagation in each <code>return</code> statement.
 
 I improved this situation by untying these ideas.  TypeChecker started tracking a single growing list of error messages encountered so far, so that returned objects in the tree traversal methods didn't need to pass error messages back to their caller.  At this point, we started returning <code>null</code> every time the method found an error:
 
-[gist id="3154330"]
+{% gist 3154330 %}
 
 <h2>Return Statements are "Extract Method" Fences</h2>
 
@@ -73,28 +73,28 @@ The many <code>TypeCheck</code> methods are now much shorter, easier to read, an
 <strong>If-Expression Type Checking</strong>
 
 <em>Before:</em>
-[gist id="3151220"]
+{% gist 3151220 %}
 
 <em>After:</em>
-[gist id="3390149"]
+{% gist 3390149 %}
 
 
 <strong>Class Declaration Type Checking</strong>
 
 <em>Before:</em>
-[gist id="3390168"]
+{% gist 3390168 %}
 
 <em>After:</em>
-[gist id="3390159"]
+{% gist 3390159 %}
 
 
 <strong>Function Declaration Type Checking</strong>
 
 <em>Before:</em>
-[gist id="3390169"]
+{% gist 3390169 %}
 
 <em>After:</em>
-[gist id="3390164"]
+{% gist 3390164 %}
 
 <h2>Detect, Reflect, Decomplect</h2>
 When you find yourself looking at suspiciously-complex code,

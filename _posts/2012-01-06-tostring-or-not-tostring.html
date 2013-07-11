@@ -9,7 +9,7 @@ While stepping through in debug mode, the debugger frequently needs a string rep
 
 Fortunately, we have an alternative to ToString() for debugging purposes.  When a <a href="http://msdn.microsoft.com/en-us/library/x810d419.aspx">[DebuggerDisplay]</a> attribute is included on your class, you can tell the debugger to use something <em>other</em> than ToString().  The documentation for this attribute lists many caveats and includes a suggested pattern to follow in order to avoid trouble:
 
-[gist id="1563243"]
+{% gist 1563243 %}
 
 If you have a class that deserves a special debugger-only representation, you can follow this pattern.  First, place [DebuggerDisplay("{DebuggerDisplay,nq}")] on the class.  Then, provide a private read-only string property, also called DebuggerDisplay.  This property can return whatever you want, but to avoid surprises at debug time you probably want to define it in terms of read-only state.
 

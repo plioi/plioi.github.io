@@ -9,7 +9,7 @@ Today, ReSharper made the same suspicious suggestion to both my coworker and me.
 
 Here's what each of our situations boiled down to:
 
-[gist id="3903096"]
+{% gist 3903096 %}
 
 We leaned on the Any() extension method, with the intention of "short circuiting" the underlying loop.  Any() starts at the front of the list, and tests each item until one of them passes the condition in the lambda expression.  Once we hit that item, there is no need to continue processing items, so Any() returns early.  This is similar to the way that the || operator works: in the expression (a() || b() || c()), we only bother to call method c() when a() and b() are both false.
 

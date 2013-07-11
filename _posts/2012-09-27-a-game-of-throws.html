@@ -9,7 +9,7 @@ This week, we'll see how lazy evaluation affects exception handling.  Next week,
 
 Let's say you're lazily producing a series of objects, but the creation of each object has a real potential to throw an exception.  The developer calling the lazy method knows that the operation could fail, and attempts to protect the rest of the system:
 
-[gist id="3792131"]
+{% gist 3792131 %}
 
 Despite wrapping the dangerous method call with a <code>try/catch</code> block, callers of SafelyBuildGrenades are in for a surprise.  <strong>The call to BuildGrenades will never throw an ExplosionException, while callers of SafelyBuildGrenades might set off a grenade just by looking at them!</strong>
 

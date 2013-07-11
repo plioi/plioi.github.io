@@ -10,11 +10,11 @@ High ceremony isn't limited to language details, though.  We can be guilty of in
 <h2>Framework Ceremony</h2>
 Frameworks often impose ceremony of their own.  ASP.NET MVC, NUnit, and xUnit all require you to litter your code with <code>[Attribte]</code>s in order to give instructions to the framework.  The framework reflects over your code, discovers these attributes, and takes action.  Usually this is all done so that the framework will know when, during its own lifecycle, your code should be invoked.  Take a look at NUnit test fixtures:
 
-[gist id="3688610"]
+{% gist 3688610 %}
 
 We <em>want</em> to simply define a named test and make an assertion about our system.  Additionally, we have to pay the Attribute Tax so that NUnit knows which classes contain tests (<code>[TestFixture]</code>), and which methods within those classes are tests (<code>[Test]</code>).  When you take part in the rest of the NUnit fixture lifecycle, you have to litter even more attributes around like <code>[SetUp]</code>, <code>[TearDown]</code>, <code>[TestFixtureSetUp]</code>, and <code>[TestFixtureTearDown]</code>.  Since these lifecycle attributes usually decorate methods with the same name as the attribute, it gets even more pointlessly verbose:
 
-[gist id="3688440"]
+{% gist 3688440 %}
 
 xUnit avoids <em>some</em> of this by using different conventions.  Test methods are still marked with an attribute (this time, <code>[Fact]</code> instead of <code>[Test]</code>).  Instead of marking test classes with an attribute, xUnit just infers the obvious: any class with <code>[Fact]</code>s must be a test class.  Instead of setup and teardown methods, xUnit relies on idioms already common in C#: default constructors for setup, and Dispose() for teardown.
 
@@ -29,7 +29,7 @@ To implement your own test-method-discovery convention, you must implement ITest
 
 To account for this ISP violation, I first created an abstract implementation of ITestClassCommand which uses the default behavior for all these unrelated details, leaving subclasses the responsibility of only having to describe the "test method discovery" part.
 
-[gist id="3688482"]
+{% gist 3688482 %}
 
 Unfortunately, the ISP violation was so significant here that xUnit <em>really, really</em> wanted me to reimplement a fairly involved feature that I never use, <a href="http://xunit.codeplex.com/wikipage?title=Comparisons#note3">IUseFixture&lt;T&gt;</a>.  I decided to give up here, instead implementing the ClassStart method to fail fast: it complains if a developer ever assumes that TestDiscoveryCommands take part in this little-used feature.
 
@@ -37,7 +37,7 @@ Unfortunately, the ISP violation was so significant here that xUnit <em>really, 
 
 Now that TestDiscoveryCommand insulates me from the ISP violation, I can very easily sublcass <em>that</em> to introduce my own test-method-discovery logic:
 
-[gist id="3688532"]
+{% gist 3688532 %}
 
 (<em>Aside: <code>void</code> is not a type, but <code>typeof(void)</code> is a <code>Type</code>.  Yikes.</em>)
 

@@ -13,21 +13,21 @@ Let's start by setting the scene.  Parsley is a tool for working with complex te
 
 Some tokens are defined with simple string literals:
 
-[gist id="4392649"]
+{% gist 4392649 %}
 
 Some tokens are defined with simple regexes:
 
-[gist id="4392659"]
+{% gist 4392659 %}
 
 Lastly, some tokens are defined with nontrivial, multilined regexes:
 
-[gist id="4392669"]
+{% gist 4392669 %}
 
 An important design goal here was to allow users of Parsley to define their regexes under a technically-untrue assumption: you get to pretend that your regex is being applied to the <em>start</em> of a potentially-long string.  You are trying to tell Parsley how to "peel off" the next few characters from the raw input.
 
 If that's how it actually worked, though, we'd be stuck with performing wasteful substring operations: after matching a regex against the front of a million-character string just to peel off the first few characters, you <strong>don't</strong> want to actually perform a nearly-million-character substring operation just to represent progress through the input.  Multiplying that waste by the number of tokens you'd eventually peel off of the original million characters, the waste would add up quickly.  So, I took advantage of some special regex options as well as a "\G" modifier, allowing me to compare your given regex against the input, <em>starting at whatever input position I feel like.</em>  I didn't want the consumer to care about these details, so I wrote the TokenRegex class to hide these details:
 
-[gist id="4392684"]
+{% gist 4392684 %}
 
 Excellent!  You can provide simple regexes intended to match the <em>start</em> of a given input, and I modify the pattern so that I can in-fact match at <em>any</em> position we've progressed to.  <strong>Man, am I awesome or what?</strong>
 
@@ -43,6 +43,6 @@ Even though the entire effort last year was to provide hooks for <em>exactly</em
 
 <a href="https://github.com/plioi/parsley/commit/c33c63bf870253be503f900482a6d3a65f50180a">The fix was to update the TokenRegex constructor to optionally accept additional RegexOption values</a>, and to allow those new constructor arguments to be supplied by the consuming project:
 
-[gist id="4392698"]
+{% gist 4392698 %}
 
 From now on, if I get a feature request on an open-source project, I should never have a knee-jerk reaction of "It already does that due to my infinite foresight."  Rather, I should go on the assumption that I really have left out or hidden something useful, and see what I can learn in the process.

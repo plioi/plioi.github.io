@@ -5,7 +5,7 @@ layout: post
 
 One of the things I like about C#'s delegate types, compared to similar concepts in other languages, is that C#'s take on the concept lets you give a useful <em>name</em> to a family of functions:
 
-[gist id="2582885"]
+{% gist 2582885 %}
 
 With this definition, all functions that turn one thing into another thing are Converters.  Nice.
 
@@ -15,11 +15,11 @@ Delegate types allow you to give a name to a family of functions.  However, you 
 
 <!--more-->
 
-[gist id="2582784"]
+{% gist 2582784 %}
 
 Since all methods are compatable with any delegate type that has matching input/output types, why aren't the following queries equivalent?
 
-[gist id="2582790"]
+{% gist 2582790 %}
 
 This was a little frustrating when C# 3 came out.  Before then, all the delegate types we were used to working with had explicit names like <code>Converter</code> and <code>Predicate</code>.  When C# 3 introduced lambdas and LINQ, we gained <code>Func&lt;…&gt;</code> and <code>Action&lt;…&gt;</code>, and I found myself stumbling while converting older code to use the new LINQ extension methods like <code>Select</code>, which takes a <code>Func&lt;T, TResult&gt;</code>.
 

@@ -13,12 +13,12 @@ As <a href="http://www.headspring.com/2012/05/headspringers-at-austin-code-camp"
 <h2>Hello, World!</h2>
 
 <p>In this example, we print some text to standard out.  Note that the <code>Main</code> function doesn't have to live inside of a boilerplate class.  Since the body of the function is just one little function call, we also don't bother surrounding it with <code>{</code> curly braces <code>}</code>:
-[gist id="2772642"]</p>
+{% gist 2772642 %}</p>
 
 <h2>Everything's an Expression</h2>
 
 <p>Well, most things are expressions.  Most of the things you see in a Rook program have a value, even things like <code>if/else</code> conditional logic.  Here, the value of the whole <code>if/else</code> is the value of the branch that was actually executed.  Since the <code>Factorial</code> function's body is just a single expression, we have no need to bother with more <code>{</code> curly braces <code>}</code> or an explicit <code>return</code> keyword:
-[gist id="2772676"]</p>
+{% gist 2772676 %}</p>
 
 <h2>Blocks: Fancy Expressions</h2>
 
@@ -26,14 +26,14 @@ Sometimes you just need to go into 'statement mode' and declare some local varia
 
 The local variables can have an explicit type declaration if you want one, but when you leave it off it will be inferred just like C#'s 'var' keyword.  Here, Main() will return 50:
 
-[gist id="2772851"]
+{% gist 2772851 %}
 
 <h2>The Billion Dollar Feature</h2>
 
 Allowing reference types to be nullable by default in languages like Java and C# has been called <a href="http://www.infoq.com/presentations/Null-References-The-Billion-Dollar-Mistake-Tony-Hoare">The Billion Dollar Mistake</a>.  Honestly, how often would it be meaningful for your domain objects to be nulls?  Most of the time, when your Customer/Account/Whathaveyou objects are null, you have encountered a bug and are moments away from a NullReferenceException cropping up <em>nowhere near</em> the actual point where the mistake was made.
 
 <p>Nullability should be something you <em>ask for</em>, when it has <em>meaning</em> in your system.  Also, when you look at a method signature for a method someone else wrote, it would be nice to know right away whether or not the other programmer is taking on the responsibility of handling nulls.  Just like <code>int</code> is a different type from <code>int?</code> in C#, <code>string</code> is a different type from <code>string?</code> in Rook:
-[gist id="2772701"]</p>
+{% gist 2772701 %}</p>
 
 <h2>Collections</h2>
 
@@ -48,7 +48,7 @@ Because <code>Vector&lt;T&gt;</code> isn't a concrete type, we can play some nea
 <strong>Letting the language favor interfaces and abstract types right from the get-go opens the door to neat trickery like fast slicing.</strong>  We preach coding to abstractions when <em>using</em> languages, and our languages should start following that advice as well.
 
 <p>Also similar to strings, operations like <code>Append()</code> produce a whole new collection instead of modifying the original:
-[gist id="2772715"]</p>
+{% gist 2772715 %}</p>
 
 <h2>Austin Code Camp</h2>
 

@@ -19,15 +19,15 @@ There are two reasons to use the <code>yield</code> keyword:  laziness and brevi
 
 <strong>Brevity is the tempting, likely-unintended feature</strong>: a really monotonous pattern can be shortened using the <code>yield</code> keyword:
 
-[gist id="3823991"]
+{% gist 3823991 %}
 
 It's tempting to look at that explicit list create/Add/return pattern and say, "I can shorten that with <code>yield</code>!"
 
-[gist id="3823995"]
+{% gist 3823995 %}
 
 Or even shorter:
 
-[gist id="3823997"]
+{% gist 3823997 %}
 
 …but even that uses <code>yield</code>'s semantics under the surface.
 
@@ -44,10 +44,10 @@ In response to all this, I have two items on my wishlist.  One is a wish for an 
 
 First, I wish that if a <code>yield</code>ing method were declared to return an array or anything that has a constructor accepting an IEnumerable&lt;T&gt;, that the items be immediately iterated through and packaged as that type.  This way, you could get the brevity while communicating that you are not interested in the side effects of laziness:
 
-[gist id="3824003"]
+{% gist 3824003 %}
 
 Second, something we can do today: I wish that we could start standardizing on a naming convention for extension methods similar to Select that are not lazy: Map is a common term in other platforms.  Select would still lazily produce one IEnumerable from another, but Map methods would always do a defensive .ToArray for you.  You'd have to write a Map overload for every collection type you care about, but there's really just a handful of collection types you'll care about in practice.  For instance:
 
-[gist id="3824012"]
+{% gist 3824012 %}
 
 Without these Map methods, every time you see a Select you have to wonder what the original developer's intention was.  <strong>If instead Map was the first method you reached for, then you would only reach for Select when you actually wanted lazy evaluation.</strong>    Reading through someone else's code, Select calls would communicate deliberate laziness with potential side effect gotchas, and Map calls would communicate deliberate brevity with no such gotchas.

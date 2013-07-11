@@ -20,7 +20,7 @@ When the <code>TypeChecker</code> succeeded, you'd get a tree with type informat
 
 Consider a simple if-expression in Rook, which is equivalent to the <code>? :</code> ternary operator in C#:
 
-[gist id="3154382"]
+{% gist 3154382 %}
 
 These four lines form a single expression.  The value of the expression as a whole is the value of the true branch (x) or the value of the false branch (y), whichever is actually evaluated at runtime.
 
@@ -38,7 +38,7 @@ When these requirements are met, the type of the whole if-expression is the type
 
 It just takes a few clear sentences to describe the type checking of if-expressions, but the implementation of those rules is jam-packed with incidental complexity:
 
-[gist id="3151220"]
+{% gist 3151220 %}
 
 After attempting to type check the condition, true branch, and false branch, we jump through some strange hoops to collect any error messages that were encountered so far.  Then, we declare three more variables with suspiciously-similar names to the variables already in scope.  Next, we 'Unify' the condition expression's type with Boolean and 'Unify' the true-branch's type with the false-branch's type (<code>Unify</code> calls are basically assertions like "These two types had better be the same as each other").  <em>Again</em>, we jump through some weird hoops to collect any error messages encountered before returning a result.  <strong>On success, the result is a new If tree node with its DataType property populated, and on failure we instead return a list of error messages.</strong>
 
@@ -60,6 +60,6 @@ The <code>TypeChecker</code> class should simply own a growing list of error mes
 
 Now, each <code>TypeCheck</code> method just returns null when no properly-typed node can be produced, and non-null when one can be produced.  That subtle shift in the meaning of returned objects lets us get rid of a lot of the cruft that was accumulating.  The new version of the if-expression type checker is much more to the point:
 
-[gist id="3154330"]
+{% gist 3154330 %}
 
 It's not perfect, but it's a clear step in the right direction.  <strong>To sum up, when you're working <em>for</em> your abstractions, they're not working for you.  Render them pointness, and then drop them like the bad habit they are.</strong>

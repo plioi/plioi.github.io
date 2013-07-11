@@ -11,7 +11,7 @@ Years ago, I was working on a project in which the architects required the team 
 
 At the bottom, we had a Data Access Layer responsible for making database calls. Above that we had a Business Layer, which our ASP.NET code-behinds depended on. A general fear of exceptions led to a lot of rules about try/catch blocks and logging. It turned out, very little <em>business</em> was actually going on in these methods. They largely just forwarded arguments passed from the UI layer down to the Data Access Layer, amounting to hundreds of methods with the following structure:
 
-[gist id="1449927"]
+{% gist 1449927 %}
 
 The Handle method would serialize the exception to a log file, and then rethrow the exception after wrapping it in a BusinessException devoted to this layer.
 
@@ -27,13 +27,13 @@ The costs were magnified when it came to troubleshooting production issues. Beca
 
 The costs were further magnified in those cases where we actually did want some specific exception types to fall up to the caller. Here, in order to follow the pattern and pass code review, our try/catches had to get extra clever:
 
-[gist id="1449930"]
+{% gist 1449930 %}
 
 <strong>This all <em>walked</em> like exception handling, and <em>quacked</em> like exception handling, but it was really just a duck.</strong>
 
 Handle()'s contributions were the logging of exceptions and the introduction of a layer-specific exception wrapper. Logging is useful, but could be performed by a <a href="http://nuget.org/packages/log4net">logging framework</a> higher up the call chain so that we don't have to keep on remembering to include it. The layer-specific exception instance served no purpose other than to remind us that we did in fact have a layer named "Business". Removing the exception handling pattern would leave us with the following:
 
-[gist id="1449933"]
+{% gist 1449933 %}
 
 Harrumph. This entire layer's contribution, now, is to provide a namespace containing the word "Business". It can be removed entirely. Hide the remaining Data Access layer behind some repository interfaces and you're well on the way to an architecture that solves problems. To see where this train of thought eventually leads you, see the <a href="http://jeffreypalermo.com/blog/the-onion-architecture-part-1/">Onion Architecture</a>.
 

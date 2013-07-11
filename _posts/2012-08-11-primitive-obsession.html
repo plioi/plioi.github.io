@@ -35,7 +35,7 @@ When a compiler is type-checking your code, it often has to reason about the typ
 
 It's easy to get type variables confused with generics, because there's a definite overlap.  Consider a generic method in C#:
 
-[gist id="3327067"]
+{% gist 3327067 %}
 
 When a compiler makes its first pass through this code, it can store the definition of Echo using a type variable everywhere we see a <code>T</code> to mean "Echo does stuff with some type but we don't know what that type is yet."
 
@@ -70,7 +70,7 @@ That's all Scope was supposed to be, but it also took on the responsibility of k
 
 Here's what the troubled version looked like.  Note especially the LambdaScope class, which took on the awkward responsibility of remembering which TypeVariables were <em>special</em>:
 
-[gist id="3327028"]
+{% gist 3327028 %}
 
 Holy cow, that is complex!  The different implementations of IsGeneric work together to make up for the fact that we couldn't just <em>ask</em> each TypeVariable whether or not it was had generics-behavior, and that all grew from my preoccupation with these things being glorified ints.
 

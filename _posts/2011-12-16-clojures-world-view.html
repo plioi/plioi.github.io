@@ -21,11 +21,11 @@ Because all Clojure code is <em>also</em> a literal for a Clojure list, code gen
 <h4><strong>Hypothetical C# Macros</strong></h4>
 Imagine we had a version of C# that didn't have <a href="http://msdn.microsoft.com/en-us/library/bb384054.aspx">auto properties</a>, but did have macros. With macros, we could effectively add a new keyword to the language, implementing it in a library, to give us the same shorthand:
 
-[gist id="1484258"]
+{% gist 1484258 %}
 
 Our hypothetical macro function <strong>public macro Code prop(Code c) { ... }</strong> would receive as its input a description of the code between 'prop' and the semicolon, returning a description of the more elaborate property code. The compiler could call that function early on, generating the code we would have otherwise written:
 
-[gist id="1484255"]
+{% gist 1484255 %}
 
 This hypothetical C# wouldn't need <strong>using() { ... }</strong> blocks, or even <strong>foreach</strong> loops, because those keywords could be implemented in a library in terms of other existing constructs. Most language features that we think of as 'syntax sugar' wouldn't have to be thought of by the language designers in advance. With Clojure, developers invent their own new syntax sugar as a part of their daily thought process.
 <h4><strong>Back to Reality</strong></h4>

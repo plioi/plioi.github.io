@@ -21,7 +21,7 @@ At this point, the project consisted of 3 files: a README, LICENSE.txt, and Enum
 
 This creates Package.nuspec, which I renamed to Enumeration.nuspec and populated:
 
-[gist id="2155348"]
+{% gist 2155348 %}
 
 There isn't much going on here.  We say what version number we want to publish, a few descriptive fields, and then list the files we want to be included in the nupkg 'zip' file.  In the file tags, <code>src</code> refers to the files relative to the location of the nuspec file, and <code>target</code> describes the path we want to copy it to <em>within</em> the zip.  Starting these paths with "content" means that when someone installs the package into one of their own projects, the files will be copied and then added to the target project file.
 

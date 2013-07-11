@@ -14,7 +14,7 @@ Case in point: in <a href="http://www.headspring.com/blog/developer-deep-dive/bu
 <h2>This has been working <em>forever</em>...</h2>
 Until this week, equality comparisons have worked perfectly fine for our Enumerations.  Consider a typical <code>Enumeration</code>:
 
-[gist id="3759210"]
+{% gist 3759210 %}
 
 The constructor is private, so you will only be working with the three trusted instances.  If you store these to a database as their underlying integers, you can read them back out with the <code>FromInt32(int)</code> method to get a hold of the corresponding instance.  We even overrode the <code>Equals(object)</code> method just in case you ever passed these around as <code>object</code> instead of the concrete type and still needed to compare them.
 

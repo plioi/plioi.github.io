@@ -9,11 +9,11 @@ In <a href="http://www.headspring.com/2011/11/recognizing-covariance-issues-in-y
 
 In the <a href="http://www.headspring.com/2012/03/publishing-a-simple-nuget-package">simple NuGet package</a>, we created a *.nuspec file containing a <code>files</code> tag.  That <code>files</code> tag listed the files we wanted to copy into the target project upon installation.  We described the target path starting with "content":
 
-[gist id="2231965"]
+{% gist 2231965 %}
 
 <a href="https://github.com/plioi/parsley/blob/c89236d7f253a13f0eaa3354b9714488d1742d65/default.ps1">Parsley's build script</a> generates a *.nuspec file with a slightly different naming convention for the target paths:
 
-[gist id="2231973"]
+{% gist 2231973 %}
 
 Starting these paths with "lib" instead of "content" indicates to NuGet that they are libraries and should be added to the target project's list of referenced assemblies.  The "net40" folder is also a part of the naming convention, indicating that the assembly was built for .NET 4.0.  If we're targeting several different runtimes, we could include them all in one package using folder names like "net11", "net20", etc...
 

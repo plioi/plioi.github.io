@@ -5,7 +5,7 @@ layout: post
 
 I'll never understand <em>why</em> it works, but it turns out that generating pseudorandom numbers takes very little code. Consider the following Random class. Given a seed integer to get started, it will produce an apparently-random list of ints as you repeatedly call Next():<!--more-->
 
-[gist id="2938870"]
+{% gist 2938870 %}
 
 Easy as pie. Shortest blog post ever.
 
@@ -15,7 +15,7 @@ Wait, why is <code>x</code> public? It's so wrong, your gut says "That should be
 
 We mark that field private and call it a day. Later, we revisit the class to start adding convenience methods, written in terms of the existing <code>Next()</code> method:
 
-[gist id="2938877"]
+{% gist 2938877 %}
 
 We balked at <code>x</code> being public because more code <em>could</em> mess with it than <em>should</em> mess with it. By marking it public, we were <em>telling</em> the next coder that altering the value of <code>x</code> was something you might want to do <em>from anywhere</em>.
 
@@ -23,7 +23,7 @@ However, if the person implementing additional methods on this class doesn't alr
 
 That's a risk we're likely willing to take in practice, but in a perfect world we could further constrain <code>x</code> so that it is only visible to the method that deserves to see it. Consider the following, in which <code>x</code> is promoted from private to super-private:
 
-[gist id="2938890"]
+{% gist 2938890 %}
 
 This produces the same results. Although <code>x</code> is declared local to the constructor, it will still live on after construction because the <code>Next</code> lambda expression "closes over" or "grabs onto" it. The lambda is even allowed to change it. Think of every lambda expression as being an instance of a class that has fields of its own, and those fields are implied by which local variables we happen to refer to in the lambda's body.
 

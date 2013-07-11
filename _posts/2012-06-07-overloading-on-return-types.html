@@ -11,11 +11,11 @@ Technically, you can't do that in C#, but you can fake it.<!--more-->
 
 Let's imagine a hypothetical C# in which you were allowed to overload on return types.  Consider the following class:
 
-[gist id="2891704"]
+{% gist 2891704 %}
 
 In the call to <code>foo.GetValue()</code>, we cannot tell which method should be called.  However, what if we tried to call it with some more context?
 
-[gist id="2891706"]
+{% gist 2891706 %}
 
 When we have some local type information available, we really could make an unambiguous decision about which overload to call.  When initializing <code>i</code>, the only overload that could work is the one returning an <code>int</code>.  When initializing <code>b</code>, the only overload that could work is the one returning a <code>bool</code>.
 
@@ -25,7 +25,7 @@ We could conceivably find the right overload to call <em>based on how the return
 
 Let's rewrite the original invalid class, using 'out' parameters instead of return types:
 
-[gist id="2891722"]
+{% gist 2891722 %}
 
 This is completely valid.  <strong>When picking the right overload to call, the compiler considers 'out' parameters as if they were inputs.</strong>
 
@@ -46,7 +46,7 @@ Both of these issues will be resolved with the 'out' keyword.
 
 This interface exposes many methods that take in an <code>int</code> and return a value.  The input <code>int</code> indicates which column of the result set you are interested in, and the method <em>name</em> says what type you hope to find in that column.  <code>reader.GetInt32(2)</code> gives you the <code>int</code> found in the third column, <code>reader.GetDataTime(3)</code> gives you the <code>DateTime</code> found in the fourth column, etc.  To further complicate matters, you shouldn't call these methods when the result set contains the special <code>DBNull</code> value.  When using this interface, you end up writing ugly things like this:
 
-[gist id="2891743"]
+{% gist 2891743 %}
 
 Note that every time you want call one of these Get* methods, you answer two questions:
 
@@ -57,7 +57,7 @@ Note that every time you want call one of these Get* methods, you answer two que
 
 Note also that in each line, both of these questions are answered by the declared type of the left-hand-side.  Why should we have to repeat those answers on the right-hand-side?  Armed with some extension methods and the 'out' keyword, things get much less repetative:
 
-[gist id="2891749"]
+{% gist 2891749 %}
 
 When you're reading in 10 or so columns, the brevity adds up.  When writing a method that needs to read in a record from an <code>IDataReader</code>, you are <em>thinking</em> "I expect to get back values with these names, at these positions, with these types".  You are <em>not</em> thinking "I expect to pull a Guid out of the first position so I'll GetGuid, and I expect to pull an int out of the second position so I'll GetInt32 but watch out for DBNull, and...".  By "overloading on the return type", we get to say what we mean <em>and nothing else</em>.
 

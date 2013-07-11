@@ -17,11 +17,11 @@ Fortunately there is a free service, <a href="http://SymbolSource.org">SymbolSou
 
 The previous version of my <code>.nuspec</code>'s <code>files</code> tag just copied DLLs and PDBs into the package's special "lib" folder:
 
-[gist id="2231973"]
+{% gist 2231973 %}
 
 The new version also copies all of the source code to the package's special "src" folder.  We don't need to copy auxiliary files like <code>.csproj</code> or <code>.sln</code>.  We just need to copy the code files that the debugger will need to display, namely all the *.cs files:
 
-[gist id="2288725"]
+{% gist 2288725 %}
 
 I used this single <code>.nuspec</code> to produce <em>two</em> <code>.nupkg</code> files, by including the <code>-Symbols</code> command line argument:
 
