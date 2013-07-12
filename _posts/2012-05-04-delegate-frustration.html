@@ -8,7 +8,6 @@ layout: post
 <p>With this definition, all functions that turn one thing into another thing are Converters.  Nice.</p>
 <p>We also have some generically-named <code>Action&lt;…&gt;</code> and <code>Func&lt;…&gt;</code> delegate types defined for us, and these have become ubiquitous ever since LINQ was introduced.  They're not as communicative, but still extremely useful, and for the most part the naming stays out of the way.</p>
 <p>Delegate types allow you to give a name to a family of functions.  However, you can run into trouble when you use two different names to refer to the <em>same</em> family of functions:</p>
-<p></p>
 <p>{% gist 2582784 %}</p>
 <p>Since all methods are compatable with any delegate type that has matching input/output types, why aren't the following queries equivalent?</p>
 <p>{% gist 2582790 %}</p>

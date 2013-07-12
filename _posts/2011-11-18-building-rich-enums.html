@@ -4,7 +4,6 @@ layout: post
 ---
 
 <p>Headspring has recently updated its open-source <a href="https://bitbucket.org/headspringlabs/enumeration">Enumeration</a> class. We recommend this as an alternative to using plain old .NET enums in your domain models. Most of the time, you use a .NET enum in order to define a finite set of named values. <code>Enumeration</code> serves that purpose too.</p>
-<p></p>
 <p>What's so bad about enums? They provide a very thin abstraction over integers, and that abstraction is both leaky and insufficient when building a rich domain model.</p>
 <h2>The .NET enum abstraction leaks</h2>
 <p>When you define an enum, you are really defining several integer constants.</p>
