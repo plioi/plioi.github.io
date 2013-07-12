@@ -3,7 +3,7 @@ title: Publishing a Library to SymbolSource.org
 layout: post
 ---
 
-<p>Last week, we saw how to <a href="http://www.headspring.com/2012/03/publishing-a-library-with-nuget">publish a library with NuGet</a>.  By including DLL files in our NuGet package under the special "lib" folder, NuGet knows to install them as assembly references in the target project.  This is a great way to get your open-source library into the hands of your audience, but it also provides them with a pretty lame debugging scenario.</p>
+<p>Last week, we saw how to <a href="http://www.headspring.com/publishing-a-library-with-nuget/">publish a library with NuGet</a>.  By including DLL files in our NuGet package under the special "lib" folder, NuGet knows to install them as assembly references in the target project.  This is a great way to get your open-source library into the hands of your audience, but it also provides them with a pretty lame debugging scenario.</p>
 <h2>Black Box Debugging</h2>
 <p>Using that NuGet package from last week, I installed <a href="https://github.com/plioi/parsley">Parsley</a> into another project that consumes it.  While trying to debug <em>that</em> project, I got to a point where I wanted to just step the debugger into one of Parsley's methods.  Even with the PDB file included in the NuGet package, Visual Studio just plain didn't have enough information to let me step through Parsley's code.</p>
 <p>Too much information about the original source gets lost when a PDB is produced.  We need to make the source code available to the consumer when they install our packages, and we need to so in a way that Visual Studio can take advantage of at debugging time.</p>

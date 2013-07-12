@@ -5,9 +5,9 @@ layout: post
 
 <p>My last three posts have covered the nuts and bolts of the little-used <code>in</code> and <code>out</code> keywords:</p>
 <ul>
-<li><a href="http://www.headspring.com/2011/10/array-covariance-in-c">Array Covariance in C#</a></li>
-<li><a href="http://www.headspring.com/2011/10/seamless-generic-type-casting">Seamless Generic Type Casting</a></li>
-<li><a href="http://www.headspring.com/2011/11/seamless-delegate-type-casting">Seamless Delegate Type Casting</a></li>
+<li><a href="http://www.headspring.com/array-covariance-in-c/">Array Covariance in C#</a></li>
+<li><a href="http://www.headspring.com/seamless-generic-type-casting/">Seamless Generic Type Casting</a></li>
+<li><a href="http://www.headspring.com/seamless-delegate-type-casting/">Seamless Delegate Type Casting</a></li>
 </ul>
 <p>&nbsp;</p>
 <p>The examples have all been small, and a little contrived, so you may not yet recognize when you need to fetch this tool from your toolbelt. Today, I'll cover a real covariance problem I ran into while developing <a href="http://github.com/plioi/Parsley">Parsley</a>, an open-source text parsing library.</p>
@@ -24,7 +24,7 @@ layout: post
 <p>For alternation, the <code>Choice</code> helper function takes in several <code>Parser&lt;T&gt;</code> and returns a new <code>Parser&lt;T&gt;</code> which recognizes when <em>any one</em> of those patterns appears next in the input text:</p>
 <p>{% gist 1355357 %}</p>
 <h2>Sequencing</h2>
-<p>For sequencing, I <a href="http://www.headspring.com/2011/09/the-compilers-treatment-of-linq-syntax">redefined the <code>from</code> and <code>select</code> LINQ keywords</a> to provide the <em>sequencing</em> operation, gluing together small <code>Parser</code>s into a larger <code>Parser</code>.</p>
+<p>For sequencing, I <a href="http://www.headspring.com/the-compilers-treatment-of-linq-syntax/">redefined the <code>from</code> and <code>select</code> LINQ keywords</a> to provide the <em>sequencing</em> operation, gluing together small <code>Parser</code>s into a larger <code>Parser</code>.</p>
 <p>In part of the JSON parser, we need to recognize the pattern of a single key/value pair for a dictionary. Such a pair is a quoted string, followed by a ':', followed by some other JSON value. The result of the Pair rule is an object containing the relevant parts of that sequence:</p>
 <p>{% gist 1355360 %}</p>
 <p>The result of a query like this is <em>yet another</em> <code>Parser</code>. Each <code>from</code> clause consumes a little more input, and the <code>select</code> clause describes the combined result of those intermediate steps.</p>
