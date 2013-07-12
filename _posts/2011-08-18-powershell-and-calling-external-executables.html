@@ -7,7 +7,7 @@ layout: post
 <p>Unfortunately, we can <em>still</em> be surprised by Powershell's error handling behavior. There are two main categories of errors your Powershell script might encounter:</p>
 <ol>
 <li>Uncaught exceptions thrown by your Powershell process.</li>
-<li>Failure exit codes returned by external programs that your Powershell process invoked.<!--more--></li>
+<li>Failure exit codes returned by external programs that your Powershell process invoked.</li>
 </ol>
 <p>When we set the ErrorActionPreference to "Stop", we only change the behavior of uncaught exceptions. We have to work a little harder to cover the other category. Consider a Powershell script that calls out to an external program which returns its own failure exit code:</p>
 <p>{% gist 1150145 %}</p>

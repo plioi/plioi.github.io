@@ -3,7 +3,7 @@ title: A C# Feature that Shocks the Conscience
 layout: post
 ---
 
-<p>The "default arguments" feature in C# seems like a great time-saver at first, but there is a sharp difference between what it <em>feels</em> like it does versus what it <em>actually</em> does which can lead to surprises.  Recently, fellow Headspring consultant <a href="https://twitter.com/pedroreys">Pedro Reys</a> discovered a particularly bizarre gotcha related to default arguments.<!--more--></p>
+<p>The "default arguments" feature in C# seems like a great time-saver at first, but there is a sharp difference between what it <em>feels</em> like it does versus what it <em>actually</em> does which can lead to surprises.  Recently, fellow Headspring consultant <a href="https://twitter.com/pedroreys">Pedro Reys</a> discovered a particularly bizarre gotcha related to default arguments.</p>
 <h2>Default Arugments Provide Brevity</h2>
 <p>Let's start with the pain that default arguments are meant to solve.  When overloading a method, we often do so because some arguments aren't always required or because some arguments have a reasonable default that you don't want to make consumers explicitly write again and again:</p>
 <p>{% gist 3456037 %}</p>

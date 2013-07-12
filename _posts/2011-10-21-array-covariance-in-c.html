@@ -4,7 +4,7 @@ layout: post
 ---
 
 <p>When we first learn about inheritance, we're given some plain-English examples with an emphasis on the phrase "is-a". A car <em>is-a</em> vehicle, so a <code>Car</code> class would inherit from a <code>Vehicle</code> class. The idea that class inheritance can so directly map to English is <strong>seriously misleading</strong> and can get you into trouble.</p>
-<p>In English, it's fair to say that a bag of apples <em>is-a</em> bag of objects. It may have an odd sound to it, but it's true. This makes it very tempting to say that in C#, a <code>List&lt;Apple&gt;</code> should be assignable to a <code>List&lt;Object&gt;</code>, since all <code>Apple</code> instances are also <code>Object</code> instances:<!--more--></p>
+<p>In English, it's fair to say that a bag of apples <em>is-a</em> bag of objects. It may have an odd sound to it, but it's true. This makes it very tempting to say that in C#, a <code>List&lt;Apple&gt;</code> should be assignable to a <code>List&lt;Object&gt;</code>, since all <code>Apple</code> instances are also <code>Object</code> instances:</p>
 <p>{% gist 1302300 %}</p>
 <p>The sample above won't compile. The compiler is protecting us from potential runtime type exceptions. If this compiled, we could get into trouble like so:</p>
 <p>{% gist 1302301 %}</p>

@@ -4,7 +4,7 @@ layout: post
 ---
 
 <p>"High Ceremony" software includes excessive detail which distracts from the essential thing the coder is trying to convey.  In C# for instance, you could argue that having to place <em>all</em> methods inside classes is needless ceremony.  Your Main() method shouldn't need that extra boilerplate, but we just Have To Do It That Way.  We have to perform that ceremony.  Developers who favor dynamic languages would find type declarations to be High Ceremony as well, and even C#ers admit this whenever they use the <code>var</code> or <code>dynamic</code> keywords.</p>
-<p>High ceremony isn't limited to language details, though.  We can be guilty of introducing it, ourselves.<!--more--></p>
+<p>High ceremony isn't limited to language details, though.  We can be guilty of introducing it, ourselves.</p>
 <h2>Framework Ceremony</h2>
 <p>Frameworks often impose ceremony of their own.  ASP.NET MVC, NUnit, and xUnit all require you to litter your code with <code>[Attribte]</code>s in order to give instructions to the framework.  The framework reflects over your code, discovers these attributes, and takes action.  Usually this is all done so that the framework will know when, during its own lifecycle, your code should be invoked.  Take a look at NUnit test fixtures:</p>
 <p>{% gist 3688610 %}</p>

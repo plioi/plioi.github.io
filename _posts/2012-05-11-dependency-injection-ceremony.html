@@ -4,7 +4,7 @@ layout: post
 ---
 
 <p>The vast majority of the time, I enjoy working with <a href="http://en.wikipedia.org/wiki/Dependency_injection">dependency injection</a>.  Sometimes, however, I find myself rolling my eyes at the amount of "ceremony" boilerplate code it takes in order to take advantage of it.  <em>Disclaimer: This is more a limitation of C# having been created before DI containers became common than a problem with DI itself.</em><br />
-<!--more--></p>
+</p>
 <p>DI and its benefits have been written about for years, but the short version is that your classes can accept interface arguments through their constructors, and these arguments represent the class's dependencies.  A simple example can be seen in the <a href="https://github.com/DarthFubuMVC/fubumvc-examples/blob/master/src/Actions/HandlerStyle/SimpleWebsite/Handlers/Movies/ListHandler.cs">FubuMVC samples</a>:</p>
 <p>{% gist 2641353 %}</p>
 <p>Here, the ListHandler class is declaring, incidentally to the compiler but primarily to the <em>reader</em>, that it depends on a repository to do its work.  Rather than construct a <code>new Repository()</code> itself, it assumes a pre-constructed <code>IRepository</code> will be provided.</p>

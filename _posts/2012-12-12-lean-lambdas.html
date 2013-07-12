@@ -4,7 +4,7 @@ layout: post
 ---
 
 <p><strong>Shirley:</strong> Tell me about the Extract-Variable refactoring.</p>
-<p><strong>Albert:</strong> Let's say I have a long expression that has become hard to read, and that I can identify a noteworthy subexpression within it.  I can 'extract' that subexpression from the original by introducing a new local variable.  The variable is initialized to the subexpression, and then the larger original expression is rewritten in terms of the new variable.  Doing so can make things easier to read: the original expression is shorter, and we've given a useful name to the part we took out.  For example:<!--more--></p>
+<p><strong>Albert:</strong> Let's say I have a long expression that has become hard to read, and that I can identify a noteworthy subexpression within it.  I can 'extract' that subexpression from the original by introducing a new local variable.  The variable is initialized to the subexpression, and then the larger original expression is rewritten in terms of the new variable.  Doing so can make things easier to read: the original expression is shorter, and we've given a useful name to the part we took out.  For example:</p>
 <p>{% gist 4264666 %}</p>
 <p><strong>Shirley:</strong> Since we're doing this extra step with an extra variable, will the result run a little slower than the original?</p>
 <p><strong>Albert:</strong> No, silly!  We're doing the same amount of work in both versions.  Even with the original version, the compiler had to break down the expression into many smaller steps just like the change we made.  We're just introducing a useful nickname for one of those intermediate steps.</p>

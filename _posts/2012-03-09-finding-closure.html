@@ -3,7 +3,7 @@ title: Finding Closure
 layout: post
 ---
 
-<p>When writing software, we constantly create abstractions.  The goal each time is to present a simple interface in front of something more complex, hiding the gory details from us so we can focus on other things.  The problem is, <a href="http://en.wikipedia.org/wiki/Leaky_abstraction">abstractions leak</a>.  Even when you go to great effort to create a really exellent abstraction, some unfortunate implementation detail manages to rear its ugly head.  This even happens with things so fundamental that we take them for granted.  Take the 'foreach' keyword in C#:<!--more--></p>
+<p>When writing software, we constantly create abstractions.  The goal each time is to present a simple interface in front of something more complex, hiding the gory details from us so we can focus on other things.  The problem is, <a href="http://en.wikipedia.org/wiki/Leaky_abstraction">abstractions leak</a>.  Even when you go to great effort to create a really exellent abstraction, some unfortunate implementation detail manages to rear its ugly head.  This even happens with things so fundamental that we take them for granted.  Take the 'foreach' keyword in C#:</p>
 <p>{% gist 1990055 %}</p>
 <p>Where we would expect the output to be:<br />
     Hello, Larry!<br />

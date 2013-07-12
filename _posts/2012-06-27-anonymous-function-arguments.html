@@ -4,7 +4,7 @@ layout: post
 ---
 
 <p>A lambda expression is also called an "anonymous function" as it has no official name of its own: <code>x => x + 1</code> does some work, but there's no declared name for that function.  Anonymous functions are powerful and expressive, and are now common in .NET projects.</p>
-<p>Anonymous function <em>arguments</em>, on the other hand, are weak and inexpressive.  Since the advent of the <code>Func</code> and <code>Action</code> delegate types, anonymous arguments have unfortuanately become as common as anonymous functions.  That is a trend I'd like to quash ASAP.<!--more--></p>
+<p>Anonymous function <em>arguments</em>, on the other hand, are weak and inexpressive.  Since the advent of the <code>Func</code> and <code>Action</code> delegate types, anonymous arguments have unfortuanately become as common as anonymous functions.  That is a trend I'd like to quash ASAP.</p>
 <h2>Sneaky Ambiguity</h2>
 <p>What do I mean by "anonymous function arguments"?  Let's say someone else has written a method that takes in a <code>Func</code> and then invokes it as part of its own work:</p>
 <p>{% gist 2992221 %}</p>

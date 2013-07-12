@@ -10,7 +10,7 @@ layout: post
 <li><a href="http://www.headspring.com/2011/11/seamless-delegate-type-casting">Seamless Delegate Type Casting</a></li>
 </ul>
 <p>&nbsp;</p>
-<p>The examples have all been small, and a little contrived, so you may not yet recognize when you need to fetch this tool from your toolbelt. Today, I'll cover a real covariance problem I ran into while developing <a href="http://github.com/plioi/Parsley">Parsley</a>, an open-source text parsing library.<!--more--></p>
+<p>The examples have all been small, and a little contrived, so you may not yet recognize when you need to fetch this tool from your toolbelt. Today, I'll cover a real covariance problem I ran into while developing <a href="http://github.com/plioi/Parsley">Parsley</a>, an open-source text parsing library.</p>
 <p>The goal of parsing is to convert plain text into a data structure that can be more easily traversed and reasoned about. You want to describe the patterns of what valid input looks like, as well as describe what objects should be created when those patterns are found.</p>
 <p>In today's example, we'll be parsing <a href="http://json.org/">JSON</a> text into the corresponding arrays and dictionaries that JSON describes. Parsley's integration tests include <a href="https://github.com/plioi/parsley/blob/91394b0f17606aea9a583ae49249da3567c53298/src/Parsley.Test/IntegrationTests/Json/JsonGrammar.cs">a JSON parser</a>. <strong>Without the <code>out</code> keyword, this sample parser would fail to compile with some pretty suspicious error messages.</strong></p>
 <p>The most important types defined in Parsley are <code>Parser&lt;T&gt;</code> and <code>Reply&lt;T&gt;</code>:</p>

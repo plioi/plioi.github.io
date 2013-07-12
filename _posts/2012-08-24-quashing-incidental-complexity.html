@@ -5,7 +5,7 @@ layout: post
 
 <p>This post is the conclusion to a 7-part series on identifying and resolving incidental complexity in your software projects.  It assumes you've already read the earlier posts (linked in the sections below).</p>
 <p>The problems I've faced can crop up in any project.  When a concept or responsibility gets applied to the wrong abstraction, we subconsciously start to add workarounds just to make things work at all.  These workarounds take up space, physically as excess lines of code and mentally as distractions from your true intent.  Workarounds beget workarounds, and the problem feeds itself until you think, "What a mess!  I need to rewrite it all!"</p>
-<p>By placing responsibilities in their proper home, you can combat this feedback loop and keep your code clean.<!--more--></p>
+<p>By placing responsibilities in their proper home, you can combat this feedback loop and keep your code clean.</p>
 <h2>A Troubled Project</h2>
 <p>In <a href="http://www.headspring.com/blog/developer-deep-dive/essential-vs-incidental-complexity/">Essential vs Incidental Complexity</a>, I admitted that my pet project, a compiler for an experimental language called <a href="https://github.com/plioi/rook">Rook</a>, was starting to run into problems.</p>
 <p>In a healthy project, it can actually get easier to add new features the further along you go, as you discover and flesh out abstractions that help rather than hinder progress.  In Rook, it was getting harder and harder to add new features.  This difficulty was a sign that I was working with the wrong abstractions.</p>

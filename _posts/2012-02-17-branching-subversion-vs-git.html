@@ -7,7 +7,7 @@ layout: post
 <p>We did relatively little work with branches.  For the most part, a branch was created only to represent the state we wanted to deploy to production.  In other words, everybody worked against trunk, and when we were happy with what we had we would create a branch with the version number as its name, and we would deploy from there.  If a hotfix was needed, at least we didn't have to worry about deploying it along with incomplete features under development; we'd base the hotfix on the version branch and deploy that.</p>
 <p>On one occasion, someone needed to make a fairly drastic change to the system.  It was a little risky, and would have interfered with the rest of the team if it was performed against trunk, so they made a feature branch for it.  About a month later, I was tasked with merging that back into trunk.</p>
 <p><strong>This was, shall we say, an Interesting Merge.</strong><br />
-<!--more--><br />
+<br />
 Throughout development of the branch, work being performed in the trunk had <em>not</em> been periodically merged into the branch, meaning that there were many, many conflicts without an obvious resolution.  Ultimately things worked out, but it didn't seem like a great way to do things.  With my lack of exposure to alternatives, I didn't really see the great benefit of frequent branching.</p>
 <h2>Sane Branching</h2>
 <p><strong>The whole concept of branching was intimidating to me because the <em>way</em> we did it caused more pain than it alleviated.</strong></p>

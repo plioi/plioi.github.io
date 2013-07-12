@@ -4,7 +4,7 @@ layout: post
 ---
 
 <p>Today, I was investigating a pretty intricate bug, and wanted to determine whether it was introduced recently or had always been present.  I wanted to revert my workspace to an old commit to see if the problem could be reproduced there.  If not, I'd be well on my way to finding the Guilty Commit That Broke Things.  When I tried to jump back in time like this, I was presented with an unusually verbose warning message that helped to fill in a gap of my understanding of git.<br />
-<!--more--></p>
+</p>
 <p>With git, you switch between branches by issuing the command <code>git checkout branchname</code>.  Branches are just convenient nicknames for commits, though, so I knew that you could also switch to any commit using the commit's ID.  I tried <code>git checkout 77cdf</code> and was surprised by the following message:</p>
 <pre>&lt;code&gt;
 Note: checking out &#39;77cdf&#39;.
