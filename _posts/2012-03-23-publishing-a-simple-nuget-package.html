@@ -4,7 +4,7 @@ layout: post
 ---
 
 <p><a href="http://nuget.org/">NuGet</a> is a Visual Studio extension that makes it easy to pull third-party libraries into your projects.  It can also bring in their dependencies, along the same lines as gems for Ruby development.</p>
-<p>I recently <a href="http://www.headspring.com/migrating-from-bitbucket-to-github/">migrated Headspring's Enumeration class to GitHub</a>.  This is a simple class that, for the most part, replaces the need for .NET enum types.  One of the simplest things a NuGet package can do is add a file to your project, so creating and publishing an updated NuGet package for Enumeration was a great way to get my feet wet.</p>
+<p>I recently <a href="http://patrick.lioi.net/2012/03/02/migrating-from-bitbucket-to-github/">migrated Headspring's Enumeration class to GitHub</a>.  This is a simple class that, for the most part, replaces the need for .NET enum types.  One of the simplest things a NuGet package can do is add a file to your project, so creating and publishing an updated NuGet package for Enumeration was a great way to get my feet wet.</p>
 <p>Unlike most things, it was as easy as it should be.</p>
 <p>First, I created an account on <a href="http://nuget.org">nuget.org</a> and installed the extension using the link on the front page.  Next, I downloaded the <a href="http://nuget.codeplex.com/releases/view/58939">NuGet.exe command-line tool</a> and made sure it was included in my PATH.  On my account profile page, I'm given the chance to see my API Key.  Keep this secret.  At the command line, we need to issue a one-time command so that this key can be active during subsequent nuget commands:</p>
 <p><code>$ nuget setApiKey 123-abc-123-abc-123</code></p>

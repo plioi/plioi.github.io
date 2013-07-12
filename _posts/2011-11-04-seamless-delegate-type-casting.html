@@ -3,7 +3,7 @@ title: Seamless Delegate Type Casting
 layout: post
 ---
 
-<p>In <a href="http://www.headspring.com/seamless-generic-type-casting/">Seamless Generic Type Casting</a>, we saw how the <code>in</code> and <code>out</code> keywords can make our generic interfaces polite with respect to casting. A <code>List&lt;string&gt;</code> can be treated as an <code>IEnumerable&lt;object&gt;</code> because a) all strings are objects and b) <code>IEnumerable</code> is declared with the <code>out</code> keyword. Now, we'll see how these keywords can be applied to delegate types in addition to interface types.</p>
+<p>In <a href="http://patrick.lioi.net/2011/10/28/seamless-generic-type-casting/">Seamless Generic Type Casting</a>, we saw how the <code>in</code> and <code>out</code> keywords can make our generic interfaces polite with respect to casting. A <code>List&lt;string&gt;</code> can be treated as an <code>IEnumerable&lt;object&gt;</code> because a) all strings are objects and b) <code>IEnumerable</code> is declared with the <code>out</code> keyword. Now, we'll see how these keywords can be applied to delegate types in addition to interface types.</p>
 <p>Suppose we have a a basic hierarchy of entity classes:</p>
 <p>{% gist 1339376 %}</p>
 <p>Also, suppose we find ourselves creating/persisting many instances of these in our integration tests, and we create a delegate type with some helper methods for doing so:</p>

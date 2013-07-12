@@ -3,7 +3,7 @@ title: Polaroid Mutation
 layout: post
 ---
 
-<p>Last week, we saw how <a href="http://www.headspring.com/clojures-world-view/">Clojure's approach to syntax</a> can influence the way we think while using other languages.  Today, we'll see how Clojure's strong opinions about state change can similarly affect the way we think in our language of choice.</p>
+<p>Last week, we saw how <a href="http://patrick.lioi.net/2011/12/16/clojures-world-view/">Clojure's approach to syntax</a> can influence the way we think while using other languages.  Today, we'll see how Clojure's strong opinions about state change can similarly affect the way we think in our language of choice.</p>
 <p>Some languages embrace mutation (the changing of variables' values at runtime).  Python and Ruby classes have publicly-settable <em>everything</em> and although this can get you into trouble it can also lead to some pretty slick tools like Ruby on Rails.  Clojure, on the other hand, fears mutation.</p>
 <h2>.NET Strings are Immutable</h2>
 <p>.NET's <code>System.String</code> is a good example of Clojure's approach to collections.  Once you have a string instance, you cannot change its content.  If you want to change the string you are currently referencing, you have to instead create a whole new string (often based on the original), and then point your reference variable at the new one.</p>

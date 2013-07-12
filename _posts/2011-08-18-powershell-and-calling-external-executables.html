@@ -3,7 +3,7 @@ title: Powershell and Calling External Executables
 layout: post
 ---
 
-<p>In my last post on <a href="http://www.headspring.com/avoiding-on-error-resume-next-when-using-powershell/">error handling when using Powershell</a>, we saw how Powershell's default behavior for uncaught exceptions allows the rest of your script to continue running in a likely-invalid state, and how setting <strong>$global:ErrorActionPreference = "Stop"</strong> changes that behavior to stop as soon as an uncaught exception surfaces.</p>
+<p>In my last post on <a href="http://patrick.lioi.net/2011/08/16/avoiding-on-error-resume-next-when-using-powershell/">error handling when using Powershell</a>, we saw how Powershell's default behavior for uncaught exceptions allows the rest of your script to continue running in a likely-invalid state, and how setting <strong>$global:ErrorActionPreference = "Stop"</strong> changes that behavior to stop as soon as an uncaught exception surfaces.</p>
 <p>Unfortunately, we can <em>still</em> be surprised by Powershell's error handling behavior. There are two main categories of errors your Powershell script might encounter:</p>
 <ol>
 <li>Uncaught exceptions thrown by your Powershell process.</li>
