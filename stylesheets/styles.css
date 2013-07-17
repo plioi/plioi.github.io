@@ -91,6 +91,7 @@ table {
 	    text-align: center;
 	}
 	h1 a:link {
+	    color: #445588;
 	    text-decoration: none;
 	}
 	h1 a:visited {
@@ -194,7 +195,6 @@ table {
 	    border-style: none;
 	}
 	a:hover {
-	    color: #999;
 	    text-decoration: none;
 	    border: 0;
 	    border-width: 0;
