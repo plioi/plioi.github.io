@@ -93,6 +93,9 @@ table {
 	h1 a:link {
 	    text-decoration: none;
 	}
+	h1 a:visited {
+	    color: #445588;
+	}
 	/* post title */
 	h2 {
 	    font-family: Helvetica, arial, freesans, clean, sans-serif;
