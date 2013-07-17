@@ -1,0 +1,12 @@
+---
+layout: default
+title: Patrick Lioi - Archive
+---
+<h2>Archive</h2>
+<ul>
+{% for post in site.posts %}
+  <li>
+    <a href="{{ post.url }}">{{ post.title }}</a> {{ post.date | date_to_string }}
+  </li>
+{% endfor %}
+</ul>
