@@ -174,7 +174,7 @@ table {
 	p {
 	    line-height: 1.635em;
 	    margin: .7em 0 1em 0;
-	    font-family: ff-meta-serif-web-pro, Georgia, Cambria, 'Times New Roman', Times, serif;
+	    font-family: Helvetica, arial, freesans, clean, sans-serif;
 	    font-size: 1.3em;
 	    color: #333;
 	    -webkit-font-smoothing: antialiased;
@@ -228,7 +228,7 @@ table {
 	    padding: .1em .0 0 1.1em;
 	    margin-top: .5em;
 	    margin-bottom: 1em;
-	    font-family: ff-meta-serif-web-pro, Georgia, Cambria, 'Times New Roman', Times, serif;
+	    font-family: Helvetica, arial, freesans, clean, sans-serif;
 	    font-size: 1.3em;
 	    -webkit-font-smoothing: antialiased;
 	}
@@ -237,7 +237,7 @@ table {
 	    padding: .1em 0 0 1.2em;
 	    margin-top: .5em;
 	    margin-bottom: 1em;
-	    font-family: ff-meta-serif-web-pro, Georgia, Cambria, 'Times New Roman', Times, serif;
+	    font-family: Helvetica, arial, freesans, clean, sans-serif;
 	    font-size: 1.3em;
 	    -webkit-font-smoothing: antialiased;
 	}
