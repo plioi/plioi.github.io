@@ -4,7 +4,7 @@ layout: post
 ---
 
 <p>Back in college, I stumbled across a great tool called <a href="http://www.graphviz.org/">GraphViz</a>.  I used it to generate class diagrams from the source of a PHP application I was working on.  More recently, I've found it useful again for visualizing the <em>runtime</em> relationships between objects.  GraphViz can turn a plaintext description of relationships into a graph image.  Not "graph" as in "charts and graphs", but "graph" as in "computer science graph".  Nodes and edges:</p>
-<p><a href="http://patrick.lioi.net/2013/02/graphviz.png"><img src="http://patrick.lioi.net/2013/02/graphviz.png" alt="simple" width="179" height="251" class="aligncenter size-medium wp-image-6425" /></a></p>
+<p><a href="http://patrick.lioi.net/images/2013/02/graphviz.png"><img src="http://patrick.lioi.net/images/2013/02/graphviz.png" alt="simple" width="179" height="251" class="aligncenter size-medium wp-image-6425" /></a></p>
 <p>Today, we'll see how to easily generate images like this.  Along the way, we'll see an interesting use case for anonymous objects.</p>
 <h2>The Dot File Format</h2>
 <p>The image above can be generated from the following text file, using a GraphViz tool called dot.exe.  Note the use of the word 'digraph'.  A graph is anything made up of nodes and edges; a digraph is a graph where the edges have <em>di</em>rection from a source node to a destination node.</p>
@@ -13,7 +13,7 @@ layout: post
 <p>The dot file format supports a lot of options.  For instance, we can customize the original dot file like so:</p>
 <p>{% gist 5014224 %}</p>
 <p>Optional attributes appear in square brackets.  Here, we give one of our edges a label, alter the colors, and change one of the nodes from an ellipse to a box:</p>
-<p><a href="http://patrick.lioi.net/2013/02/fancy.png"><img src="http://patrick.lioi.net/2013/02/fancy.png" alt="fancy" width="179" height="275" class="aligncenter size-full wp-image-6424" /></a></p>
+<p><a href="http://patrick.lioi.net/images/2013/02/fancy.png"><img src="http://patrick.lioi.net/images/2013/02/fancy.png" alt="fancy" width="179" height="275" class="aligncenter size-full wp-image-6424" /></a></p>
 <p>One can imagine generating these dot files programmatically with a StringBuilder.  Doing so would be a little monotonous, especially when the optional attributes like shapes and colors are included.  You have to busy yourself with the dot format's quoting rules as well as C#'s quoting rules.  Even when you succeed, you'll be left with some ugly code.  I'd much rather generate the above two dot files like so:</p>
 <p>{% gist 5014233 %}</p>
 <p>{% gist 5014237 %}</p>
