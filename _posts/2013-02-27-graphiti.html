@@ -4,7 +4,7 @@ layout: post
 ---
 
 <p>Back in college, I stumbled across a great tool called <a href="http://www.graphviz.org/">GraphViz</a>.  I used it to generate class diagrams from the source of a PHP application I was working on.  More recently, I've found it useful again for visualizing the <em>runtime</em> relationships between objects.  GraphViz can turn a plaintext description of relationships into a graph image.  Not "graph" as in "charts and graphs", but "graph" as in "computer science graph".  Nodes and edges:</p>
-<p><a href="http://patrick.lioi.net/images/2013/02/graphviz.png"><img src="http://patrick.lioi.net/images/2013/02/graphviz.png" alt="simple" width="179" height="251" class="aligncenter size-medium wp-image-6425" /></a></p>
+<p><a href="http://patrick.lioi.net/images/2013/02/graphviz.png"><img src="http://patrick.lioi.net/images/2013/02/graphviz.png" alt="simple" width="179" height="251" /></a></p>
 <p>Today, we'll see how to easily generate images like this.  Along the way, we'll see an interesting use case for anonymous objects.</p>
 <h2>The Dot File Format</h2>
 <p>The image above can be generated from the following text file, using a GraphViz tool called dot.exe.  Note the use of the word 'digraph'.  A graph is anything made up of nodes and edges; a digraph is a graph where the edges have <em>di</em>rection from a source node to a destination node.</p>
