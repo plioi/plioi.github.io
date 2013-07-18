@@ -13,7 +13,7 @@ layout: post
 <p>The dot file format supports a lot of options.  For instance, we can customize the original dot file like so:</p>
 <p>{% gist 5014224 %}</p>
 <p>Optional attributes appear in square brackets.  Here, we give one of our edges a label, alter the colors, and change one of the nodes from an ellipse to a box:</p>
-<p><a href="http://patrick.lioi.net/images/2013/02/graphviz-fancy.png"><img src="http://patrick.lioi.net/images/2013/02/graphviz-fancy.png" alt="fancy" width="179" height="275" class="aligncenter size-full wp-image-6424" /></a></p>
+<p><a href="http://patrick.lioi.net/images/2013/02/graphviz-fancy.png"><img src="http://patrick.lioi.net/images/2013/02/graphviz-fancy.png" alt="fancy" width="179" height="275" /></a></p>
 <p>One can imagine generating these dot files programmatically with a StringBuilder.  Doing so would be a little monotonous, especially when the optional attributes like shapes and colors are included.  You have to busy yourself with the dot format's quoting rules as well as C#'s quoting rules.  Even when you succeed, you'll be left with some ugly code.  I'd much rather generate the above two dot files like so:</p>
 <p>{% gist 5014233 %}</p>
 <p>{% gist 5014237 %}</p>
