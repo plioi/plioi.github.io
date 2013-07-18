@@ -3,7 +3,7 @@ title: The Defensive ToArray
 layout: post
 ---
 
-<p>In <a href="http://www.headspring.com/patrick/a-game-of-throws/">A Game of Throws</a>, we saw a frequently-blogged-about gotcha regarding the <code>yield</code> keyword and exception handling.  This week, we'll see how there is more than one motivation for using the <code>yield</code> keyword, and when you opt into it for one you get the other whether you like it or not.  This leads to a code smell: littering our code with 'defensive' calls to ToArray(). </p>
+<p>In <a href="http://patrick.lioi.net/2012/09/27/a-game-of-throws/">A Game of Throws</a>, we saw a frequently-blogged-about gotcha regarding the <code>yield</code> keyword and exception handling.  This week, we'll see how there is more than one motivation for using the <code>yield</code> keyword, and when you opt into it for one you get the other whether you like it or not.  This leads to a code smell: littering our code with 'defensive' calls to ToArray(). </p>
 <h2>Generalizing the Exception Gotcha</h2>
 <p>The exception handling case from last week is a specific example of a larger potential gotcha: with lazy evaluation, some work <em>happens</em> at a different time than the caller might expect.  It allows exceptions to get "smuggled" through try/catch blocks, but exceptions are just one way you might be surprised by the change in the order of events: if your <code>yield</code>ing method has any kind of side effect, the caller is likely to experience the odd order of evaluation.</p>
 <p>That can be good.  That can be bad.  It's a sharp tool.</p>

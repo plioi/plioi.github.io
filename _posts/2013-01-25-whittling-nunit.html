@@ -3,7 +3,7 @@ title: Whittling NUnit
 layout: post
 ---
 
-<p>Last week, we applied <a href="http://www.headspring.com/patrick/code-whittling/">Code Whittling</a> to learn about <a href="http://www.headspring.com/patrick/whittling-xunit/">xUnit</a>.  This week, we'll do the same for NUnit, and contrast the two testing frameworks.  NUnit has been around a long time, and has accumulated many features.  <a href="http://www.nunitlite.com/">NUnitLight</a> is a recent endeavor to make a smaller version of the core features.  Since my goal is to get to the core features anyway, I'll start with NUnitLight instead of the full NUnit.</p>
+<p>Last week, we applied <a href="http://patrick.lioi.net/2013/01/03/code-whittling/">Code Whittling</a> to learn about <a href="http://patrick.lioi.net/2013/01/15/whittling-xunit/">xUnit</a>.  This week, we'll do the same for NUnit, and contrast the two testing frameworks.  NUnit has been around a long time, and has accumulated many features.  <a href="http://www.nunitlite.com/">NUnitLight</a> is a recent endeavor to make a smaller version of the core features.  Since my goal is to get to the core features anyway, I'll start with NUnitLight instead of the full NUnit.</p>
 <h2>The Whittle</h2>
 <p>I started by grabbing a copy of the <a href="https://launchpad.net/nunitlite">NUnitLite source code on Launchpad</a>.</p>
 <p>The first thing I noticed is that it has an atypical structure in Solution Explorer.  Project names include .NET version numbers (2.0, 3.5, 4.0), and these projects are placed within solution folders NET-2.0, NET-3.5, and NET-4.0.  Comparing this to the actual file structure on disk, it looks like the same code files are shared by each of these version-based projects.</p>

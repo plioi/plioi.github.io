@@ -3,7 +3,7 @@ title: Isolating Execution
 layout: post
 ---
 
-<p>In last week's post, <a href="http://www.headspring.com/patrick/dogfooding/">Dogfooding</a>, I uncovered a bug in the <a href="https://github.com/plioi/fixie">Fixie test framework</a> by trying to use it on two of my other side projects.  At the end of that post, I claimed that the bug had something to do with "AppDomains" and stated that it would be fixed once I met the following requirement:</p>
+<p>In last week's post, <a href="http://patrick.lioi.net/2013/04/11/dogfooding/">Dogfooding</a>, I uncovered a bug in the <a href="https://github.com/plioi/fixie">Fixie test framework</a> by trying to use it on two of my other side projects.  At the end of that post, I claimed that the bug had something to do with "AppDomains" and stated that it would be fixed once I met the following requirement:</p>
 <blockquote>
 <p>A test framework should fool your test DLL into thinking it is an EXE running in the build output folder, when in fact the running EXE is the console runner off in some other folder.</p>
 </blockquote>

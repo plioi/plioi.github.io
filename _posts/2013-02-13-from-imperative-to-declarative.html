@@ -3,7 +3,7 @@ title: From Imperative to Declarative
 layout: post
 ---
 
-<p>Two weeks ago, we took a peek at the <a href="http://www.headspring.com/patrick/whittling-parsley/">low-level pattern recognition classes</a> that make up the core of <a href="https://github.com/plioi/parsley">Parsley</a>.  Last week, we saw how pattern recognition involves 3 pivotal <a href="http://www.headspring.com/patrick/composable-operations/">composable operations</a>: repetition, choice, and sequence.  We saw how Parsley implements basic repetition and choice operations, but sequence was still too hard to address.</p>
+<p>Two weeks ago, we took a peek at the <a href="http://patrick.lioi.net/2013/02/01/whittling-parsley/">low-level pattern recognition classes</a> that make up the core of <a href="https://github.com/plioi/parsley">Parsley</a>.  Last week, we saw how pattern recognition involves 3 pivotal <a href="http://patrick.lioi.net/2013/02/07/composable-operations/">composable operations</a>: repetition, choice, and sequence.  We saw how Parsley implements basic repetition and choice operations, but sequence was still too hard to address.</p>
 <p>Today, we'll finally see how to extract a useful sequence operation into a useful class, finally giving us the last of the necessary composable operations, and freeing us to finish our high-level <a href="http://martinfowler.com/bliki/DomainSpecificLanguage.html">DSL</a>.</p>
 <h2>Manual Sequence Recognition</h2>
 <p>Recall the horrible imperative code necessary to recognize the trivial three-token sequence of [left-parenthesis, letter, right-parenthesis]:</p>

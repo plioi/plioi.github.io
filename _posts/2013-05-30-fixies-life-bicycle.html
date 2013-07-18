@@ -3,7 +3,7 @@ title: Fixie's Life Bicycle
 layout: post
 ---
 
-<p>Last week, we saw how the <a href="https://github.com/plioi/fixie">Fixie test framework</a> gives you control over <a href="http://www.headspring.com/patrick/test-discovery/">test discovery</a>. This week, we'll see my first (admittedly rough) attempt at similarly giving you control over test <em>execution</em>. Let's start with a quick review of last week's test discovery feature, and then extend the example to demonstrate Fixie's treatment of test execution.</p>
+<p>Last week, we saw how the <a href="https://github.com/plioi/fixie">Fixie test framework</a> gives you control over <a href="http://patrick.lioi.net/2013/05/22/test-discovery/">test discovery</a>. This week, we'll see my first (admittedly rough) attempt at similarly giving you control over test <em>execution</em>. Let's start with a quick review of last week's test discovery feature, and then extend the example to demonstrate Fixie's treatment of test execution.</p>
 <h2>Test Discovery (Again)</h2>
 <p>By default, Fixie uses a reasonable rule of thumb to determine which of your classes are test classes, and which of your methods are test methods. The default rules are implemented like so:</p>
 <p>{% gist 5675320 %}</p>
