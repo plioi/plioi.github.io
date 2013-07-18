@@ -3,7 +3,7 @@ title: Early Experiences with Unit Testing
 layout: post
 ---
 
-<p>By <a href="http://www.headspring.com/author/plioi/">Patrick Lioi</a></p>
+
 <p>I got my feet wet with unit testing during a summer internship, before the term was officially on my radar. I was writing a number-crunching library in C, and my tests took the form of short C programs using that library. They would run through several related examples and print to the console when something went wrong. It's a shame that I was a senior in college before the concept even came up, but at least I got exposure to it before graduating and entering the workforce. This approach actually helped me to catch a pretty serious and subtle error that I wasn't explicitly looking for.</p>
 <h2>The Goal</h2>
 <p>The project involved a lot of number crunching for an electron-detector that would be mounted on a satellite. Picture a 180 degree protractor stuck on the side of a spinning box. At time 0, we might get a reading of an electron coming from 15 degrees. At time 1 we might get another reading coming from 42 degrees.</p>
@@ -20,4 +20,3 @@ layout: post
 <p>In middle school Algebra, we always draw +Y moving up the page, and +X moving to the right of the page. That's just a convention; it makes sense only because we're all agreeing that we will do it that way. When you introduce 3D, you have to decide whether the +Z axis is coming "up" out of the page, or "down" into the table the page sits on. One of these is called a left-handed system, and the other is called a right-handed system. Again, it's just convention; if everyone agrees on what we're using, everything is fine.</p>
 <p>The satellite's examples used the opposite +Z from the documentation of the angles to reverse-rotate. Every time we needed to rotate around Z, we were going in the wrong direction!</p>
 <p><strong>I never would have discovered this problem if I hadn't been building up a test-suite alongside the library.</strong> It was just dumb luck that I got to experience a unit-testing "A-HA!" moment so long ago, but I'm glad I did.</p>
-<p><a href="http://www.headspring.com/resources/whitepapers/">Learn more about unit tests and the Agile Difference by downloading the whitepaper</a></p>

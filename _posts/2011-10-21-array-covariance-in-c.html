@@ -14,4 +14,3 @@ layout: post
 <p>{% gist 1302325 %}</p>
 <p>Because <code>TChild[]</code> can be assigned to <code>TParent[]</code> for any <code>TChild</code> inheriting from <code>TParent</code>, we can say "arrays in C# are covariant".</p>
 <p>To sum up, <code>List&lt;Apple&gt;</code> can't be treated as <code>List&lt;Object&gt;</code> <em>because of the operations that <code>List&lt;T&gt;</code> provides</em>. The question, then, is could we ever safely take advantage of this convenient funky-casting for <em>other</em> generic types? The answer to this question falls under the category of "Covariance and Contravariance" and is provided by the C# 4 keywords <code>in</code> and <code>out</code>. In my next post, we'll cover an example where this funky-casting is both convenient and safe.</p>
-<p><a href="http://www.headspring.com/feed" target="_blank">Subscribe to our blog feed</a> for the freshest content.</p>

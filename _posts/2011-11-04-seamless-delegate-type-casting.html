@@ -14,4 +14,3 @@ layout: post
 <p>{% gist 1339420 %}</p>
 <p>Surprise! This won't even compile. The compiler can't assign our <code>EntityCreator&lt;SalesPerson&gt;</code> to the expected type <code>EntityCreator&lt;Employee&gt;</code>. That's strange, since we know that any <code>SalesPerson</code> it ever makes will <strong>obviously</strong> be an Employee. As we saw with similar situations around interfaces, we need to use the <code>out</code> keyword when we define the delegate type, promising to the compiler that the <code>T</code> will only appear in the return value. Armed with this additional promise, the compiler can safely treat all <code>EntityCreator&lt;FieldTechnician&gt;</code> as <code>EntityCreator&lt;Employee&gt;</code>. With the following change, the example compiles as expected:</p>
 <p>{% gist 1339421 %}</p>
-<p><a href="http://www.headspring.com/feed" target="_blank">Subscribe to our blog feed</a> for the freshest content.</p>
