@@ -3,7 +3,7 @@ title: Scope Creep
 layout: post
 ---
 
-<p>Two weeks back, I said that I was encountering <a href="http://www.headspring.com/blog/developer-deep-dive/essential-vs-incidental-complexity/">Incidental Complexity</a> in a hobby project, and last week I demonstrated <a href="http://www.headspring.com/blog/developer-deep-dive/identifying-incidental-complexity/">the first of several revisions</a> meant to identify and remove that incidental complexity.</p>
+<p>Two weeks back, I said that I was encountering <a href="http://patrick.lioi.net/2012/07/13/essential-vs-incidental-complexity/">Incidental Complexity</a> in a hobby project, and last week I demonstrated <a href="http://patrick.lioi.net/2012/07/21/identifying-incidental-complexity/">the first of several revisions</a> meant to identify and remove that incidental complexity.</p>
 <p>Last week focused on identifying an abstraction that was providing no value at all and needed to be removed.  This week, we'll see an abstraction that was right in its inception, but had become increasingly complex as it took on more and more functionality.</p>
 <h2>Rook's Representation of Scope</h2>
 <p>We all take scope for granted.  A locally-declared variable is visible only within the block it was declared, a method only exists within the class block it is declared in, function parameters only exist within their function, etc.  When we're looking at a line of code and we refer to a variable that <em>wasn't</em> declared in the closest containing block, we instinctively look to the next outer block, and the next outer block, until we find it.</p>
