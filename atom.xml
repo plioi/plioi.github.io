@@ -1,0 +1,28 @@
+---
+layout: nil
+---
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>patrick.lioi.net</title>
+  <link href="http://patrick.lioi.net/"/>
+  <link type="application/atom+xml" rel="self" href="http://patrick.lioi.net/atom.xml"/>
+  <updated>{{ site.time | date_to_xmlschema }}</updated>
+  <id>http://patrick.lioi.net/</id>
+  <author>
+    <name>Patrick Lioi</name>
+  </author>
+  {% for post in site.posts limit: 10 %}
+  <entry>
+    <id>http://patrick.lioi.net{{ post.id }}</id>
+    <link type="text/html" rel="alternate" href="http://patrick.lioi.net{{ post.url }}"/>
+    <title>{{ post.title | xml_escape }}</title>
+    <published>{{ post.date | date_to_xmlschema }}</published>
+    <updated>{{ post.date | date_to_xmlschema }}</updated>
+    <author>
+      <name>Patrick Lioi</name>
+      <uri>http://patrick.lioi.net/</uri>
+    </author>
+    <content type="html">{{ post.content | xml_escape }}</content>
+  </entry>
+  {% endfor %}
+</feed>
