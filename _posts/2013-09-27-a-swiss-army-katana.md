@@ -2,7 +2,7 @@
 title: A Swiss Army Katana
 layout: post
 ---
-Before now, test methods for the [Fixie test framework](https://github.com/plioi/fixie/) had to have zero parameters. If your test method had a parameter, it would fail without being called. Fixie would have no idea what values to pass in. As of [Fixie 0.0.1.98](http://www.nuget.org/packages/Fixie/0.0.1.98), you can define your own conventions for parameterized tests. As a convention author, you decide what it means for a test to have parameters. For example, let&#8217;s say you want your parameter values to come from attributes on the method, similar to [xUnit theories](http://stackoverflow.com/a/9110623):
+Before now, test methods for the [Fixie test framework](https://github.com/fixie/fixie/) had to have zero parameters. If your test method had a parameter, it would fail without being called. Fixie would have no idea what values to pass in. As of [Fixie 0.0.1.98](http://www.nuget.org/packages/Fixie/0.0.1.98), you can define your own conventions for parameterized tests. As a convention author, you decide what it means for a test to have parameters. For example, let&#8217;s say you want your parameter values to come from attributes on the method, similar to [xUnit theories](http://stackoverflow.com/a/9110623):
 
 {% gist 6721858 %}
 

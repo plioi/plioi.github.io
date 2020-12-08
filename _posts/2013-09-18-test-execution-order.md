@@ -12,7 +12,7 @@ I see three possibilities:
   2. You deliberately want to shuffle the tests in order to catch issues earlier, and you accept that it&#8217;s up to you to keep that in mind when tests start failing inconsistently.
   3. You have an extremely unusual situation in which you want to order the tests in a test class by some other rule.
 
-I recently added support for test execution order in the [Fixie test framework](https://github.com/plioi/fixie). By default, no order is enforced, meaning you get the undefined (but not very surprising) order provided by the reflection API. If you want to opt into random shuffling or apply your own rule for ordering tests, you can do so in your testing conventions. To randomize the order of test cases within a test class, declare that they should be shuffled:
+I recently added support for test execution order in the [Fixie test framework](https://github.com/fixie/fixie). By default, no order is enforced, meaning you get the undefined (but not very surprising) order provided by the reflection API. If you want to opt into random shuffling or apply your own rule for ordering tests, you can do so in your testing conventions. To randomize the order of test cases within a test class, declare that they should be shuffled:
 
 {% gist 6602967 %}
 

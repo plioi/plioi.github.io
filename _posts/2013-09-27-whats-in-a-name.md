@@ -40,5 +40,5 @@ In order to answer that question, I needed to introduce a new customization hook
 
 Poor naming motivated a false equivalence between methods and test cases, which muddied the Case creation step and hid the need for this customization hook. With better naming, the need for this hook was clear. The actual commits were quite small:
 
-  1. [Rename the offending property](https://github.com/plioi/fixie/commit/a2260e27efd6471d9fb1214721a12ced2ad2187a)
-  2. [Construct many test Case objects with the user-provided Func.](https://github.com/plioi/fixie/commit/70691f241a48aafacdba48b705b72bea7a6e4269#diff-2)
+  1. [Rename the offending property](https://github.com/fixie/fixie/commit/a2260e27efd6471d9fb1214721a12ced2ad2187a)
+  2. [Construct many test Case objects with the user-provided Func.](https://github.com/fixie/fixie/commit/70691f241a48aafacdba48b705b72bea7a6e4269#diff-2)

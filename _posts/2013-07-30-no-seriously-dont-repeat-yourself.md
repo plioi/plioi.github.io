@@ -22,7 +22,7 @@ I didn&#8217;t run into this before because my build script happened to pass abs
 
 ## The Fix
 
-The fix was simple enough: [convert incoming paths to absolute paths _immediately_](https://github.com/plioi/fixie/commit/104c0c8dda724f6916c364b48b6fb0c17918859a), allowing the rest of the system to work exclusively with absolute paths.
+The fix was simple enough: [convert incoming paths to absolute paths _immediately_](https://github.com/fixie/fixie/commit/104c0c8dda724f6916c364b48b6fb0c17918859a), allowing the rest of the system to work exclusively with absolute paths.
 
 `Path.GetFullPath(string)`, at a quick glance, seems to be a &#8220;pure&#8221; function: string goes in, the machine gets a little bit warmer, string comes out. However, this function can only work by reaching out to the environment for an additional input: the current directory. I made the &#8220;same call&#8221; twice, but only the first call produced a meaningful result.
 

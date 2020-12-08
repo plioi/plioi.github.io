@@ -2,7 +2,7 @@
 title: 'Shufflin&#8217; Ain&#8217;t Sortin&#8217;'
 layout: post
 ---
-I recently added a test-shuffling feature to the [Fixie](https://github.com/plioi/fixie) test framework. The basic idea is that you can opt into randomizing the order of execution for tests within a test class. I&#8217;ll cover the details of the test shuffling feature in my next post. Today, let&#8217;s take a deeper look at shuffling in general. Readily-available advice on shuffling is actually quite wrong.
+I recently added a test-shuffling feature to the [Fixie](https://github.com/fixie/fixie) test framework. The basic idea is that you can opt into randomizing the order of execution for tests within a test class. I&#8217;ll cover the details of the test shuffling feature in my next post. Today, let&#8217;s take a deeper look at shuffling in general. Readily-available advice on shuffling is actually quite wrong.
 
 ## The Too-Clever One-Liner
 

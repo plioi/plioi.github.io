@@ -28,7 +28,7 @@ When a test method had no parameters at all, it would explicitly return a single
 
 ## The Fix: Fail Loudly
 
-In order to fail loudly, Fixie needed to [treat test methods with _unsatisfied_ parameters as _failures_](https://github.com/plioi/fixie/commit/006f3a74e0f47222e1e44b8f192d44d70172a788), with a failure message explaining that fact. A nice side effect is that it&#8217;s easier for convention authors to do the right thing: yield when you have a meaningful input, don&#8217;t when you don&#8217;t, and let Fixie autofail any test method that still couldn&#8217;t be called.
+In order to fail loudly, Fixie needed to [treat test methods with _unsatisfied_ parameters as _failures_](https://github.com/fixie/fixie/commit/006f3a74e0f47222e1e44b8f192d44d70172a788), with a failure message explaining that fact. A nice side effect is that it&#8217;s easier for convention authors to do the right thing: yield when you have a meaningful input, don&#8217;t when you don&#8217;t, and let Fixie autofail any test method that still couldn&#8217;t be called.
 
 Our convention from last time gets simpler, now that we don&#8217;t have a lurking edge case to care about, and the output now correctly complains about the new test method:
 

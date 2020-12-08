@@ -3,7 +3,7 @@ title: "Cutting Scope"
 layout: post
 ---
 
-<p>Over the last week, I've implemented support for <code>async</code>/<code>await</code> in the <a href="https://github.com/plioi/fixie">Fixie test framework</a>. Thanks to a suggestion from <a href="https://twitter.com/pedroreys">Pedro Reys</a>, I found that this project was susceptible to a serious bug, one that NUnit and xUnit both encountered and addressed back when the <code>async</code>/<code>await</code> keywords were introduced in C# 5.</p>
+<p>Over the last week, I've implemented support for <code>async</code>/<code>await</code> in the <a href="https://github.com/fixie/fixie">Fixie test framework</a>. Thanks to a suggestion from <a href="https://twitter.com/pedroreys">Pedro Reys</a>, I found that this project was susceptible to a serious bug, one that NUnit and xUnit both encountered and addressed back when the <code>async</code>/<code>await</code> keywords were introduced in C# 5.</p>
 <p>While developing the fix, I relearned an important lesson: cutting scope is not a sign of defeat. Sometimes less really is more.</p>
 <h2>The Bug</h2>
 <p>With the bug in place, a test framework can report that a test has passed even when it should fail. Consider the following test fixture:</p>

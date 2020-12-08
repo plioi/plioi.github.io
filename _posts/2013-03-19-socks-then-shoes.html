@@ -3,7 +3,7 @@ title: "Socks, *then* Shoes"
 layout: post
 ---
 
-<p>A couple weeks back, I announced the <a href="http://patrick.lioi.net/2013/03/08/insufficiently-round-wheels/">start of development on Fixie</a>, a .NET test framework. Last week, I covered some early <a href="http://patrick.lioi.net/2013/03/13/strongly-typed-whiteboarding/">proof-of-concept work</a> performed with throw-away code. This week, we'll take a close look at the first <a href="http://patrick.lioi.net/2012/02/10/am-i-not-dead-commit/">several small commits</a> to <a href="https://github.com/plioi/fixie">Fixie on GitHub</a>.</p>
+<p>A couple weeks back, I announced the <a href="http://patrick.lioi.net/2013/03/08/insufficiently-round-wheels/">start of development on Fixie</a>, a .NET test framework. Last week, I covered some early <a href="http://patrick.lioi.net/2013/03/13/strongly-typed-whiteboarding/">proof-of-concept work</a> performed with throw-away code. This week, we'll take a close look at the first <a href="http://patrick.lioi.net/2012/02/10/am-i-not-dead-commit/">several small commits</a> to <a href="https://github.com/fixie/fixie">Fixie on GitHub</a>.</p>
 <p>The commits we cover today are all about preparing the initial solution structure, installing dependencies with NuGet, writing a build script, and applying a simple version numbers scheme.  I strongly recommend performing similar steps when starting up any new project.  You've gotta put on your socks before you can seriously think about putting on your shoes.  <strong>Today's work is all about the socks.</strong></p>
 <p>The goal here is to prepare a build script that compiles, runs tests, and applies version numbers to the built assemblies. Any developer should be able to clone the repo and run "build" at the command line in order to compile the project and run its tests.  It should be that easy; if it isn't, we've failed at putting on <em>socks</em>.</p>
 <p>Although I'm framing this advice as "necessary first steps for any project", it's never too late to get a reliable build in place around your existing project.  Take it in small steps: get a build script that can simply compile the solution, then grow it to apply version numbers to assemblies, then grow it to run unit tests, put it on a Continuous Integration server, expand it to run integration tests...</p>
@@ -12,7 +12,7 @@ layout: post
 <p>{% gist 5192403 %}</p>
 <h2>Choose an Open Source License</h2>
 <p>I am not a lawyer, so I cannot offer advice as to which open source license is right for you.  I selected the MIT License and included it as a .txt file at the root of my repo.  The fact that I went with this is not a recommendation.  This is your decision, but whatever you choose, include it in your repo and be sure to include the official name of the license at the top of the file so that everyone knows what it is.</p>
-<p><a href="https://github.com/plioi/fixie/commit/af7c43afaf3111c2139e5886abc9b57e983a0962">Commit</a>.</p>
+<p><a href="https://github.com/fixie/fixie/commit/af7c43afaf3111c2139e5886abc9b57e983a0962">Commit</a>.</p>
 <h2>Initial Solution Structure</h2>
 <p>As we've already seen, our repo needs to contain things other than source code.  To keep our peas and rice separated on the plate, we'll put our actual code files under a src/ folder.  In Visual Studio, I created a new solution containing a Class Library project named Fixie, all under src/.</p>
 <p>It's tempting at this point to start adding several projects to the solution.  Surely, I'll eventually need this test framework to produce a console-runner EXE, and a DLL to integrate with TestDriven.NET.  Also, I used to set up projects in a solution to enforce internal dependencies: Fixie's reflection-helpers code shouldn't depend on anything else, so it's tempting to put that in its own project with no references to other Fixie.sln projects.  Although tempting, <strong>don't start creating projects left and right</strong>.  That would be a symptom of Big Design Up Front, which usually doesn't turn out to be very accurate.</p>
@@ -28,7 +28,7 @@ layout: post
     /src/Fixie/Properties/AssemblyInfo.cs
     /src/Fixie.Tests/Fixie.Tests.csproj
     /src/Fixie.Tests/Properties/AssemblyInfo.cs</pre>
-<p><a href="https://github.com/plioi/fixie/commit/c066c8b89ff606a59d26a60ce77d7c890ed53ef6">Commit</a>.</p>
+<p><a href="https://github.com/fixie/fixie/commit/c066c8b89ff606a59d26a60ce77d7c890ed53ef6">Commit</a>.</p>
 <h2>Enable NuGet Package Restore</h2>
 <p>It is extremely important that your repo be aware of all of its dependencies, so that a new developer can simply clone from GitHub and <em>go</em>.  If at all possible, they shouldn't have to install anything extra.</p>
 <blockquote><p>If your new coworker has trouble getting up and running on their machine, chances are you'll have similar difficulties when you deploy to your production machine.  Consider any repo clone to be a mini deployment.  Detect deployment pains early, when they're easiest to address.</p></blockquote>
@@ -36,12 +36,12 @@ layout: post
 <p>In Solution Explorer, right-click the solution and select Enable NuGet Package Restore.  Git will show you that src/Fixie.sln was updated to include the contents of a new folder /src/.nuget containing a few files.  We can leave them alone, as the default settings are just fine.</p>
 <p>Be sure to include the following line in your .gitignore.  This is the folder that will contain downloaded packages.  Since package restore is turned on, this folder can be left out of source control.  It will be rebuilt by NuGet during a build, whenever the folder is missing or incomplete:</p>
 <p>{% gist 5192486 %}</p>
-<p><a href="https://github.com/plioi/fixie/commit/2cf6ed22a1008787f33bc7d07d0fc0816393d90f">Commit.</a></p>
+<p><a href="https://github.com/fixie/fixie/commit/2cf6ed22a1008787f33bc7d07d0fc0816393d90f">Commit.</a></p>
 <h2>Install NUnit and NUnit.Runners via NuGet</h2>
 <p>Fixie is a test framework, so it may seem odd to start using NUnit during its development.  However, there's a bare minimum of functionality that I need to implement before Fixie can be used to test itself, and in the meantime I don't want to fall into the tempting trap of "coding without a net".  In the meantime, I'll use NUnit.</p>
 <p>There are two dependencies we want to include via NuGet: NUnit and NUnit.Runners.  In Solution Explorer, right-click the solution and go to "Manage NuGet Packages for Solution."  In this dialog, search for and install the NUnit and NUnit.Runners packages.  When installing NUnit, select the Fixie.Tests project so that it will add a reference to Nunit.Framework.dll for us.</p>
 <p>I also added the Shouldly test assertion library, again referenced by Fixie.Tests, but use whatever assertion style you are comfortable with.</p>
-<p><a href="https://github.com/plioi/fixie/commit/92cb56fd553639da0b2127f4fcefc408cfb40078">Commit</a>.</p>
+<p><a href="https://github.com/fixie/fixie/commit/92cb56fd553639da0b2127f4fcefc408cfb40078">Commit</a>.</p>
 <h2>Add a Build Script to Compile and Run Tests</h2>
 <p>Any new developer should be able to clone your repo and run "build" at a command line in order to compile the solution and run all the tests.  Here, we'll use a third-party PowerShell tool called "psake" to simplify writing such a script.</p>
 <blockquote><p>Working with PowerShell can be insanely frustrating.  The language behavior for seemingly-simple tasks is often the exact opposite of anything you would expect when compared to any other language.  I would rather work with COBOL.  In Antarctica.  Without a coat.  And there's bees.  Bees everywhere.</p>
@@ -57,7 +57,7 @@ layout: post
 <p>{% gist 5192545 %}</p>
 <p>When someone clones the repo and runs "build" at the command line, the results in the console should show the dependencies successfully downloaded (if they were missing), the solution compiled successfully, and the single unit test executed but failed.  After changing the test to always pass, rerunning the script should show the whole build-and-test process completes successfully.</p>
 <p>I encourage the habit of running "build" at the command line manually prior to any commit.  Speaking of commits,</p>
-<p><a href="https://github.com/plioi/fixie/commit/c45ac7a6c50c1be995303b70a85396c89b8fb768">Commit</a>.</p>
+<p><a href="https://github.com/fixie/fixie/commit/c45ac7a6c50c1be995303b70a85396c89b8fb768">Commit</a>.</p>
 <h2>Version Your Assemblies with Common AssemblyInfo</h2>
 <p>By default, every Project in a Visual Studio Solution contains a file called AssemblyInfo.cs under a Properties folder.  It's easy to forget that this exists and actually needs to be updated periodically.  The values in these files live on in the compiled assemblies.  When releasing our libraries/tools to the public, we should be good citizens by keeping this information up to date, especially the version numbers.  That sounds tiresome and error-prone, so let's automate as much as possible.</p>
 <p>Versioning assemblies is actually a complex topic, and lots of high-profile projects do it a little differently from each other, so let's err on the safe side while also keeping it simple. If our versioning plans need to grow into something more involved later, we can always change it then.</p>
@@ -70,7 +70,7 @@ layout: post
 <p>I updated the build script to produce a CommonAssemblyInfo.cs file with the build number filled in:</p>
 <p>{% gist 5192606 %}</p>
 <p>I ran the script and confirmed the contents of CommonAssemblyInfo.cs.  Next, I needed to make both Projects in the Solution actually use this file instead of the defaults.  In both Projects, I removed most of the contents of Properties/AssemblyInfo.cs (leaving only the Project-specific [AssemblyName] attribute), right-clicked the Project to Add \ Existing Item, browsed to CommonAssemblyInfo.cs <em>and clicked the down-arrow within the Add button to select Add As Link</em> so that a single copy of the file would be used by all projects.  Once these links were created, I dragged them into the Properties folders to get them out of the way.  Whenever I add a new project to the solution, I'll need to repeat this step.</p>
-<p><a href="https://github.com/plioi/fixie/commit/d861ff8fb6bc5621c7066a855fa96733cbe7eebf">Commit</a>.</p>
+<p><a href="https://github.com/fixie/fixie/commit/d861ff8fb6bc5621c7066a855fa96733cbe7eebf">Commit</a>.</p>
 <h2>Footwear Accomplished</h2>
 <p>Phew!  These first steps can be frustrating, and a little boring, but they pay for themselves very quickly.  Now that we have a reliable build script, a simple NuGet-friendly file structure, and a simple versioning scheme, we can finally dive into development.</p>
 <p>Socks fully donned, next week, we'll stretch the footwear metaphor a bit further, as we "bootstrap" Fixie to the point where it can test itself!</p>

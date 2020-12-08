@@ -5,7 +5,7 @@ layout: post
 
 <p>I'm often guilty of this myself, but I cringe whenever I hear a software developer say that in order to implement a feature, they "Just" have to do x, y, and z.  The reality is that even on healthy projects, you will face at least a little more complexity than could be anticipated in advance.  This complexity makes time-based estimates risky, especially on seemingly-small features.  This week, I was particularly guilty of declaring to myself that a feature would take "Just a few lines of code".</p>
 <h2>The Feature</h2>
-<p>Working on the <a href="https://github.com/plioi/fixie">Fixie test framework</a> this week, I pulled the next task from my backlog.  It read:</p>
+<p>Working on the <a href="https://github.com/fixie/fixie">Fixie test framework</a> this week, I pulled the next task from my backlog.  It read:</p>
 <blockquote><p>Honor Dispose() when present.</p></blockquote>
 <p>When a test fixture class happens to implement IDisposable, the test framework should treat Dispose() as special.  After constructing your fixture and calling its test methods, and before it discards the fixture instance, it should be sure to call Dispose().  For example, the xUnit test framework uses Dispose() in the same way that NUnit uses [TearDown] methods.  In both of those frameworks, you have a chance to perform cleanup after tests execute, and I wanted Fixie to support Dispose() too.</p>
 <h2>Initial Analysis</h2>
@@ -16,7 +16,7 @@ layout: post
 <p>To satisfy the requirement, "Honor Dipose() when present," I <em><strong>just</strong></em> had to wrap my test-running code in a similar try/finally block.  Easy as pie.  It should take about 4 minutes, mostly just to write its acceptance test.</p>
 <p>"<em><strong>Just</strong></em> 4 minutes" quickly turned into 4 hours.</p>
 <h2>The Easy Part</h2>
-<p>The <a href="https://github.com/plioi/fixie/commit/16f079b08131026e75d5ae5075dfbf5ec7e1df1b">primary commit for this feature</a> is exactly what I expected.  My acceptance test for this feature involved a sample fixture that implemented IDisposable along with two tests, one that passes and one that fails.  My real test fixture would run that sample test fixture, inspecting the results.  This pattern of having a real fixture wrap a private sample fixture allows me to have sample fixtures with failing tests. Only failures in the outer real fixture cause my build to fail:</p>
+<p>The <a href="https://github.com/fixie/fixie/commit/16f079b08131026e75d5ae5075dfbf5ec7e1df1b">primary commit for this feature</a> is exactly what I expected.  My acceptance test for this feature involved a sample fixture that implemented IDisposable along with two tests, one that passes and one that fails.  My real test fixture would run that sample test fixture, inspecting the results.  This pattern of having a real fixture wrap a private sample fixture allows me to have sample fixtures with failing tests. Only failures in the outer real fixture cause my build to fail:</p>
 <p>{% gist 5521216 %}</p>
 <p>The primary commit's fix involved wrapping test execution in a <code>try/finally</code>:</p>
 <p>{% gist 5521221 %}</p>
@@ -32,7 +32,7 @@ layout: post
 <p>{% gist 5521235 %}</p>
 <p>In this case, the DeclaredType for the Dispose() method is HasDisposeButNotIDisposable, which doesn't implement IDisposable.  When Fixie tried to run tests in a class like DisposableTestFixture, it <em>still</em> treated Dispose() as a test case.  I had to replace DeclaredType with ReflectedType:</p>
 <p>{% gist 5521240 %}</p>
-<p>Finally, I could <a href="https://github.com/plioi/fixie/commit/3f9dc52a3e4570c7baa197773ae8a1983abc50f8">use that helper method to exclude IDisposable.Dispose()</a> from being treated as a test case.  Running the sample fixture produced one pass and one expected failure, and Dispose was called the right number of times.</p>
+<p>Finally, I could <a href="https://github.com/fixie/fixie/commit/3f9dc52a3e4570c7baa197773ae8a1983abc50f8">use that helper method to exclude IDisposable.Dispose()</a> from being treated as a test case.  Running the sample fixture produced one pass and one expected failure, and Dispose was called the right number of times.</p>
 <p>All done.</p>
 <h2>The Plot Thickens</h2>
 <p>Wait.  What if someone's test fixture has a Dispose() that throws exceptions?  Just like an NUnit [TearDown], we want exceptions here to cause the corresponding tests to fail, and we want the disposal exception to be included in the output.  I <em><strong>just</strong></em> have to wrap the disposal in a try/catch and emit a failure when Dispose() throws, like I already do when a test method throws:</p>

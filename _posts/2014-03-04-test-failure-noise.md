@@ -2,7 +2,7 @@
 title: Cleaning Up Test Failure Noise
 layout: post
 ---
-The [Fixie test framework](https://github.com/plioi/fixie) has no built-in assertion library, since assertions are an orthogonal concern to the nuts and bolts of test discovery and test execution. Although I stand by the decision to avoid including a built-in assertion library, there is one neat thing NUnit does with its _own_ assertions in order to simplify output of test failures. Today, we&#8217;ll see Fixie&#8217;s answer to that feature.
+The [Fixie test framework](https://github.com/fixie/fixie) has no built-in assertion library, since assertions are an orthogonal concern to the nuts and bolts of test discovery and test execution. Although I stand by the decision to avoid including a built-in assertion library, there is one neat thing NUnit does with its _own_ assertions in order to simplify output of test failures. Today, we&#8217;ll see Fixie&#8217;s answer to that feature.
 
 NUnit simplifies its own output when exceptions are thrown by its own assertion library infrastructure. For instance, when NUnit&#8217;s `Assert.AreEqual(int, int)` fails by throwing an exception, the output deliberately excludes stack trace lines pointing _within_ the implementation of `AreEqual`, and deliberately excludes the name of the exception type. This filtering allows typical test failure output to remain as simple and direct as possible, pointing the developer to the line where their own test failed.
 
