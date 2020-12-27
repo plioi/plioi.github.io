@@ -8,4 +8,7 @@ Recently, I gave a talk about .NET Core and the challenges it poses for test fra
 
 &#8212; Well, that&#8217;s a lie. &#8212;
 
-It&#8217;s not about that at all. It&#8217;s _really_ about how to recognize a big family of architectural problems in software projects, and how to go about solving those problems in tiny steps: [Tiny Steps &#8211; Creating Fixie 2](https://vimeo.com/495046446)
+It&#8217;s not about that at all. It&#8217;s _really_ about how to recognize a big family of architectural problems in software projects, and how to go about solving those problems in tiny steps:
+
+<iframe src="https://player.vimeo.com/video/495046446" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+<p><a href="https://vimeo.com/495046446">2016-07-08 Tiny Steps - Creating Fixie 2</a> from <a href="https://vimeo.com/user130074912">Patrick Lioi</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
