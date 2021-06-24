@@ -16,13 +16,13 @@ layout: post
 <p>Let's say we've got some classes that perform an operation against an input int:</p>
 <p>{% gist 3456058 %}</p>
 <p>Ok, no surprises yet.  When we omitted the argument in the first call, the compiler copied and pasted a 1 into the call site.</p>
-<p>As we start adding more and more such operations to the program, a developer finds a need to extract a common interface for all such one-argument operations.  This developer means well, but when he writes the interface definition, he doesn't look at each and every implementing class's defaults.  He figures 0 is a reasonable default for an integer, and defines it like so:</p>
+<p>As we start adding more and more such operations to the program, a developer finds a need to extract a common interface for all such one-argument operations.  This developer means well, but when they write the interface definition, they don't look at each and every implementing class's defaults.  They figure 0 is a reasonable default for an integer, and define it like so:</p>
 <p>{% gist 3456065 %}</p>
 <p><em>Note that the default in the interface is different from the defaults on the concrete classes.</em></p>
 <p>Running the same sample code produces the same output as before:</p>
 <p>{% gist 3456075 %}</p>
 <p>This makes sense.  We're calling <code>Negate.Apply</code>, and <code>Negate.Apply</code>'s default comes into play just like before.  We might (incorrectly!) conclude that the concrete runtime type (<code>Negate</code>) is used to determine which default value "wins" the competition.</p>
-<p>Later, a new developer joins the project.  He is unaware that the interface and concrete classes have conflicting defaults.  He's read up on SOLID principles and naturally he wants to favor abstract types over concrete types.  He makes one seemingly-safe change to the code, changing only the declared type of the <code>operation</code> variable:</p>
+<p>Later, a new developer joins the project.  They are unaware that the interface and concrete classes have conflicting defaults.  They've read up on SOLID principles and naturally want to favor abstract types over concrete types.  They make one seemingly-safe change to the code, changing only the declared type of the <code>operation</code> variable:</p>
 <p>{% gist 3456080 %}</p>
 <blockquote><p>The C# compiler finds our efforts to apply "nonbreaking changes" quaint but ultimately futile.</p></blockquote>
 <h2>What in the <em>what!?</em></h2>
