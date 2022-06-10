@@ -35,6 +35,7 @@ header, footer {
 
 article {
   margin: auto;
+  width: 80ch;
 }
 
 article p {
