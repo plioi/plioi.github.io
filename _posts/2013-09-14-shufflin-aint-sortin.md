@@ -10,6 +10,11 @@ Let&#8217;s say you want to randomize the order of items in a simple .NET array.
 
 {% gist 6565356 %}
 
+```cs
+Random rnd=new Random();
+string[] shuffled = array.OrderBy(x => rnd.Next()).ToArray();
+```
+
 You may have also run into similar shufflers that use Guid.NewGuid() for the same effect. This seems pretty reasonable. We&#8217;re &#8220;randomingly sorting&#8221; the items. Each time the sort algorithm needs to decide the order of two items, it&#8217;ll basically flip a coin. **go What could wrong possibly?**
 
 I&#8217;m sure I&#8217;ve followed this advice on past projects, and never ran into any trouble. It might actually work, but if so it works only due to a convenient accident of implementation details.
