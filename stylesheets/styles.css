@@ -31,9 +31,9 @@ h1 a, h1 a:visited, h1 a:hover {
 
 article p:first-child:first-letter {
   color: #000;
-  font-size 4em;
-  line-height 0.9em;
-  padding-right 0.1em;
+  font-size: 4em;
+  line-height: 0.9em;
+  padding-right: 0.1em;
   float: left;
 }
 
