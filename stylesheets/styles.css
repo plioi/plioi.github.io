@@ -14,10 +14,6 @@ article {
   width: 80ch;
 }
 
-article p {
-  max-width: 65ch;
-}
-
 article a:visited {
   color: var(--bs-purple);
 }
