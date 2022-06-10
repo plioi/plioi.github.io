@@ -48,11 +48,8 @@
       {{ content }}
     </div>
     <footer>
-        <p>&copy; 2011-<span id="copyright-year"></span> Patrick Lioi</p>
+        <p>&copy; 2011-{{ site.time | date: '%Y' }} Patrick Lioi</p>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
-    <script type="text/javascript">
-      document.getElementById("copyright-year").innerHTML = new Date().getFullYear();
-    </script>
   </body>
 </html>
