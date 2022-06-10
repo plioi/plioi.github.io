@@ -3,6 +3,10 @@
   --bs-link-hover-color: #1a0dab;
 }
 
+nav {
+ box-shadow: 0px 3px 6px gray; 
+}
+
 article {
   font-size: 18px;
   margin: auto;
