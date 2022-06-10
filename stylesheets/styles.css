@@ -24,7 +24,7 @@ a:visited {
   color: var(--bs-purple);
 }
 
-h1 a {
+h1 a, h1 a:visited, h1 a:hover {
  color: #000;
  text-decoration: none;
 }
