@@ -4,10 +4,10 @@
 }
 
 body {
-  font-family: hero-new, sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-weight: 450;
-  font-size: 1.125em;
-  line-height: 1.65em;
+  font-size: 1.5rem;
+  line-height: 2rem;
   color: #444;
 }
 
@@ -29,6 +29,10 @@ h1 a, h1 a:visited, h1 a:hover {
  text-decoration: none;
 }
 
-footer {
+header, footer {
   text-align: center;
+}
+
+article p {
+  max-width: 65ch;
 }
