@@ -30,7 +30,7 @@ h1 a, h1 a:visited, h1 a:hover {
 }
 
 article p:first-child:first-letter {
-  color: #000;
+  font-weight: bold;
   font-size: 4.25em;
   padding-right: 0.1em;
   float: left;
