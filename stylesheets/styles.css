@@ -5,10 +5,10 @@
 
 nav {
   box-shadow: 0px 3px 6px lightgray;
-  padding-bottom: 10px;
 }
 
 article {
+  padding-top: 10px;
   font-size: 18px;
   margin: auto;
   width: 80ch;
