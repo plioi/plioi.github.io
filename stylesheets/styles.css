@@ -33,6 +33,10 @@ header, footer {
   text-align: center;
 }
 
+article {
+  margin: auto;
+}
+
 article p {
   max-width: 65ch;
 }
