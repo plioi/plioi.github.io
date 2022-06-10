@@ -8,8 +8,6 @@ I recently added a test-shuffling feature to the [Fixie](https://github.com/fixi
 
 Let&#8217;s say you want to randomize the order of items in a simple .NET array. A little googling will lead you to solutions like this:
 
-{% gist 6565356 %}
-
 ```cs
 Random rnd=new Random();
 string[] shuffled = array.OrderBy(x => rnd.Next()).ToArray();
@@ -22,8 +20,6 @@ I&#8217;m sure I&#8217;ve followed this advice on past projects, and never ran i
 Sorting algorithms operate with a very specific contract in mind. They frequently need to compare two items, and you are expected to provide a consistent answer to the question, &#8220;Which comes first, a or b?&#8221;. (In the case of OrderBy, the lambda provides a &#8220;key selector&#8221; for shorthand: a comes before b if a&#8217;s &#8216;key&#8217; comes before b&#8217;s &#8216;key&#8217;. The overall contract of consistent ordering is still present.)
 
 Consider a humble [Bubble Sort](http://stackoverflow.com/a/1595310):
-
-{% gist 6565370 %}
 
 ```cs
 //Jon Skeet's Bubble Sort from http://stackoverflow.com/a/1595310
@@ -57,8 +53,6 @@ Randomized sorting is a contradiction in terms.
 ## Real Shuffling
 
 Thankfully, real shuffling is a solved problem. We don&#8217;t have to violate an algorithm&#8217;s contract if we use the right algorithm.
-
-{% gist 6565381 %}
 
 ```cs
 //Matt Howells's Shuffler from http://stackoverflow.com/a/110570
