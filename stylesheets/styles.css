@@ -18,10 +18,11 @@ article a:visited {
   color: var(--bs-purple);
 }
 
-pre.highlight code {
-  color: #f6f8fa;
+pre.highlight {
+  background-color: #f6f8fa;
   border-radius: 6px;
-  border: 1px solid #ddd
+  border: 1px solid #ddd;
+  padding: 10px;
 }
 
 footer {
