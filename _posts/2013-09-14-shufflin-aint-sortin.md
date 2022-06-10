@@ -25,6 +25,29 @@ Consider a humble [Bubble Sort](http://stackoverflow.com/a/1595310):
 
 {% gist 6565370 %}
 
+```cs
+//Jon Skeet's Bubble Sort from http://stackoverflow.com/a/1595310
+public void BubbleSort<T>(IList<T> list, IComparer<T> comparer)
+{
+    bool stillGoing = true;
+    while (stillGoing)
+    {
+        stillGoing = false;
+        for (int i = 0; i < list.Length-1; i++)
+        {
+            T x = list[i];
+            T y = list[i + 1];
+            if (comparer.Compare(x, y) > 0)
+            {
+                list[i] = y;
+                list[i + 1] = x;
+                stillGoing = true;
+            }
+        }
+    }
+}
+```
+
 Imagine our comparer flips a coin each time it is asked to compare two items in the array. That while loop starts to look pretty scary. Each iteration of the outer loop makes a single pass through the list. If _any_ items get swapped during that pass, we are `stillGoing` and will execute another pass through the list. When would the bubble sort even terminate? It&#8217;ll terminate when we _happen_ to generate `list.Length` _consistent_ answers in a row. A few test runs of this loop against a 10-item array reached _thousands_ of iterations before terminating!
 
 Sure, .NET&#8217;s array sorter doesn&#8217;t use Bubble Sort, but the clever one-liner may fall into the same basic trap. In practice it seems to work, but just try proving that it will always work. What algorithm does .NET&#8217;s `Array.Sort(...)` use? Insertion Sort? Heap Sort? Quick Sort? Trick question: [it could do any of those](http://msdn.microsoft.com/en-us/library/6tf1f0bc.aspx) depending on the input array. You could inspect the implementation all day long, constructing an ironclad proof that a randomized comparer will in fact work in all possible cases, and still run into trouble when a future implementation changes the underlying algorithm(s).
@@ -36,6 +59,21 @@ Randomized sorting is a contradiction in terms.
 Thankfully, real shuffling is a solved problem. We don&#8217;t have to violate an algorithm&#8217;s contract if we use the right algorithm.
 
 {% gist 6565381 %}
+
+```cs
+//Matt Howells's Shuffler from http://stackoverflow.com/a/110570
+public static void Shuffle<T>(this T[] array, Random random)
+{
+    int n = array.Length;
+    while (n > 1)
+    {
+        int k = random.Next(n--);
+        T temp = array[n];
+        array[n] = array[k];
+        array[k] = temp;
+    }
+}
+```
 
 > Most of the world&#8217;s loops have already been written, and they have names. This is the Fisher-Yates Shuffle. It randomizes the order of array items in a single pass.
 
