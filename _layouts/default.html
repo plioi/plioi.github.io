@@ -19,22 +19,21 @@
     </script>
   </head>
   <body>
+    <header>
+      <p>
+        <a href="https://twitter.com/plioi/">@plioi</a> ::
+        <a href="http://patrick.lioi.net/archive/">archive</a> ::
+        <a href="http://plioi.github.io/fixie/">fixie</a> ::
+        <a href="http://github.com/plioi/parsley/">parsley</a> ::
+        <a href="http://github.com/plioi/rook/">rook</a>
+      </p>      
+    </header>
     <div class="container">
-
       {{ content }}
-
-      <br>
-
-      <footer>
-        <p><a href="https://twitter.com/plioi/">@plioi</a> ::
-           <a href="http://patrick.lioi.net/archive/">archive</a> ::
-           <a href="http://plioi.github.io/fixie/">fixie</a> ::
-           <a href="http://github.com/plioi/parsley/">parsley</a> ::
-           <a href="http://github.com/plioi/rook/">rook</a>
-        </p>
-        <p>&copy; 2011-<span id="copyright-year"></span> Patrick Lioi</p>
-      </footer>
     </div>
+    <footer>
+        <p>&copy; 2011-<span id="copyright-year"></span> Patrick Lioi</p>
+    </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
     <script type="text/javascript">
       document.getElementById("copyright-year").innerHTML = new Date().getFullYear();
