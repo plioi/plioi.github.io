@@ -3,37 +3,16 @@
   --bs-link-hover-color: #1a0dab;
 }
 
-body {
-  font-family: Inter,X-LocaleSpecific,sans-serif;
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 1.5;
-  color: #000;
-}
-
-a {
-  text-decoration: none;
-  font-weight: 500;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
 a:visited {
   color: var(--bs-purple);
 }
 
-h1 a, h1 a:visited, h1 a:hover {
- color: #444;;
- text-decoration: none;
-}
-
-header, footer {
+footer {
   text-align: center;
 }
 
 article {
+  font-size: 18px;
   margin: auto;
   width: 80ch;
 }
