@@ -3,14 +3,6 @@
   --bs-link-hover-color: #1a0dab;
 }
 
-a:visited {
-  color: var(--bs-purple);
-}
-
-footer {
-  text-align: center;
-}
-
 article {
   font-size: 18px;
   margin: auto;
@@ -19,4 +11,12 @@ article {
 
 article p {
   max-width: 65ch;
+}
+
+article a:visited {
+  color: var(--bs-purple);
+}
+
+footer {
+  text-align: center;
 }
