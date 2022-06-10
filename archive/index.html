@@ -4,8 +4,13 @@ title: Patrick Lioi - Archive
 ---
 <article>
 {% for post in site.posts %}
+  {% assign postyear = post.date | date: "%Y" %}
+  {% if postyear != year %}
+    {% assign year = postyear %}
+    <h1>{{ year }}</h1>
+  {% endif %}
   <p>
-    <a href="{{ post.url }}">{{ post.title }}</a> {{ post.date | date: "%B %d, %Y" }}
+    <a href="{{ post.url }}">{{ post.title }}</a>
   </p>
 {% endfor %}
 </article>
