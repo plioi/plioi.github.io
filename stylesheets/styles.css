@@ -25,6 +25,13 @@ pre.highlight {
   padding: 10px;
 }
 
+blockquote {
+  margin-left: 3rem;
+  margin-right 3rem;
+  border-left: 2px solid black;
+  padding-left: 1rem;
+}
+
 footer {
   text-align: center;
 }
