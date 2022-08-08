@@ -53,7 +53,7 @@ What does this have to do with the Confidently Incorrect Mental Model? If you ha
 
 After some practice being self-aware of your own bubbling thoughts and after thinking about this post enough times, *those* votes will leave you more likely to bubble up the thought "Oh! This is the thing! This is the Confidently Incorrect Mental Model!" **The jarring and counterintuitive next move, then, is to forcefully wrench yourself out of that series of like thoughts.** You have to drag yourself, kicking and screaming, out of that cul-de-sac **by doing something that will force several new votes of a different kind**, thoughts that will help you to instead build up the correct mental model.
 
-You need to set the *apparent* immediate task aside and climb down to the ladder of mental abstraction to the absolute rock bottom basics, and take several smaller steps.
+You need to set the *apparent* immediate task aside and climb down the ladder of mental abstraction to the absolute rock bottom basics, and take several smaller steps.
 
 
 ## Drawing Geometry in WPF, with a Forms-Over-Data Mental Model
