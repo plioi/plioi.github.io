@@ -22,7 +22,6 @@ In the case of tests that cannot even be reached, we want to report exactly the 
 
 In other words, we want to &#8220;unwrap&#8221; any `TargetInvocationException` thrown by the test method invocation. We&#8217;d be tempted to do the following:
 
-{% gist 6170654 %}
 ```cs
 try
 {
@@ -48,7 +47,6 @@ I had two problems: the need to unwrap TargetInvocationExceptions, and the need 
 
 Mistakenly combining these two small problems into one all-encompassing exception-handling problem led me to an overly complex solution. Where ExceptionList belonged in a very small part of my system, it quickly spread everywhere. As a &#8220;fix&#8221; for the insufficient try/catch above, I did something like this:
 
-{% gist 6170663 %}
 ```cs
 ExceptionList exceptions = new ExceptionList();
 
@@ -74,7 +72,6 @@ Instead of throwing exceptions, I would return nonempty ExceptionLists. I was co
 
 Collecting and returning exceptions didn&#8217;t seem too offensive. The caller, though, _also_ had to adopt the pattern of collecting and returning exceptions. The caller&#8217;s caller? Collect and return. On and on. When Fixie needed to construct a test class, run several tests, and finally Dispose of the test class, I was doing this:
 
-{% gist 6170669 %}
 ```cs
 object instance;
 
@@ -101,7 +98,6 @@ Wait a sec. At each step I ask, &#8220;Did anything fail yet?&#8221;. If somethi
 
 The ExceptionList nonsense was spreading into the public customization API, which is _supposed_ to be Fixie&#8217;s main selling point. An example from a previous blog post included a ridiculous method of the form:
 
-{% gist 6170674 %}
 ```cs
 ExceptionList DoSomething()
 {
