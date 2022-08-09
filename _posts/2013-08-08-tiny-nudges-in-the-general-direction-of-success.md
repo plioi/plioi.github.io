@@ -29,7 +29,37 @@ I mitigated the combinatorial explosion by recognizing that if I covered _some_ 
 
 My test classes work with a nested hypothetical end user test class, containing a passing test and a failing test of its own:
 
-{% gist 6180921 %}
+```cs
+class SampleTestClass : IDisposable
+{
+    bool disposed;
+
+    public SampleTestClass()
+    {
+        WhereAmI();
+    }
+
+    public void Pass()
+    {
+        WhereAmI();
+    }
+
+    public void Fail()
+    {
+        WhereAmI();
+        throw new FailureException();
+    }
+
+    public void Dispose()
+    {
+        if (disposed)
+            throw new ShouldBeUnreachableException();
+        disposed = true;
+
+        WhereAmI();
+    }
+}
+```
 
 The WhereAmI() helper method simply writes the member to the console. The constructor writes &#8220;.ctor&#8221;, the Pass() method writes &#8220;Pass&#8221;, etc. From the outside, I can force any of these members to deliberately throw some generic exception, in order to prove what happens when end users&#8217; test classes throw exceptions at any step.
 
@@ -41,15 +71,50 @@ Finally, I had [meaningful coverage of the test class lifecycle](https://github.
 
 Yesterday&#8217;s mess resulted from the desire to rethrow the InnerException within a TargetInvocationException:
 
-{% gist 6170654 %}
+```cs
+try
+{
+    method.Invoke(instance, null);
+}
+catch (TargetInvocationException ex)
+{
+    throw ex.InnerException;
+}
+```
 
 Alas, rethrowing like this destroys the stack trace we want to report to the user, so I had done this:
 
-{% gist 6170663 %}
+```cs
+ExceptionList exceptions = new ExceptionList();
+
+try
+{
+    method.Invoke(instance, null);
+}
+catch (TargetInvocationException ex)
+{
+    exceptions.Add(ex.InnerException);
+}
+catch (Exception ex)
+{
+    exceptions.Add(ex);
+}
+
+return exceptions;
+```
 
 Returning the ExceptionList to the caller started the complexity virus I described yesterday. The real fix is to wrap-and-rethrow within an exception type devoted to this purpose, [PreservedException](https://github.com/fixie/fixie/blob/d3cc2fd1e2092bbcdc464d172a8ca5344a175ec9/src/Fixie/PreservedException.cs):
 
-{% gist 6180835 %}
+```cs
+try
+{
+    method.Invoke(instance, null);
+}
+catch (TargetInvocationException ex)
+{
+    throw new PreservedException(ex.InnerException);
+}
+```
 
 When I later catch exceptions, I do have to take care to unwrap the OriginalException before reporting to the user. Why not just let the TargetInvocationException throw to that same catch block? If my end-of-the-line catch block sees a TargetInvocationException, I don&#8217;t _know today and forevermore_ that it came from _this_ call to MethodInfo.Invoke(). If I catch a PreservedException, though, I _know_ that it is mine and that I should unwrap it.
 
