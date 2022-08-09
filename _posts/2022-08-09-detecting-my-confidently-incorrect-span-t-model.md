@@ -1,5 +1,5 @@
 ---
-title: 'Detecting My Confidently Incorrect `Span<T>` Model'
+title: 'Detecting My Confidently Incorrect Span&lt;T&gt; Model'
 layout: post
 ---
 Posts in this series:
