@@ -5,7 +5,7 @@ layout: post
 Posts in this series:
 
 1. [The Confidently Incorrect Mental Model](https://patrick.lioi.net/2022/08/08/the-confidently-incorrect-mental-model/)
-2. Detecting My Confidently Incorrect `Span<T>` Model
+2. [Detecting My Confidently Incorrect `Span<T>` Model](https://patrick.lioi.net/2022/08/09/detecting-my-confidently-incorrect-span-t-model/)
 3. Correcting My Confidently Incorrect `Span<T>` Model
 4. Benchmarking Parsley's `Span<T>` Upgrade
 
