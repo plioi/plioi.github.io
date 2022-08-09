@@ -11,7 +11,7 @@ article {
   padding-top: 10px;
   font-size: 18px;
   margin: auto;
-  width: 80ch;
+  max-width: 80ch;
 }
 
 article a:visited {
