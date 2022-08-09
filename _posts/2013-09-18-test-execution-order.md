@@ -14,10 +14,42 @@ I see three possibilities:
 
 I recently added support for test execution order in the [Fixie test framework](https://github.com/fixie/fixie). By default, no order is enforced, meaning you get the undefined (but not very surprising) order provided by the reflection API. If you want to opt into random shuffling or apply your own rule for ordering tests, you can do so in your testing conventions. To randomize the order of test cases within a test class, declare that they should be shuffled:
 
-{% gist 6602967 %}
+```cs
+public class CustomConvention : Convention
+{
+    public CustomConvention()
+    {
+        Classes
+          .NameEndsWith("Tests");
+
+        Cases
+          .Where(method => method.IsVoid());
+
+        ClassExecution
+          .CreateInstancePerTestClass()
+          .ShuffleCases();
+    }
+}
+```
 
 To specify your own sorting rule, call SortCases instead of ShuffleCases, providing a rule for ordering any two test cases:
 
-{% gist 6602950 %}
+```cs
+public class CustomConvention : Convention
+{
+    public CustomConvention()
+    {
+        Classes
+          .NameEndsWith("Tests");
+
+        Cases
+          .Where(method => method.IsVoid());
+
+        ClassExecution
+          .CreateInstancePerTestClass()
+          .SortCases((caseA, caseB) => String.Compare(caseA.Name, caseB.Name, StringComparison.Ordinal));
+    }
+}
+```
 
 When Fixie tests itself, it needs to say things like &#8220;Run all of the tests in this sample test class and then assert on the results and the output across the whole test class.&#8221; It&#8217;s just easier to write these assertions in a small amount of code if I can assume a reliable order of execution, so I sort them by name. Rather than sorting, most users would likely do nothing or call ShuffleCases, but SortCases is there if you really, really want it.
