@@ -138,9 +138,9 @@ public delegate bool Parser<T>(
    [NotNullWhen(false)] out string? expectation);
 ```
 
-**At this point, each new change was more significant, higher up the ladder of abstraction, and more confident in its use of spans.** See how we're assuming `char` sequences there? I wanted to generalize to recognizing patterns in any sequence, not just sequences of text.
+**At this point, each new change was more significant, higher up the ladder of abstraction, and more confident in its use of spans.**
 
-However, a system wide change of `Parser<T>` to a proposed `Parser<TItem, TValue>` would have introduced a hundred compiler errors, each needing attention until I could finally see if the concept worked. No thanks!
+See how we're assuming `char` sequences there? I wanted to generalize to recognizing patterns in any sequence, not just sequences of text. However, a system wide change of `Parser<T>` to a proposed `Parser<TItem, TValue>` would have introduced a hundred compiler errors, each needing attention until I could finally see if the concept worked. No thanks!
 
 As a step towards that big and uncertain move, I first duplicated the type. I could then opt into the new type bit by bit over several commits without breaking the whole library in the process. This enabled me to get **constant positive feedback about my progress** even during a "big" architectural change:
 
