@@ -49,7 +49,7 @@ The changes over these 300 commits are of course a bit much to cover in detail. 
 
 To get a feel for the overall work, though, it helps to watch the evolution of the `Parser<...>` type over time. This type happens to be pivotal to the library and represents any function that does a very small amount of work parsing the original sequence.
 
-For instance, a parser function might recognize and consume a single digit character, or might recognize an repetition of some other parser. You might then combine those two parser functions to get yet another little function the recognizes and consumes a series of digits.
+For instance, a parser function might recognize and consume a single digit character, or might recognize a repetition of some other parser function. You might then combine those two parser functions to get yet another parser function the recognizes and consumes a series of digits.
 
 Although the real work happens in tiny functions, this type started out as an interface wrapping that one function. It would accept an abstraction over the original text and produce a `Reply` representing the successful matching of an expected `T` value, or failure to match such a thing.
 
