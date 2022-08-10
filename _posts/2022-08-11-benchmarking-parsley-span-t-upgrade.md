@@ -1,5 +1,5 @@
 ---
-title: 'Benchmarking Parsley\'s Span&lt;T&gt; Upgrade'
+title: 'Benchmarking Parsley''s Span&lt;T&gt; Upgrade'
 layout: post
 ---
 Posts in this series:
