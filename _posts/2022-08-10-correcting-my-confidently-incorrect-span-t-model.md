@@ -118,7 +118,7 @@ public delegate bool Parser<T>(
    [NotNullWhen(false)] out string? expectation);
 ```
 
-**Here, spans started to gain a foothold both in the code and in my mental model.** I was able to phase out enough old obstacles and simplify the remaining concepts to the point where spans could really show up as the representation of the text under processing. It was incredibly satisfying to conceive of this change, write it, and see the compiler was happy. My mental model for *this much span stuff* was finally right:
+**Here, spans started to gain a foothold both in the code and in my mental model.** I was able to phase out enough old obstacles and simplify the remaining concepts to the point where spans could really show up as the representation of the text being parsed. It was incredibly satisfying to conceive of this change, write it, and see the compiler was happy. My mental model for *this much span stuff* was finally right:
 
 ```cs
 public delegate bool Parser<T>(
