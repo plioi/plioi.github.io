@@ -11,7 +11,7 @@ Posts in this series:
 
 In the previous post, I [detected that I had a Confidently Incorrect Mental Model for `Span<T>`](https://patrick.lioi.net/2022/08/09/detecting-my-confidently-incorrect-span-t-model/). I had a series of similar ideas bubbling up, but since they were all built atop a weak foundation, they weren't helping. I was stuck in a loop of generating similar ineffective ideas over and over.
 
-**The answer to the "thought bubbling" trap here is to deliberately and radically wrench yourself out of that train of thought by moving down the ladder of abstraction, way way down to the absolute nuts and bolts fundamentals you *do* know to be real.** Set your mental model aside. Take incredibly small steps. Make many tiny commits. Seek feedback for each tiny step. When feedback confirms your expectations, include it in the new mental model. When feedback rejects your expectations, stop the presses because this is an important moment of correction to the model.
+The answer to the "thought bubbling" trap here is to deliberately and radically wrench yourself out of that train of thought by moving down the ladder of abstraction, way way down to the absolute nuts and bolts fundamentals you *do* know to be real. Set your mental model aside. Take incredibly small steps. Make many tiny commits. Seek feedback for each tiny step. When feedback confirms your expectations, include it in the new mental model. When feedback rejects your expectations, stop the presses because this is an important moment of correction to the model.
 
 # 300 Tiny Adjustments
 
