@@ -7,7 +7,7 @@ Posts in this series:
 1. [The Confidently Incorrect Mental Model](https://patrick.lioi.net/2022/08/08/the-confidently-incorrect-mental-model/)
 2. [Detecting My Confidently Incorrect `Span<T>` Model](https://patrick.lioi.net/2022/08/09/detecting-my-confidently-incorrect-span-t-model/)
 3. [Correcting My Confidently Incorrect `Span<T>` Model](https://patrick.lioi.net/2022/08/10/correcting-my-confidently-incorrect-span-t-model/)
-4. Benchmarking Parsley's `Span<T>` Upgrade
+4. [Benchmarking Parsley's `Span<T>` Upgrade](https://patrick.lioi.net/2022/08/11/benchmarking-parsley-span-t-upgrade/)
 
 There is a class of software development challenge I'll call the Confidently Incorrect Mental Model. You think you do have a good mental model, a useful metaphor or a useful picture in your head, for what some technical concept is and how to work with it. You have a strong sense that you know what problems it is a good match for, what the solution will look like, and what you would expect to be valid or invalid usage of the thing. The moment you try to actually use it, though, you feel nothing but friction.
 

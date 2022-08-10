@@ -7,7 +7,7 @@ Posts in this series:
 1. [The Confidently Incorrect Mental Model](https://patrick.lioi.net/2022/08/08/the-confidently-incorrect-mental-model/)
 2. [Detecting My Confidently Incorrect `Span<T>` Model](https://patrick.lioi.net/2022/08/09/detecting-my-confidently-incorrect-span-t-model/)
 3. [Correcting My Confidently Incorrect `Span<T>` Model](https://patrick.lioi.net/2022/08/10/correcting-my-confidently-incorrect-span-t-model/)
-4. Benchmarking Parsley's `Span<T>` Upgrade
+4. [Benchmarking Parsley's `Span<T>` Upgrade](https://patrick.lioi.net/2022/08/11/benchmarking-parsley-span-t-upgrade/)
 
 
 As I covered in [The Confidently Incorrect Mental Model](https://patrick.lioi.net/2022/08/08/the-confidently-incorrect-mental-model/), when developing software we frequently run into the problem of using an invalid mental picture or metaphor for some technical concept we're working with. It can lead us into a conceptual dead end, where unhelpful ideas favor yet more unhelpful ideas, none of which align with real world feedback.
