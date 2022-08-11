@@ -112,7 +112,7 @@ Deep recursion is still fastest in Newtonsoft.Json, but with lower memory requir
 
 The repetition scenario heavily favored the span-heavy tools System.Text.Json and Parsley.
 
-Parsing typical documents is mostly a toss-up now, though System.Text.Json excels. This isn't surprising, as that's exactly its motivating use case.
+Parsing typical documents is mostly a toss-up now, though System.Text.Json excels. This isn't surprising, as that's exactly its motivating use case. What is surprising is that for the typical case, Parsley landed in second place. This scenario used to be *38 times* slower than the highly optimized System.Text.Json, but is now only *2 times* slower, all due to spans.
 
 Overall, applying spans alone not only brought Parsley into the stadium, but also made it highly competitive in this benchmark. As a result, the different tools can instead be evaluated for their ease of use, user-facing feature set, and communities rather than merely their performance characteristics. That's much more interesting, and can result in much better diversity of features, than having to choose a tool by performance alone.
 
