@@ -67,6 +67,8 @@ First, I ran these benchmarks with the older, pre-`Span<T>` implementation of Pa
 
 ```
 
+The columns I'm focusing on are the `Mean` duration and the `Allocated` memory.
+
 The first interesting thing is that our expected winner, System.Text.Json, was not always a definitive winner after all. Newtonsoft.Json was faster at handling deeply recursive objects, but needed slightly more memory. The Repetition scenario told a different story, with Newtonsoft.Json taking much more time and memory while System.Text.Json came out way ahead. In the typical scenario, as expected, System.Text.Json knocked it out of the park both in speed and memory allocated.
 
 Alas, the old pre-`Span<T>` implementation of Parsley was just ridiculous here. It was never optimized, and was full of big, slow `string.Substring(...)` operations. The apparently simple case of parsing a long array took *52 times* longer to run than System.Text.Json, put tons more pressure on the garbage collector by keeping a lot of objects stuck in memory through to Gen 2, and had to allocate *121 times* more memory than System.Text.Json. Similarly, Parsley was in a distant fourth place in the typical scenario.
