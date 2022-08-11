@@ -100,3 +100,5 @@ We have a powerful, naturally ability to bubble up new ideas, evaluate them, and
 It can also get us stuck in a mental dead end when the sequence of thoughts is built atop an incorrect mental model. The sequence of unhelpful thoughts yields more unhelpful thoughts.
 
 By forcefully setting aside the chain of thoughts and by instead taking a sequence of much smaller and much more fundamental steps, we can start a new chain of thoughts that *are* valid, resulting in a better mental model, resulting in more useful thought generation to solve the problem at hand.
+
+In the [next post](https://patrick.lioi.net/2022/08/09/detecting-my-confidently-incorrect-span-t-model/), we'll see how this problem cropped up while I was trying to learn about C#'s `Span<T>`.
