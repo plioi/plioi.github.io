@@ -27,7 +27,7 @@ There are lies, damned lies, and software benchmarks. Let's spell out the benchm
 
 As a general-purpose parsing library, we'd like to prove that this works for more than what a typical regex would do. We want to parse a programming language or complex document format with these libraries. Since JSON is ubiquitous and well understood, it's a good target for our benchmark.
 
-The Pidgin library is highly optimized and relies on the same fundamental computer science concepts as Parsley. If we can *remotely* compete with them using only `Span<T>` for optimization, that's a huge with for spans.
+The Pidgin library is highly optimized and relies on the same fundamental computer science concepts as Parsley. If we can *remotely* compete with them using only `Span<T>` for optimization, that's a huge win for spans.
 
 For context, though, it's good to also see what you can get with a bespoke JSON parser. We have two reference tools here. Newtonsoft.Json is an exceptional library with an incredible reach among .NET projects. It represents a great balance of speed and utility, while being constrained by backward compatibility goals. It's not the absolute fastest option, and it doesn't claim to be. It does, however, need to run fast enough to drive a ton of .NET projects in production. The newer System.Text.Json parser, however, was written specifically with `Span<T>` optimization in mind. Its entire purpose is to be a highly optimized bespoke JSON parser.
 
