@@ -71,4 +71,4 @@ At this point, I realized the familiar sensation of the Confidently Incorrect Me
 1. I honestly felt like I had a good mental model.
 2. The *moment* my hands met the keyboard, all I felt was friction.
 
-That conflict in the two symptoms was jarring because my own thoughts were clearly mismatched with reality. Thankfully, my thoughts while coding are so often mismatched with reality that I could recognize the feeling and make an appropriate pivot. I was stuck, and *thinking* was making it *worse*. In the next post, we'll see how I applied the antidote.
+That conflict in the two symptoms was jarring because my own thoughts were clearly mismatched with reality. Thankfully, my thoughts while coding are so often mismatched with reality that I could recognize the feeling and make an appropriate pivot. I was stuck, and *thinking* was making it *worse*. In the [next post](https://patrick.lioi.net/2022/08/10/correcting-my-confidently-incorrect-span-t-model/), we'll see how I applied the antidote.

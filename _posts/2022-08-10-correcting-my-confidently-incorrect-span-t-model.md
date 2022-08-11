@@ -188,4 +188,4 @@ It's no great feat of mental strength: the singular moment of strength was days 
 
 When the mental model and the level of abstraction are aligned, it no longer feels like work. Flow takes over. Your ego shuts the heck up. Hours of progress can come and go in the blink of an eye leaving you feeling refreshed. When the mental model and the level of abstraction are misaligned, we can recognize that friction and simply pivot to fundamentals and feedback systems until flow takes over and brings you back on course.
 
-That's a lot of fancy talk, but did it really help? In the next post, we'll see benchmarks of Parsley before and after this application of `Span<T>`, using a few popular alternatives as a baseline.
+That's a lot of fancy talk, but did it really help? In the [next post](https://patrick.lioi.net/2022/08/11/benchmarking-parsley-span-t-upgrade/), we'll see benchmarks of Parsley before and after this application of `Span<T>`, using a few popular alternatives as a baseline.
