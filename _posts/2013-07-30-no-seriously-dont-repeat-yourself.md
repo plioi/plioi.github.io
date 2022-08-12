@@ -1,5 +1,5 @@
 ---
-title: 'No, Seriously. Don't Repeat Yourself.'
+title: 'No, Seriously. Don''t Repeat Yourself.'
 layout: post
 ---
 A few weeks back, while writing about Fixie's [treatment of command line arguments](http://patrick.lioi.net/2013/07/12/by-your-command-line/), I discovered a bug which had been lurking for months. This bug was easy to trigger and produced a useless error message, making for a lame first impression, so I'd like to do a quick postmortem.

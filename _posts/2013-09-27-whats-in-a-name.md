@@ -1,5 +1,5 @@
 ---
-title: 'What's in a Name?'
+title: 'What''s in a Name?'
 layout: post
 ---
 In my last post, we saw how Fixie lets you define [conventions for parameterized tests](https://patrick.lioi.net/2013/09/27/a-swiss-army-katana/). My goal was to provide a way for convention authors to tell Fixie what inputs should be passed into any given test method, allowing for potentially-many calls to a single test method. Each call can pass or fail independently.

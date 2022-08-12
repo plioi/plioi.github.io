@@ -1,5 +1,5 @@
 ---
-title: 'Shufflin' Ain't Sortin''
+title: 'Shufflin'' Ain''t Sortin'''
 layout: post
 ---
 I recently added a test-shuffling feature to the [Fixie](https://github.com/fixie/fixie) test framework. The basic idea is that you can opt into randomizing the order of execution for tests within a test class. I'll cover the details of the test shuffling feature in my next post. Today, let's take a deeper look at shuffling in general. Readily-available advice on shuffling is actually quite wrong.
