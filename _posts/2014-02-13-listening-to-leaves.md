@@ -12,11 +12,11 @@ From early on, Fixie has used the following abstraction for runners to implement
 
 {% gist 8986300 %}
 
-Fixie calls each method as the corresponding action takes place. The ConsoleListener reacts by echoing things to standard out, the TestDrivenListener reacts by echoing things to TestDriven.NET&#8217;s own listener abstraction, etc.
+Fixie calls each method as the corresponding action takes place. The ConsoleListener reacts by echoing things to standard out, the TestDrivenListener reacts by echoing things to TestDriven.NET's own listener abstraction, etc.
 
-When it became clear that being able to output an NUnit-style XML file would help with build server integration, and in turn adoption of Fixie, I thought, &#8220;Gee, that&#8217;s just another Listener. It&#8217;ll be a breeze.&#8221;
+When it became clear that being able to output an NUnit-style XML file would help with build server integration, and in turn adoption of Fixie, I thought, &#8220;Gee, that's just another Listener. It'll be a breeze.&#8221;
 
-I even got [a pull request](https://github.com/fixie/fixie/commit/08c430fa38bbf811963932553b1f598dd29ec8ef) that did exactly what I&#8217;d been picturing. It included a Listener which reacted to each event (AssemblyStarted, CasePassed&#8230;) by producing XML nodes of the NUnit style. The original developer realized there were two main problems with using the Listener abstraction:
+I even got [a pull request](https://github.com/fixie/fixie/commit/08c430fa38bbf811963932553b1f598dd29ec8ef) that did exactly what I'd been picturing. It included a Listener which reacted to each event (AssemblyStarted, CasePassed&#8230;) by producing XML nodes of the NUnit style. The original developer realized there were two main problems with using the Listener abstraction:
 
   1. **Listener has the wrong lifetime for reporting on the run.** Each test assembly must be executed within its own AppDomain, and the Listener itself lives within that AppDomain. A single Listener can only ever know about the results of a single test assembly, but the XML report needs to include results from all assemblies in the run. The initial implementation of the feature could only work if your solution had one test project.
   2. **Your goal is to build a tree, but all you get is leaves.** A run of your tests, conceptually, produces a tree of results: tests within classes within assemblies. The Listener abstraction, though, gives you that information by only reporting the _leaves_ of that tree: a passed test case, a failed test case, or a skipped test case. The NUnit XML Listener had to infer the class associated with each case and build up an internal dictionary mapping classes to cases, so that it could finally output the tree structure as an XML document (otherwise, you might accidentally report the same class several times over, once for each method in that class).
@@ -29,4 +29,4 @@ With help from [Sharon Cichelli](https://lostechies.com/sharoncichelli/) at a me
 
 The resulting tree processing class (no longer a Listener), is [NUnitXmlReport](https://github.com/fixie/fixie/blob/d7c712a5286772dc3829a74080fbb1e969b45546/src/Fixie/Reports/NUnitXmlReport.cs). It is clean and straightforward: the shape of the code mimics the shape of the resulting XML document. It works no matter how many test projects your solution has. Supporting the [similar xUnit XML format](https://github.com/fixie/fixie/blob/d7c712a5286772dc3829a74080fbb1e969b45546/src/Fixie/Reports/XUnitXmlReport.cs) was likewise simple. No need to _infer_ the tree structure given only leaves; instead we simply turn one tree into another.
 
-When you find yourself having to jump through hoops to make something _simple_ work, take a step back and evaluate whether you&#8217;re using an abstraction that helps you or hinders you.
+When you find yourself having to jump through hoops to make something _simple_ work, take a step back and evaluate whether you're using an abstraction that helps you or hinders you.

@@ -2,23 +2,23 @@
 title: AutoFixie
 layout: post
 ---
-Last week, we saw how the Fixie test framework deals with [test method parameters](https://patrick.lioi.net/2013/09/27/a-swiss-army-katana/). Your custom convention calls a Parameters(&#8230;) hook, supplying an explanation of _where_ parameters should come from and _how many times_ the test method should be called. The example convention was a little underwhelming, since parameters had to be explicitly listed within [Input] attributes. Today, we&#8217;ll get our parameter values from somewhere more interesting, [AutoFixture](https://github.com/AutoFixture/AutoFixture).
+Last week, we saw how the Fixie test framework deals with [test method parameters](https://patrick.lioi.net/2013/09/27/a-swiss-army-katana/). Your custom convention calls a Parameters(&#8230;) hook, supplying an explanation of _where_ parameters should come from and _how many times_ the test method should be called. The example convention was a little underwhelming, since parameters had to be explicitly listed within [Input] attributes. Today, we'll get our parameter values from somewhere more interesting, [AutoFixture](https://github.com/AutoFixture/AutoFixture).
 
-Parameterized tests are useful when a single test method needs to run many times against a large set of independent inputs. However, it&#8217;s perfectly reasonable for parameterized tests to be called a _single_ time, and in this case the purpose of using parameters is to hide away some otherwise-distracting instantiation code. Your test can focus on the actual system-under-test. AutoFixture&#8217;s a great example for single-call parameterized test methods, since it&#8217;s purpose is to automate boring class-population code you&#8217;d rather not clutter your tests with.
+Parameterized tests are useful when a single test method needs to run many times against a large set of independent inputs. However, it's perfectly reasonable for parameterized tests to be called a _single_ time, and in this case the purpose of using parameters is to hide away some otherwise-distracting instantiation code. Your test can focus on the actual system-under-test. AutoFixture's a great example for single-call parameterized test methods, since it's purpose is to automate boring class-population code you'd rather not clutter your tests with.
 
-Let&#8217;s start with a simple Person class:
+Let's start with a simple Person class:
   
 {% gist 6846260 %}
 
-Next, I have a test class with three tests. Two of the tests have parameters. Since I&#8217;m just investigating Fixie&#8217;s ability to pass meaningful values to these tests, they write the actual incoming values to the console instead of making assertions:
+Next, I have a test class with three tests. Two of the tests have parameters. Since I'm just investigating Fixie's ability to pass meaningful values to these tests, they write the actual incoming values to the console instead of making assertions:
   
 {% gist 6846271 %}
 
-I haven&#8217;t told Fixie what it means for a test to have parameters, so when we run our test under the default convention we see some failures:
+I haven't told Fixie what it means for a test to have parameters, so when we run our test under the default convention we see some failures:
   
 {% gist 6846310 %}
 
-Today, I&#8217;d like parameters to come from AutoFixture, similar to [AutoFixture&#8217;s support for xUnit Theories](http://blog.ploeh.dk/2010/10/08/AutoDataTheorieswithAutoFixture/). I needed to define an extension method for AutoFixture first, though, because normal AutoFixture usage involves knowing ahead of time what type to instantiate. Instead, we want to be able to ask AutoFixture to instantiate any arbitrary Type:
+Today, I'd like parameters to come from AutoFixture, similar to [AutoFixture's support for xUnit Theories](http://blog.ploeh.dk/2010/10/08/AutoDataTheorieswithAutoFixture/). I needed to define an extension method for AutoFixture first, though, because normal AutoFixture usage involves knowing ahead of time what type to instantiate. Instead, we want to be able to ask AutoFixture to instantiate any arbitrary Type:
   
 {% gist 6846415 %}
 
@@ -26,7 +26,7 @@ Finally, I define a custom convention which takes advantage of the Parameters(&#
   
 {% gist 6846456 %}
 
-As we saw last week, the inherited Parameters(&#8230;) method wants you to provide a method that takes in a MethodInfo and returns an IEnumerable<object[]>, since in general it needs to support any number of calls to a given test method. For today&#8217;s AutoFixture convention, though, we really just want to call each parameterized test **once**, and we want parameters to be based simply on the parameter types. Therefore, this convention includes a convenience overload for Parameters(&#8230;) which accepts a Func<Type, object>. This overload finds a single value for each parameter, based on its type, and returns a single-item array to provoke a single call to each test method. If it proves useful in general, I&#8217;ll promote this overload to be accessible from any convention.
+As we saw last week, the inherited Parameters(&#8230;) method wants you to provide a method that takes in a MethodInfo and returns an IEnumerable<object[]>, since in general it needs to support any number of calls to a given test method. For today's AutoFixture convention, though, we really just want to call each parameterized test **once**, and we want parameters to be based simply on the parameter types. Therefore, this convention includes a convenience overload for Parameters(&#8230;) which accepts a Func<Type, object>. This overload finds a single value for each parameter, based on its type, and returns a single-item array to provoke a single call to each test method. If it proves useful in general, I'll promote this overload to be accessible from any convention.
 
 Running the tests again, we see that each test is successfully passed values generated by AutoFixture:
   

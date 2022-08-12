@@ -14,7 +14,7 @@ The collected duration, a TimeSpan, is one of the things passed along to the Lis
 
 ## The Black Hole Bug
 
-Next, TeamCity integration motivated the discovery and fix of a bug which could allow a &#8220;rude&#8221; test to trample Fixie&#8217;s own output.
+Next, TeamCity integration motivated the discovery and fix of a bug which could allow a &#8220;rude&#8221; test to trample Fixie's own output.
 
 TeamCity, and potentially any other test reporting tool, wants to be handed the string equivalent of any output that a test wrote to the console. In general, tests should rely on assertions as their main form of &#8220;output&#8221;, but sometimes console output can help with diagnosing tricky problems. Maybe stepping through a test in the debugger locally works fine, but then the same test fails on the CI machine. Resorting to &#8220;low tech&#8221; debugging with `Console.WriteLine`s may be the quickest path to a diagnosis.
 
@@ -22,9 +22,9 @@ As I started to work my way through the console-capture feature, I realized that
 
 {% gist 7089325 %}
 
-Fixie starts up a test run, outputting results to the console as it goes, either via ConsoleListener or TeamCityListener. It reaches this evil test, outputs &#8220;All is well.&#8221;, and then the developer sees _nothing else_. All subsequent attempts by Fixie to write anything to the console, such as other tests&#8217; failures, fall into the blackHole StringWriter instead of the real console.
+Fixie starts up a test run, outputting results to the console as it goes, either via ConsoleListener or TeamCityListener. It reaches this evil test, outputs &#8220;All is well.&#8221;, and then the developer sees _nothing else_. All subsequent attempts by Fixie to write anything to the console, such as other tests' failures, fall into the blackHole StringWriter instead of the real console.
 
-Imagine you&#8217;re using Fixie to test your project, and your project happens to redirect console output for legitimate reasons, but fails to gracefully return things to the original output TextWriter? Suddenly, Fixie stops telling you what&#8217;s going on. Imagine having to diagnose that issue. Bad news.
+Imagine you're using Fixie to test your project, and your project happens to redirect console output for legitimate reasons, but fails to gracefully return things to the original output TextWriter? Suddenly, Fixie stops telling you what's going on. Imagine having to diagnose that issue. Bad news.
 
 Thankfully, implementing the console output capture feature fixes this bug at the same time.
 
