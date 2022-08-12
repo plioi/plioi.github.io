@@ -22,6 +22,6 @@ To produce an NUnit- or xUnit-style XML report, you need to include one of the F
 
 > It looks like the xUnit file format can only describe a single test assembly, while the NUnit file format supports any number of assemblies.
 
-I'm using the "fixie:&#8221; qualifier for built-in arguments to avoid ever conflicting with an end user's own custom arguments.
+I'm using the "fixie:" qualifier for built-in arguments to avoid ever conflicting with an end user's own custom arguments.
 
 Each of these commands will produce a file named TestResult.xml of the desired format, which your build server can be instructed to read and interpret. Here are some samples produced when running Fixie's own self-tests: [NUnit format](https://gist.github.com/plioi/8743559), [xUnit](https://gist.github.com/plioi/8743573) format.

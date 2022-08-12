@@ -24,6 +24,6 @@ I didn't run into this before because my build script happened to pass absolute 
 
 The fix was simple enough: [convert incoming paths to absolute paths _immediately_](https://github.com/fixie/fixie/commit/104c0c8dda724f6916c364b48b6fb0c17918859a), allowing the rest of the system to work exclusively with absolute paths.
 
-`Path.GetFullPath(string)`, at a quick glance, seems to be a "pure&#8221; function: string goes in, the machine gets a little bit warmer, string comes out. However, this function can only work by reaching out to the environment for an additional input: the current directory. I made the "same call&#8221; twice, but only the first call produced a meaningful result.
+`Path.GetFullPath(string)`, at a quick glance, seems to be a "pure" function: string goes in, the machine gets a little bit warmer, string comes out. However, this function can only work by reaching out to the environment for an additional input: the current directory. I made the "same call" twice, but only the first call produced a meaningful result.
 
 Most explanations of the DRY principle focus on the risks of copying chunks of code, due to maintenance issues you can run into later on. Here, though, even a single redundant function call led to problems. Duplicating even simple function calls can lead to issues when those functions are incorrectly treated as pure.

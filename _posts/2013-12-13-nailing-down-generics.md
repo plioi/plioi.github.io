@@ -15,11 +15,11 @@ Actually, for the purposes of this discussion, this is **not** one method declar
   * `void GenericMethod<Customer>(Customer input)`
   * &#8230;
 
-Each time you make a call, the compiler decides which of the infinite methods you really meant. It makes this decision each time you call something called "GenericMethod&#8221;. It makes this decision based on the compile-time types at each call site:
+Each time you make a call, the compiler decides which of the infinite methods you really meant. It makes this decision each time you call something called "GenericMethod". It makes this decision based on the compile-time types at each call site:
 
 {% gist 7944816 %}
 
-The compiler knows the compile-time type of each argument, and compares this to the generic type definition in order to pick the single winning "specific&#8221; method.
+The compiler knows the compile-time type of each argument, and compares this to the generic type definition in order to pick the single winning "specific" method.
 
 Easy, right? C# 101 stuff.
 
@@ -35,13 +35,13 @@ Easy, right? Wrong. Each call to Invoke above would throw a System.InvalidOperat
 
 > Late bound operations cannot be performed on types or methods for which ContainsGenericParameters is true.
 
-This exception message achieves the high honor of being both 100% accurate and 10% helpful. "Late bound operation&#8221; is compiler-speak for "something that is figured out dynamically at runtime instead of statically at compile time.&#8221; The figuring out happens _later_ than compilation. The late bound operation, the thing we're trying to _do_ dynamically at runtime, is the method invocation itself.
+This exception message achieves the high honor of being both 100% accurate and 10% helpful. "Late bound operation" is compiler-speak for "something that is figured out dynamically at runtime instead of statically at compile time." The figuring out happens _later_ than compilation. The late bound operation, the thing we're trying to _do_ dynamically at runtime, is the method invocation itself.
 
-Translation: the exception message is saying, "You cannot invoke the method because it _still_ has generic parameters.&#8221; In order to invoke it, we're going to have to first nail down the generic parameters to specific concrete types so that they won't be generic anymore. We asked .NET to do the impossible:
+Translation: the exception message is saying, "You cannot invoke the method because it _still_ has generic parameters." In order to invoke it, we're going to have to first nail down the generic parameters to specific concrete types so that they won't be generic anymore. We asked .NET to do the impossible:
 
-> You: "Please call this method.&#8221;
+> You: "Please call this method."
 > 
-> .NET: "No. That is not a method. It is an infinite number of methods. Try again, and tell me which one you meant.&#8221;
+> .NET: "No. That is not a method. It is an infinite number of methods. Try again, and tell me which one you meant."
 
 ## Once More, With Feeling
 

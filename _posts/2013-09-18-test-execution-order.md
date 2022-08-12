@@ -52,4 +52,4 @@ public class CustomConvention : Convention
 }
 ```
 
-When Fixie tests itself, it needs to say things like "Run all of the tests in this sample test class and then assert on the results and the output across the whole test class.&#8221; It's just easier to write these assertions in a small amount of code if I can assume a reliable order of execution, so I sort them by name. Rather than sorting, most users would likely do nothing or call ShuffleCases, but SortCases is there if you really, really want it.
+When Fixie tests itself, it needs to say things like "Run all of the tests in this sample test class and then assert on the results and the output across the whole test class." It's just easier to write these assertions in a small amount of code if I can assume a reliable order of execution, so I sort them by name. Rather than sorting, most users would likely do nothing or call ShuffleCases, but SortCases is there if you really, really want it.

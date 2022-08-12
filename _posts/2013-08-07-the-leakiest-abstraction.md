@@ -2,7 +2,7 @@
 title: The Leakiest Abstraction
 layout: post
 ---
-Centuries from now, when archaeologists are digging through the rubble patch located over the former home of the GitHub servers, they will recover a copy of [Fixie's repository](https://github.com/fixie/fixie). Inspecting its history, an unfortunate soul will discover a particularly horrible abstraction. Upon unearthing that abstraction, the [lights in Cairo](http://www.kingtutone.com/tutankhamun/curse/) will mysteriously go out. Soon after, kids will tell ghost stories around campfires about just how terrible Patrick's Horribly Leaky Abstraction (the PHLA) really was. Parents will begin to threaten unruly children with it: "Be good, or Santa will leave a lump of PHLA in your stocking!&#8221; After a while, college students and young professionals envious of college students will promote the inevitable PHLA meme on reddit.
+Centuries from now, when archaeologists are digging through the rubble patch located over the former home of the GitHub servers, they will recover a copy of [Fixie's repository](https://github.com/fixie/fixie). Inspecting its history, an unfortunate soul will discover a particularly horrible abstraction. Upon unearthing that abstraction, the [lights in Cairo](http://www.kingtutone.com/tutankhamun/curse/) will mysteriously go out. Soon after, kids will tell ghost stories around campfires about just how terrible Patrick's Horribly Leaky Abstraction (the PHLA) really was. Parents will begin to threaten unruly children with it: "Be good, or Santa will leave a lump of PHLA in your stocking!" After a while, college students and young professionals envious of college students will promote the inevitable PHLA meme on reddit.
 
 Early in its life, I introduced a leaky abstraction into the Fixie test framework. It didn't all happen at once, but it got away from me before I realized what I was doing. Deviously, it _worked_ right up until it didn't, so it had plenty of opportunity to leak, spreading incidental complexity through the whole system. A week and 34 commits later, I've finally corrected the problem.
 
@@ -20,7 +20,7 @@ In the case of tests that are reached yet fail, we want to report the _wrapped_ 
 
 In the case of tests that cannot even be reached, we want to report exactly the Exception that was thrown. The test framework has failed and the least we can do is explain the plain truth of that failure.
 
-In other words, we want to "unwrap&#8221; any `TargetInvocationException` thrown by the test method invocation. We'd be tempted to do the following:
+In other words, we want to "unwrap" any `TargetInvocationException` thrown by the test method invocation. We'd be tempted to do the following:
 
 ```cs
 try
@@ -35,7 +35,7 @@ catch (TargetInvocationException ex)
 
 This attempt would certainly usher test failures back to rest of the test framework. Test methods that are reached yet fail will throw the actual assertion failure back to the rest of the framework, to be caught and reported to the user. Test framework bugs will bypass this catch block (since they are some _other_ Exception type) and likewise throw back to the rest of the framework, to be caught and reported to the user.
 
-This attempt is flawed. "throw ex.InnerException&#8221; will propagate the original exception _message_ correctly, but the exception _stack trace_ will be destroyed. The end user will see that their assertion failed, but it will say that it failed within the above catch block instead of within their test. They get the right message, but they don't know where in their own code the failure happened!
+This attempt is flawed. "throw ex.InnerException" will propagate the original exception _message_ correctly, but the exception _stack trace_ will be destroyed. The end user will see that their assertion failed, but it will say that it failed within the above catch block instead of within their test. They get the right message, but they don't know where in their own code the failure happened!
 
 ## The Conflation
 
@@ -45,7 +45,7 @@ To address the issue of potentially-many exceptions per test, I added an abstrac
 
 I had two problems: the need to unwrap TargetInvocationExceptions, and the need to collect multiple exceptions per test case.
 
-Mistakenly combining these two small problems into one all-encompassing exception-handling problem led me to an overly complex solution. Where ExceptionList belonged in a very small part of my system, it quickly spread everywhere. As a "fix&#8221; for the insufficient try/catch above, I did something like this:
+Mistakenly combining these two small problems into one all-encompassing exception-handling problem led me to an overly complex solution. Where ExceptionList belonged in a very small part of my system, it quickly spread everywhere. As a "fix" for the insufficient try/catch above, I did something like this:
 
 ```cs
 ExceptionList exceptions = new ExceptionList();
@@ -66,7 +66,7 @@ catch (Exception ex)
 return exceptions;
 ```
 
-Instead of throwing exceptions, I would return nonempty ExceptionLists. I was correctly "unwrapping&#8221; TargetInvocationExceptions, and I was allowing the rest of the framework to combine these exceptions with things like failed teardown and Dispose() exceptions. I thought I was doing Good.
+Instead of throwing exceptions, I would return nonempty ExceptionLists. I was correctly "unwrapping" TargetInvocationExceptions, and I was allowing the rest of the framework to combine these exceptions with things like failed teardown and Dispose() exceptions. I thought I was doing Good.
 
 ## The Leak
 
@@ -94,7 +94,7 @@ else
 }
 ```
 
-Wait a sec. At each step I ask, "Did anything fail yet?&#8221;. If something failed, I note the failure and then stop doing the rest of the operation. These if/else/return sequences are suspiciously like try/catch/throw, except that they are complex, nonidiomatic C#, and just _weird_.
+Wait a sec. At each step I ask, "Did anything fail yet?". If something failed, I note the failure and then stop doing the rest of the operation. These if/else/return sequences are suspiciously like try/catch/throw, except that they are complex, nonidiomatic C#, and just _weird_.
 
 The ExceptionList nonsense was spreading into the public customization API, which is _supposed_ to be Fixie's main selling point. An example from a previous blog post included a ridiculous method of the form:
 
@@ -113,7 +113,7 @@ ExceptionList DoSomething()
 
 Insanity.
 
-What if the "actual work&#8221; here, um, throws an exception? Better put some kind of try/catch at the end of the line to patch things over, right? Eventually I ran into a situation where I just couldn't keep propagating the weirdness, and I was _again_ left with the need to safely re-throw some InnerException. I didn't just reinvent exceptions, I made an _insufficient_ reimplementation of exceptions.
+What if the "actual work" here, um, throws an exception? Better put some kind of try/catch at the end of the line to patch things over, right? Eventually I ran into a situation where I just couldn't keep propagating the weirdness, and I was _again_ left with the need to safely re-throw some InnerException. I didn't just reinvent exceptions, I made an _insufficient_ reimplementation of exceptions.
 
 The thing that finally lifted my blinders was that I discoverd this buggy need-to-rethrow-again while _all of my tests were happily green_. Stop all of the presses. Hold all of the phones. Shut Down Everything.
 

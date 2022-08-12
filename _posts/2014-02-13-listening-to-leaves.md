@@ -14,7 +14,7 @@ From early on, Fixie has used the following abstraction for runners to implement
 
 Fixie calls each method as the corresponding action takes place. The ConsoleListener reacts by echoing things to standard out, the TestDrivenListener reacts by echoing things to TestDriven.NET's own listener abstraction, etc.
 
-When it became clear that being able to output an NUnit-style XML file would help with build server integration, and in turn adoption of Fixie, I thought, "Gee, that's just another Listener. It'll be a breeze.&#8221;
+When it became clear that being able to output an NUnit-style XML file would help with build server integration, and in turn adoption of Fixie, I thought, "Gee, that's just another Listener. It'll be a breeze."
 
 I even got [a pull request](https://github.com/fixie/fixie/commit/08c430fa38bbf811963932553b1f598dd29ec8ef) that did exactly what I'd been picturing. It included a Listener which reacted to each event (AssemblyStarted, CasePassed&#8230;) by producing XML nodes of the NUnit style. The original developer realized there were two main problems with using the Listener abstraction:
 

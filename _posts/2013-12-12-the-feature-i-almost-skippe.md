@@ -10,7 +10,7 @@ Second, if you _really_ wanted to skip tests in Fixie, you could already effecti
 
 {% gist 7930603 %}
 
-> In other words, "a method is a test method if it isn't marked as skipped.&#8221;
+> In other words, "a method is a test method if it isn't marked as skipped."
 
 I don't like skipped tests, and I basically had poor-man's skipped tests anyway, so why bother to implement true support for them in Fixie? Well, the convention trick above is _even worse_ than normal, because the skipped tests would not even show up in result counts and would not come with warnings in the output. They'd be even easier to forget and let rot. Also, Fixie's convention-based approach to test discovery and execution opens the door to creatively mitigating the risks of skipping tests, as we'll see in our example below.
 
@@ -26,6 +26,6 @@ You might define a skip attribute that will skip a test until a specific GitHub 
 
 ## The Implementation -or- The Greatest Pull Request Ever
 
-Other test frameworks treat skippedness as a kind of _execution result_. "Run this test.&#8221; "No. I'll pretend I did _and then tell you that I pretended I did_.&#8221; This is weird, and I was about to mimic that weirdness when Max Malook (aka [mexx](https://github.com/mexx) on GitHub) found a much more clear way to implement it.
+Other test frameworks treat skippedness as a kind of _execution result_. "Run this test." "No. I'll pretend I did _and then tell you that I pretended I did_." This is weird, and I was about to mimic that weirdness when Max Malook (aka [mexx](https://github.com/mexx) on GitHub) found a much more clear way to implement it.
 
 From a user's point of view, 3 things can happen to a given test: it can run and fail; it can run and pass; or it can be set aside, counted and warned as never having been run in the first place. mexx's implementation does exactly that: after determining that a method is a test, a separate decision is made about whether it should be skipped. If it should be skipped, it is counted and reported but we never bother running it and we never bother pretending to run it. Simple, and a perfect match for the end-user's expectations. We didn't have to muddy the waters of what it means for a test to be executed. [mexx's pull request was fantastic](https://github.com/fixie/fixie/pull/24/files): a clear implementation, with test coverage that matched the existing test style I was using for similar features.
