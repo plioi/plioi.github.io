@@ -37,7 +37,7 @@ Each method was a test case: a single thing that could pass or fail. The naming 
 
 When I wanted to start working with parameterized tests, in which a single test method is potentially-many individual test cases, I was immediately running into barriers put up by the false equivalence between methods and cases. Shakespeare had it wrong &#8212; names matter. That scene should have gone more like this:
 
-> **Romeo**: What's in a name? A rose by any other name would&#8211;  
+> **Romeo**: What's in a name? A rose by any other name would-
 > **Juliet**: Stop right there. "What's in a name!?" A MethodInfo by any other name could be mistaken for a Case and hamper your ability to reason about your own software, that's what.  
 > **Romeo**: I think we should see other people.
 
