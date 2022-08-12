@@ -17,7 +17,7 @@ You may have also run into similar shufflers that use Guid.NewGuid() for the sam
 
 I'm sure I've followed this advice on past projects, and never ran into any trouble. It might actually work, but if so it works only due to a convenient accident of implementation details.
 
-Sorting algorithms operate with a very specific contract in mind. They frequently need to compare two items, and you are expected to provide a consistent answer to the question, "Which comes first, a or b?". (In the case of OrderBy, the lambda provides a "key selector" for shorthand: a comes before b if a's &#8216;key' comes before b's &#8216;key'. The overall contract of consistent ordering is still present.)
+Sorting algorithms operate with a very specific contract in mind. They frequently need to compare two items, and you are expected to provide a consistent answer to the question, "Which comes first, a or b?". (In the case of OrderBy, the lambda provides a "key selector" for shorthand: a comes before b if a's 'key' comes before b's 'key'. The overall contract of consistent ordering is still present.)
 
 Consider a humble [Bubble Sort](http://stackoverflow.com/a/1595310):
 
