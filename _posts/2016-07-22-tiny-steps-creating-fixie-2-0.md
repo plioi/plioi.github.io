@@ -6,7 +6,7 @@ With the recent release of .NET Core, it's time to upgrade the [Fixie test frame
 
 Recently, I gave a talk about .NET Core and the challenges it poses for test frameworks like this one.
 
-&#8212; Well, that's a lie. &#8212;
+- Well, that's a lie. -
 
 It's not about that at all. It's _really_ about how to recognize a big family of architectural problems in software projects, and how to go about solving those problems in tiny steps:
 

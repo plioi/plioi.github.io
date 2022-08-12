@@ -35,7 +35,7 @@ public MethodFilter Cases { get; private set; }
 
 Each method was a test case: a single thing that could pass or fail. The naming was weird, though. Why not `public CaseFilter Cases` or `public MethodFilter Methods`? The mismatch in naming should have jumped out at me, and maybe it did, but I downplayed it as "accurate today" and let it be. That poor naming, however, muddied the terms "test method" and "test case" in my head, and the terminology mix-up spread all over.
 
-When I wanted to start working with parameterized tests, in which a single test method is potentially-many individual test cases, I was immediately running into barriers put up by the false equivalence between methods and cases. Shakespeare had it wrong &#8212; names matter. That scene should have gone more like this:
+When I wanted to start working with parameterized tests, in which a single test method is potentially-many individual test cases, I was immediately running into barriers put up by the false equivalence between methods and cases. Shakespeare had it wrong - names matter. That scene should have gone more like this:
 
 > **Romeo**: What's in a name? A rose by any other name would-
 > **Juliet**: Stop right there. "What's in a name!?" A MethodInfo by any other name could be mistaken for a Case and hamper your ability to reason about your own software, that's what.  
