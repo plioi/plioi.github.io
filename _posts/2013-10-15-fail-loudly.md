@@ -24,7 +24,7 @@ Over my last few posts, we've dealt with Fixie's parameterized tests hook: a Fun
 
 {% gist 6994443 %}
 
-When a test method had no parameters at all, it would explicitly return a single empty object[], meaning "Call the test method once with no args." FindInputs(&#8230;), on the other hand, could still yield zero object[], and thus zero requests to call the method. Here's a bug that causes silent failures, and the worst failure is the one that keeps on happening without anyone knowing. We often hear the advice to "fail fast", but there's an implicit "&#8230;and fail as loudly as possible" in there, too.
+When a test method had no parameters at all, it would explicitly return a single empty object[], meaning "Call the test method once with no args." FindInputs(...), on the other hand, could still yield zero object[], and thus zero requests to call the method. Here's a bug that causes silent failures, and the worst failure is the one that keeps on happening without anyone knowing. We often hear the advice to "fail fast", but there's an implicit "...and fail as loudly as possible" in there, too.
 
 ## The Fix: Fail Loudly
 

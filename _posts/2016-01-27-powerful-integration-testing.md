@@ -39,7 +39,7 @@ namespace ContactList.Core.Domain
 }
 ```
 
-&#8230;and our controller:
+...and our controller:
 
 ```cs
 namespace ContactList.Features.Contact
@@ -81,7 +81,7 @@ namespace ContactList.Features.Contact
 }
 ```
 
-We'll also pull a funny trick so that most of the "Contact Edit" feature can go into a single file. Instead of having many similarly named files like ContactEditQuery, ContactEditQueryHandler, ContactEditCommand, ContactEditCommandHandler&#8230; we'll introduce one wrapper class named after the feature, ContactEdit, and place short-named items within it, each named after their role:
+We'll also pull a funny trick so that most of the "Contact Edit" feature can go into a single file. Instead of having many similarly named files like ContactEditQuery, ContactEditQueryHandler, ContactEditCommand, ContactEditCommandHandler... we'll introduce one wrapper class named after the feature, ContactEdit, and place short-named items within it, each named after their role:
 
 ```cs
 namespace ContactList.Features.Contact
@@ -370,7 +370,7 @@ public class ResetDatabase : CaseBehavior
 
 In other words,
 
-> Whenever we're about to run a test case, call Respawn's Reset(&#8230;) first, and then proceed with actually running the test case.
+> Whenever we're about to run a test case, call Respawn's Reset(...) first, and then proceed with actually running the test case.
 
 ## StructureMap
 
@@ -711,15 +711,15 @@ public static class Testing
 
 We've got a lot going on here.
 
-First, we can interact with the one nested IoC container per test case, in order to resolve types in our tests. If one of our tests needs to swap in a fake implementation of some interface, it can call Inject(&#8230;).
+First, we can interact with the one nested IoC container per test case, in order to resolve types in our tests. If one of our tests needs to swap in a fake implementation of some interface, it can call Inject(...).
 
 Second, if we ever want a test to temporarily dump the generated Entity Framework SQL to the console, we can call LogSql() inside that test.
 
-Third, we have some helpers for working against the database. Transaction(&#8230;) lets you interact with the database in a dedicated transaction. Save(&#8230;) lets you initialize your recently-respawned database with a few entities. Save(&#8230;) also protects your fellow teammates from mistakenly abusing the DbContext involved by requiring that you save all your sample entities with a single DbContext. Query(&#8230;) lets you inspect your database during assertions after exercising the system under test.
+Third, we have some helpers for working against the database. Transaction(...) lets you interact with the database in a dedicated transaction. Save(...) lets you initialize your recently-respawned database with a few entities. Save(...) also protects your fellow teammates from mistakenly abusing the DbContext involved by requiring that you save all your sample entities with a single DbContext. Query(...) lets you inspect your database during assertions after exercising the system under test.
 
-Fourth, Validator(&#8230;) lets us get a handle on the same validator instance that would be used prior to entering a controller action. We want a test case to mimic a controller action. If our validation rule tests construct a validator explicitly, they would be missing out on the chance to catch poor validator declarations that reference the wrong model. This helper method lets us exercise the same validator lookup that would happen right before a controller action gets invoked in production.
+Fourth, Validator(...) lets us get a handle on the same validator instance that would be used prior to entering a controller action. We want a test case to mimic a controller action. If our validation rule tests construct a validator explicitly, they would be missing out on the chance to catch poor validator declarations that reference the wrong model. This helper method lets us exercise the same validator lookup that would happen right before a controller action gets invoked in production.
 
-Lastly, we integrate with Mediatr in our tests with the Send(&#8230;) helper. Our tests can send a message through Mediatr just like our controller actions can, and when our tests do so they operate in their own Unit of Work just like production. Additionally, our test will only be allowed to Send(&#8230;) when the sample form would have passed validation, which keeps us from writing misleading tests for scenarios that would never happen in production.
+Lastly, we integrate with Mediatr in our tests with the Send(...) helper. Our tests can send a message through Mediatr just like our controller actions can, and when our tests do so they operate in their own Unit of Work just like production. Additionally, our test will only be allowed to Send(...) when the sample form would have passed validation, which keeps us from writing misleading tests for scenarios that would never happen in production.
 
 ## Actually Write A Test, Darnit!
 
@@ -761,9 +761,9 @@ Respawn steps in to nuke any existing database records. We're starting this test
 
 AutoFixture steps in to fully populate our incoming Contact instances with essentially random data. I don't care what the property values are. I only care that they're filled in with something.
 
-We set up the well-known state of our database with the Save(&#8230;) helper. This works in its own DbContext and its own transaction, since this is just setup code rather than the system under test.
+We set up the well-known state of our database with the Save(...) helper. This works in its own DbContext and its own transaction, since this is just setup code rather than the system under test.
 
-We execute the system under test by calling Send(&#8230;), passing in the same request object that would be used in production to select a Contact for editing. This operates within the nested container mimicking production, in a database transaction mimicking production. We're not just calling the handler's Execute(&#8230;) method. We're exercising the whole pipeline that our controller action would execute in production.
+We execute the system under test by calling Send(...), passing in the same request object that would be used in production to select a Contact for editing. This operates within the nested container mimicking production, in a database transaction mimicking production. We're not just calling the handler's Execute(...) method. We're exercising the whole pipeline that our controller action would execute in production.
 
 Finally, we just assert that the view model we got back is fully populated with the _right_ Contact's information. Since we saved two Contacts and fetched one, we have confidence that our query actually works.
 
@@ -835,7 +835,7 @@ public class ContactEditTests
 }
 ```
 
-Again, we're not just testing the handler's Execute(&#8230;) method. We're working in a fresh database, with automatically populated sample records, within a production-like nested IoC container and a production-like Unit of Work. Send(&#8230;) will fail the test if the sample form wouldn't really have passed validation in production, so we have confidence that the scenario actually makes sense. Our assertion rightly uses its _own_ transaction so that we don't fool ourselves by misusing Entity Framework change tracking: we assert on the reality of the operation's effects on the world. Lastly, we've demonstrated that we're affecting the _right_ record. It would be _very_ difficult for this test to pass incorrectly.
+Again, we're not just testing the handler's Execute(...) method. We're working in a fresh database, with automatically populated sample records, within a production-like nested IoC container and a production-like Unit of Work. Send(...) will fail the test if the sample form wouldn't really have passed validation in production, so we have confidence that the scenario actually makes sense. Our assertion rightly uses its _own_ transaction so that we don't fool ourselves by misusing Entity Framework change tracking: we assert on the reality of the operation's effects on the world. Lastly, we've demonstrated that we're affecting the _right_ record. It would be _very_ difficult for this test to pass incorrectly.
 
 ## Automatic Persistence Testing
 

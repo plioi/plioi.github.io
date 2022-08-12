@@ -13,7 +13,7 @@ Actually, for the purposes of this discussion, this is **not** one method declar
   * `void GenericMethod<int>(int input)`
   * `void GenericMethod<string>(string input)`
   * `void GenericMethod<Customer>(Customer input)`
-  * &#8230;
+  * ...
 
 Each time you make a call, the compiler decides which of the infinite methods you really meant. It makes this decision each time you call something called "GenericMethod". It makes this decision based on the compile-time types at each call site:
 
@@ -29,7 +29,7 @@ Let's try to call the same method, with the same inputs, via reflection:
 
 {% gist 7944838 %}
 
-MethodInfo.Invoke(&#8230;) wants you to throw an object[] at the method. It wants to take the first item of that array for the first parameter of the method, the second item for the second parameter, etc. 
+MethodInfo.Invoke(...) wants you to throw an object[] at the method. It wants to take the first item of that array for the first parameter of the method, the second item for the second parameter, etc. 
 
 Easy, right? Wrong. Each call to Invoke above would throw a System.InvalidOperationException with the message:
 
@@ -57,7 +57,7 @@ Let's say you're using the Fixie test framework and you have [defined an [Input]
 
 {% gist 7944867 %}
 
-Fixie calls test methods via reflection, using an object[] of inputs. In this case, the object[] has length 1, and the values come from the [Input] attributes. In order to successfully invoke the MethodInfo, Fixie must also call MethodInfo.MakeGenericMethod(&#8230;), passing in the right concrete Type, in order to get a handle on the specific, concrete version of the MethodInfo. Finally, Fixie can invoke _that_ MethodInfo.
+Fixie calls test methods via reflection, using an object[] of inputs. In this case, the object[] has length 1, and the values come from the [Input] attributes. In order to successfully invoke the MethodInfo, Fixie must also call MethodInfo.MakeGenericMethod(...), passing in the right concrete Type, in order to get a handle on the specific, concrete version of the MethodInfo. Finally, Fixie can invoke _that_ MethodInfo.
 
 Thanks to [Anders Forsgren](https://github.com/andersforsgren), Fixie can handle tests like this one. If the generic type parameter T can be nailed down to something unambiguously specific, it will be. If a generic test is declared with multiple generic type parameters like T1, T2, etc, it'll try to nail them all down. When there's any ambiguity for a T, though, Fixie has to assume `object` as the most specific type possible.
 

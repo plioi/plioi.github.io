@@ -19,7 +19,7 @@ Because my current test coverage was no longer giving me confidence in Fixie's m
 
 The features in question all had to do with treatment of a test class's _lifecycle_: end users can customize test class construction; customize frequency of construction; and wrap behaviors around each test method, around each test class instance, and around each test class.
 
-The customization aspect led to my insufficient test coverage. I offer several degrees of freedom, but I need to promise that we'll do something reasonable when end users _exercise_ that freedom. There are a lot of combinations you can produce with those building blocks. "Create an instance once per test, wrapping each test in a setup/teardown," "Create an instance once per test class, using a custom factory method, wrapping each instance in a fixture setup/teardown and each test in a transaction,"&#8230;
+The customization aspect led to my insufficient test coverage. I offer several degrees of freedom, but I need to promise that we'll do something reasonable when end users _exercise_ that freedom. There are a lot of combinations you can produce with those building blocks. "Create an instance once per test, wrapping each test in a setup/teardown," "Create an instance once per test class, using a custom factory method, wrapping each instance in a fixture setup/teardown and each test in a transaction,"...
 
 Testing these lifecycles gets extra interesting when you want to prove what happens when an end user's own test code fails. What happens when a test class constructor fails? When a custom factory fails? When a setup fails? When test teardown fails _and_ class teardown fails _and_ disposal fails?
 

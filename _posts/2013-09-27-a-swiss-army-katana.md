@@ -91,7 +91,7 @@ public class CustomConvention : Convention
 
 Your own convention wouldn't have to be attribute-based. All that Fixie cares about is that you provide it some `Func<MethodInfo, IEnumerable<object[]>>`. That's a mouthful, so let's break it down:
 
-  1. Parameters(&#8230;) accepts a function that explains what inputs to use for any given test method.
+  1. Parameters(...) accepts a function that explains what inputs to use for any given test method.
   2. Your function is given the MethodInfo that describes a single test method.
   3. Your function yields any number of object arrays.
   4. Each object array that you yield represents a single call to the test method. If the method takes in 3 parameters, your arrays better have 3 values with corresponding types.

@@ -54,7 +54,7 @@ Case[] cases = Methods
                 .ToArray();
 ```
 
-The .Select(&#8230;) call here finally stood out as fishy. With the old naming, it was natural that each of the methods found by the _Cases_ property should new up a Case object. With the new naming, I realized that _here_ was a place to decide _how many_ Cases needed to be created for each method found by the _Methods_ property.
+The .Select(...) call here finally stood out as fishy. With the old naming, it was natural that each of the methods found by the _Cases_ property should new up a Case object. With the new naming, I realized that _here_ was a place to decide _how many_ Cases needed to be created for each method found by the _Methods_ property.
 
 In order to answer that question, I needed to introduce a new customization hook. As we saw yesterday, given a MethodInfo, a convention author can yield any number of object arrays, each of which is a set of parameters for a single call to the method. Yield multiple object arrays, get multiple test case pass/fails. The default, if the convention author doesn't provide their own rule, is to simply call the method once with zero parameters.
 
