@@ -33,19 +33,19 @@ The `Cases` property was defined like so:
 public MethodFilter Cases { get; private set; }
 ```
 
-Each method was a test case: a single thing that could pass or fail. The naming was weird, though. Why not `public CaseFilter Cases` or `public MethodFilter Methods`? The mismatch in naming should have jumped out at me, and maybe it did, but I downplayed it as &#8220;accurate today&#8221; and let it be. That poor naming, however, muddied the terms &#8220;test method&#8221; and &#8220;test case&#8221; in my head, and the terminology mix-up spread all over.
+Each method was a test case: a single thing that could pass or fail. The naming was weird, though. Why not `public CaseFilter Cases` or `public MethodFilter Methods`? The mismatch in naming should have jumped out at me, and maybe it did, but I downplayed it as "accurate today&#8221; and let it be. That poor naming, however, muddied the terms "test method&#8221; and "test case&#8221; in my head, and the terminology mix-up spread all over.
 
 When I wanted to start working with parameterized tests, in which a single test method is potentially-many individual test cases, I was immediately running into barriers put up by the false equivalence between methods and cases. Shakespeare had it wrong &#8212; names matter. That scene should have gone more like this:
 
 > **Romeo**: What's in a name? A rose by any other name would&#8211;  
-> **Juliet**: Stop right there. &#8220;What's in a name!?&#8221; A MethodInfo by any other name could be mistaken for a Case and hamper your ability to reason about your own software, that's what.  
+> **Juliet**: Stop right there. "What's in a name!?&#8221; A MethodInfo by any other name could be mistaken for a Case and hamper your ability to reason about your own software, that's what.  
 > **Romeo**: I think we should see other people.
 
 ## The Fix: Name Things What They Are
 
-Each time that I failed to implement this feature, I started in the wrong place. Before identifying the naming mismatch as the root cause of the problem, I was actually starting clear on the other side of the code at the point where the test method's corresponding MethodInfo gets invoked. &#8220;I'll just overload this to take in optional parameters, and then see what breaks, and go from there.&#8221; Dead end, because the real issue was far earlier in the process. I was treating the symptom and not the root cause.
+Each time that I failed to implement this feature, I started in the wrong place. Before identifying the naming mismatch as the root cause of the problem, I was actually starting clear on the other side of the code at the point where the test method's corresponding MethodInfo gets invoked. "I'll just overload this to take in optional parameters, and then see what breaks, and go from there.&#8221; Dead end, because the real issue was far earlier in the process. I was treating the symptom and not the root cause.
 
-The thing that finally got me moving in the right direction was to rename the darn Convention &#8220;Cases&#8221; property to &#8220;Methods&#8221;. Naming it what it _was_ finally made the next culprit stand out on the screen:
+The thing that finally got me moving in the right direction was to rename the darn Convention "Cases&#8221; property to "Methods&#8221;. Naming it what it _was_ finally made the next culprit stand out on the screen:
 
 ```cs
 Case[] cases = Methods

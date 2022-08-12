@@ -14,7 +14,7 @@ We'll integrate Fixie with AutoMapper, Respawn, StructureMap, FluentValidation, 
 
 Imagine a typical ASP.NET MVC application for maintaining a contact list.
 
-I will assume some familiarity with Mediatr, which keeps our controller tiny. If you haven't seen it before, think of Mediatr as a bit of reflection that allows controller actions to be short: &#8220;Please, somebody, handle this request!&#8221; Mediatr finds the corresponding &#8220;Handler&#8221; class and invokes it to do the work.
+I will assume some familiarity with Mediatr, which keeps our controller tiny. If you haven't seen it before, think of Mediatr as a bit of reflection that allows controller actions to be short: "Please, somebody, handle this request!&#8221; Mediatr finds the corresponding "Handler&#8221; class and invokes it to do the work.
 
 Why talk about Mediatr in an article on testing? By letting us pull the meat of a feature out of the controller and into separate classes, we wind up with classes that are easier to construct and invoke from a test than an ASP.NET MVC controller would be. No HttpContext, no insane mocking. In other words, Mediatr enables the meat of an action to be pulled out to the side to be tested in isolation, and lets the controller focus entirely on routing concerns.
 
@@ -81,7 +81,7 @@ namespace ContactList.Features.Contact
 }
 ```
 
-We'll also pull a funny trick so that most of the &#8220;Contact Edit&#8221; feature can go into a single file. Instead of having many similarly named files like ContactEditQuery, ContactEditQueryHandler, ContactEditCommand, ContactEditCommandHandler&#8230; we'll introduce one wrapper class named after the feature, ContactEdit, and place short-named items within it, each named after their role:
+We'll also pull a funny trick so that most of the "Contact Edit&#8221; feature can go into a single file. Instead of having many similarly named files like ContactEditQuery, ContactEditQueryHandler, ContactEditCommand, ContactEditCommandHandler&#8230; we'll introduce one wrapper class named after the feature, ContactEdit, and place short-named items within it, each named after their role:
 
 ```cs
 namespace ContactList.Features.Contact
@@ -268,7 +268,7 @@ Each of the classes this references, InitializeAutoMapper, ResetDatabase, Nested
 
 At a glance though, we can describe our testing style to a new team member by scanning this class:
 
-> A test class is a class whose name ends with &#8220;Tests&#8221;. A test method is any public void or async method within such a class. Whenever a test class runs, we'll ensure AutoMapper has already been initialized. Whenever a test case runs, we'll first reset the contents of the database, and we'll wrap the whole test case in a nested IoC container. When test methods have parameters, they'll be created and filled by AutoFixture.
+> A test class is a class whose name ends with "Tests&#8221;. A test method is any public void or async method within such a class. Whenever a test class runs, we'll ensure AutoMapper has already been initialized. Whenever a test case runs, we'll first reset the contents of the database, and we'll wrap the whole test case in a nested IoC container. When test methods have parameters, they'll be created and filled by AutoFixture.
 
 ## AutoMapper
 
@@ -399,7 +399,7 @@ public static class IoC
 }
 ```
 
-I claimed that installing [StructureMap.MVC5](https://nuget.org/packages/StructureMap.MVC5) will set up &#8220;one nested IoC container per web request&#8221; in our production code. Each web request will get its own little bubble of dependency creation. For instance, this gives me exactly one DbContext per web request, which satisfies our Unit of Work pattern.
+I claimed that installing [StructureMap.MVC5](https://nuget.org/packages/StructureMap.MVC5) will set up "one nested IoC container per web request&#8221; in our production code. Each web request will get its own little bubble of dependency creation. For instance, this gives me exactly one DbContext per web request, which satisfies our Unit of Work pattern.
 
 I want my tests to mimic production as much as possible, so I similarly want one nested IoC container per test case. A test case mimics one user interaction, so it better run in the same kind of environment as one actual user interaction!
 
@@ -769,7 +769,7 @@ Finally, we just assert that the view model we got back is fully populated with 
 
 ## Testing Validation Rules
 
-Most validation rule tests out there are _horrifically_ useless. They say things like, &#8220;With this sample form, the such and such property should report some error of some kind.&#8221; Such a test _seems_ to be testing something, but it's so vague that you wind up being able to get a passing test even when everything is buggy.
+Most validation rule tests out there are _horrifically_ useless. They say things like, "With this sample form, the such and such property should report some error of some kind.&#8221; Such a test _seems_ to be testing something, but it's so vague that you wind up being able to get a passing test even when everything is buggy.
 
 Instead, let's actually assert that the validation rule fails for the reason we think it is set up to fail, by asserting on the error message too!
 
@@ -800,7 +800,7 @@ public class ContactEditTests
 }
 ```
 
-&#8220;Oh, but that's brittle!&#8221; you say? Without it, your validation rule tests are such a misleading time bomb that I'd rather you not write them at all, thankyouverymuch.
+"Oh, but that's brittle!&#8221; you say? Without it, your validation rule tests are such a misleading time bomb that I'd rather you not write them at all, thankyouverymuch.
 
 ## Yet More Testing
 
@@ -868,7 +868,7 @@ Despite it's size, a lot is happening here.
 
 This test method is called once for every single Entity subclass in the system. Every entity gets its own individual pass or fail.
 
-For each entity, we get a test that attempts to fully populate, save, and reload a record, asserting that every single property on it &#8220;round tripped&#8221; without loss to and from the database.
+For each entity, we get a test that attempts to fully populate, save, and reload a record, asserting that every single property on it "round tripped&#8221; without loss to and from the database.
 
 The ShouldMatch assertion helper just takes two objects of the same type, and asserts that they have the same JSON representation, giving us a quick way to deeply compare all the properties for equality:
 

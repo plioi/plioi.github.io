@@ -13,11 +13,11 @@ Random rnd=new Random();
 string[] shuffled = array.OrderBy(x => rnd.Next()).ToArray();
 ```
 
-You may have also run into similar shufflers that use Guid.NewGuid() for the same effect. This seems pretty reasonable. We're &#8220;randomingly sorting&#8221; the items. Each time the sort algorithm needs to decide the order of two items, it'll basically flip a coin. **go What could wrong possibly?**
+You may have also run into similar shufflers that use Guid.NewGuid() for the same effect. This seems pretty reasonable. We're "randomingly sorting&#8221; the items. Each time the sort algorithm needs to decide the order of two items, it'll basically flip a coin. **go What could wrong possibly?**
 
 I'm sure I've followed this advice on past projects, and never ran into any trouble. It might actually work, but if so it works only due to a convenient accident of implementation details.
 
-Sorting algorithms operate with a very specific contract in mind. They frequently need to compare two items, and you are expected to provide a consistent answer to the question, &#8220;Which comes first, a or b?&#8221;. (In the case of OrderBy, the lambda provides a &#8220;key selector&#8221; for shorthand: a comes before b if a's &#8216;key' comes before b's &#8216;key'. The overall contract of consistent ordering is still present.)
+Sorting algorithms operate with a very specific contract in mind. They frequently need to compare two items, and you are expected to provide a consistent answer to the question, "Which comes first, a or b?&#8221;. (In the case of OrderBy, the lambda provides a "key selector&#8221; for shorthand: a comes before b if a's &#8216;key' comes before b's &#8216;key'. The overall contract of consistent ordering is still present.)
 
 Consider a humble [Bubble Sort](http://stackoverflow.com/a/1595310):
 
@@ -71,4 +71,4 @@ public static void Shuffle<T>(this T[] array, Random random)
 
 > Most of the world's loops have already been written, and they have names. This is the Fisher-Yates Shuffle. It randomizes the order of array items in a single pass.
 
-We've adopted the term &#8220;contract&#8221; for a reason: two parties make an agreement about how they are meant to interact. Violate the contract, and who knows what will happen.
+We've adopted the term "contract&#8221; for a reason: two parties make an agreement about how they are meant to interact. Violate the contract, and who knows what will happen.

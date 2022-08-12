@@ -19,7 +19,7 @@ Because my current test coverage was no longer giving me confidence in Fixie's m
 
 The features in question all had to do with treatment of a test class's _lifecycle_: end users can customize test class construction; customize frequency of construction; and wrap behaviors around each test method, around each test class instance, and around each test class.
 
-The customization aspect led to my insufficient test coverage. I offer several degrees of freedom, but I need to promise that we'll do something reasonable when end users _exercise_ that freedom. There are a lot of combinations you can produce with those building blocks. &#8220;Create an instance once per test, wrapping each test in a setup/teardown,&#8221; &#8220;Create an instance once per test class, using a custom factory method, wrapping each instance in a fixture setup/teardown and each test in a transaction,&#8221;&#8230;
+The customization aspect led to my insufficient test coverage. I offer several degrees of freedom, but I need to promise that we'll do something reasonable when end users _exercise_ that freedom. There are a lot of combinations you can produce with those building blocks. "Create an instance once per test, wrapping each test in a setup/teardown,&#8221; "Create an instance once per test class, using a custom factory method, wrapping each instance in a fixture setup/teardown and each test in a transaction,&#8221;&#8230;
 
 Testing these lifecycles gets extra interesting when you want to prove what happens when an end user's own test code fails. What happens when a test class constructor fails? When a custom factory fails? When a setup fails? When test teardown fails _and_ class teardown fails _and_ disposal fails?
 
@@ -61,7 +61,7 @@ class SampleTestClass : IDisposable
 }
 ```
 
-The WhereAmI() helper method simply writes the member to the console. The constructor writes &#8220;.ctor&#8221;, the Pass() method writes &#8220;Pass&#8221;, etc. From the outside, I can force any of these members to deliberately throw some generic exception, in order to prove what happens when end users' test classes throw exceptions at any step.
+The WhereAmI() helper method simply writes the member to the console. The constructor writes ".ctor&#8221;, the Pass() method writes "Pass&#8221;, etc. From the outside, I can force any of these members to deliberately throw some generic exception, in order to prove what happens when end users' test classes throw exceptions at any step.
 
 When Fixie tests itself, it executes the full lifecycle of this sample test class, given an example customization of the lifecycle. All console output is captured so that we can assert on the exact order the members were hit. The overall results of the mini test run are also collected, so we can assert on which tests passed, which tests failed, and which exceptions were the cause of each expected test failure. It's a little mind-bendy. Fixie's own tests fire up test runs of this hypothetical mini test class. This way, I can make positive assertions about what happens when _your_ test classes go negative.
 
@@ -130,4 +130,4 @@ At this point, I had meaningful coverage and a fix to apply at the deepest part 
   4. [Simplify the original buggy class](https://github.com/fixie/fixie/commit/4535866daa271a84f08df84f3866f81e9c53153d). Tests pass. Commit
   5. [Simplify](https://github.com/fixie/fixie/commit/70383b1361346276e5b639d5b0b32f0a94eec0c9). Tests pass. Commit
 
-Each commit dramatically simplified yesterday's mess. Ugly helper classes in support of the mess melted away. The confusing, paranoid &#8220;Did we fail yet?&#8221; checks are gone. I dramatically &#8220;rewrote&#8221; the innermost secrets of the system, but **at no time did I take a large step**. The bug is fixed, and I have coverage I can actually rely on going forward. Now that I'm back to writing simple idiomatic C#, there's room for even more simplification. Phew!
+Each commit dramatically simplified yesterday's mess. Ugly helper classes in support of the mess melted away. The confusing, paranoid "Did we fail yet?&#8221; checks are gone. I dramatically "rewrote&#8221; the innermost secrets of the system, but **at no time did I take a large step**. The bug is fixed, and I have coverage I can actually rely on going forward. Now that I'm back to writing simple idiomatic C#, there's room for even more simplification. Phew!
