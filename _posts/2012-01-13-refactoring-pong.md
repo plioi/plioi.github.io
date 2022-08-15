@@ -4,7 +4,7 @@ layout: post
 ---
 
 
-One of my first successes with refactoring was in a text-mode Pong clone.  My parents got <a href="http://en.wikipedia.org/wiki/Turbo_Pascal">Turbo Pascal</a> for my brother and me when I was in middle school.  The first nontrivial thing I made was Pong.  Instead of plotting individual pixels, the screen was drawn with plain text.  An asterisk was the ball, and the paddles were drawn with vertical | bars.
+One of my first successes with refactoring was in a text-mode Pong clone.  My parents got <a href="http://en.wikipedia.org/wiki/Turbo_Pascal">Turbo Pascal</a> for my brother and me when I was in middle school.  The first nontrivial thing I made was Pong.  Instead of plotting individual pixels, the screen was drawn with plain text.  An asterisk was the ball, and the paddles were drawn with vertical `|` bars.
 
 I was extremely proud of the way the ball would bounce around the screen.  It would detect when the ball hit a side wall or a paddle, changing direction.  At first, the code that handled this collision detection was enormous.  I didn't know what I was doing, so every step of the way was very verbose.  I didn't quite start out with the right data structure to represent the ball, so every time I wanted to *say* something about it, I'd write another awkward function that *worked* but made things ever-more *complicated*..
 
