@@ -10,40 +10,40 @@ Recently, I found that *this abstraction can leak*. I had a set of queries that 
 
 ```cs
 class Program
-    {
-        static void Main()
-        {
-            var result = from x in FirstClause()
-                         from y in SecondClause()
-                         from z in ThirdClause()
-                         select x + y;
+{
+   static void Main()
+   {
+      var result = from x in FirstClause()
+                     from y in SecondClause()
+                     from z in ThirdClause()
+                     select x + y;
 
-            Console.WriteLine("Before Loop");
+      Console.WriteLine("Before Loop");
 
-            foreach (var item in result)
-                Console.WriteLine(item);
+      foreach (var item in result)
+            Console.WriteLine(item);
 
-            Console.ReadLine();
-        }
+      Console.ReadLine();
+   }
 
-        private static IEnumerable<int> FirstClause()
-        {
-            Console.WriteLine("First Clause Side Effect");
-            return new[] { 1 };
-        }
+   private static IEnumerable<int> FirstClause()
+   {
+      Console.WriteLine("First Clause Side Effect");
+      return new[] { 1 };
+   }
 
-        private static IEnumerable<int> SecondClause()
-        {
-            Console.WriteLine("Second Clause Side Effect");
-            return new[] { 2 };
-        }
+   private static IEnumerable<int> SecondClause()
+   {
+      Console.WriteLine("Second Clause Side Effect");
+      return new[] { 2 };
+   }
 
-        private static IEnumerable<int> ThirdClause()
-        {
-            Console.WriteLine("Third Clause Side Effect");
-            return new[] { 3 };
-        }
-    }
+   private static IEnumerable<int> ThirdClause()
+   {
+      Console.WriteLine("Third Clause Side Effect");
+      return new[] { 3 };
+   }
+}
 ```
 
 If we trusted the explanations of LINQ queries as having a lazy evaluation model, we would expect the output to be:
