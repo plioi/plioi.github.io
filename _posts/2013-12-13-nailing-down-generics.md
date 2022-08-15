@@ -6,7 +6,15 @@ layout: post
 
 You write a class containing a harmless generic method:
 
-{% gist 7944797 %}
+```cs
+public class Thing
+{
+    public void GenericMethod<T>(T input)
+    {
+        Console.WriteLine(typeof(T).Name);
+    }
+}
+```
 
 Actually, for the purposes of this discussion, this is **not** one method declaration. Rather, it is an infinite number of method declarations:
 
@@ -17,7 +25,13 @@ Actually, for the purposes of this discussion, this is **not** one method declar
 
 Each time you make a call, the compiler decides which of the infinite methods you really meant. It makes this decision each time you call something called "GenericMethod". It makes this decision based on the compile-time types at each call site:
 
-{% gist 7944816 %}
+```
+var instance = new Thing();
+
+instance.GenericMethod(1); //Compile-time type is Int32, so prints "Int32".
+instance.GenericMethod(true); //Compile-time type is Boolean, so prints "Boolean".
+instance.GenericMethod("Cantaloupe Pantaloons"); //Compile-time type is String, so prints "String".
+```
 
 The compiler knows the compile-time type of each argument, and compares this to the generic type definition in order to pick the single winning "specific" method.
 
@@ -27,7 +41,15 @@ Easy, right? C# 101 stuff.
 
 Let's try to call the same method, with the same inputs, via reflection:
 
-{% gist 7944838 %}
+```cs
+var instance = new Thing();
+
+var method = typeof(Thing).GetMethod("GenericMethod");
+
+method.Invoke(instance, new object[] { 1 });
+method.Invoke(instance, new object[] { true });
+method.Invoke(instance, new object[] { "Cantaloupe Pantaloons" });
+```
 
 MethodInfo.Invoke(...) wants you to throw an object[] at the method. It wants to take the first item of that array for the first parameter of the method, the second item for the second parameter, etc. 
 
@@ -47,7 +69,20 @@ Translation: the exception message is saying, "You cannot invoke the method beca
 
 Lets narrow things down, each time we want to call the method via reflection. _Just like the compiler did for us in the original compile-time example_:
 
-{% gist 7944850 %}
+```cs
+var instance = new Thing();
+
+var method = typeof(Thing).GetMethod("GenericMethod");
+
+var methodOfInt32 = method.MakeGenericMethod(typeof(int));
+methodOfInt32.Invoke(instance, new object[] { 1 });
+
+var methodOfBoolean = method.MakeGenericMethod(typeof(bool));
+methodOfBoolean.Invoke(instance, new object[] { true });
+
+var methodOfString = method.MakeGenericMethod(typeof(string));
+methodOfString.Invoke(instance, new object[] { "Cantaloupe Pantaloons" });
+```
 
 This time, thankfully, we get the same output as the original plain calls to GenericMethod<T>(T). As with the original example, we know _exactly which 3_ of the _infinite_ methods are being called.
 
@@ -55,7 +90,18 @@ This time, thankfully, we get the same output as the original plain calls to Gen
 
 Let's say you're using the Fixie test framework and you have [defined an [Input] attribute with an associated Fixie Convention in order to have parameterized tests](https://patrick.lioi.net/2013/09/27/a-swiss-army-katana/). If one of your test methods is generic, Fixie faces the same problem we faced above:
 
-{% gist 7944867 %}
+```cs
+public class Tests
+{
+    [Input(1)]
+    [Input(true)]
+    [Input("Cantaloupe Pantaloons")]
+    public void GenericTestMethod<T>(T input)
+    {
+        Console.WriteLine(typeof(T).Name);
+    }
+}
+```
 
 Fixie calls test methods via reflection, using an object[] of inputs. In this case, the object[] has length 1, and the values come from the [Input] attributes. In order to successfully invoke the MethodInfo, Fixie must also call MethodInfo.MakeGenericMethod(...), passing in the right concrete Type, in order to get a handle on the specific, concrete version of the MethodInfo. Finally, Fixie can invoke _that_ MethodInfo.
 

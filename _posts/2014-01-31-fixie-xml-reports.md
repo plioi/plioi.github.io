@@ -12,13 +12,19 @@ Before this feature, Fixie could already report to the console, TestDriven.NET, 
 
 A typical command for running Fixie as part of your build script is to specify a test assembly and optional custom name/value pairs of the form "`--name value --othername othervalue...`":
 
-{% gist 8743518 %}
+```
+Fixie.Console.exe path\to\your\Tests.dll --category Slow
+```
 
 This command will write results to the console in a format that is meant for human consumption. It also makes the given key/value pair available to your conventions. Fixie doesn't know or care what a category is, but it will gladly hand that information to your convention.
 
 To produce an NUnit- or xUnit-style XML report, you need to include one of the Fixie-specific reporting arguments:
 
-{% gist 8743536 %}
+```
+Fixie.Console.exe path\to\your\Tests.dll --category Slow --fixie:NUnitXml TestResult.xml
+
+Fixie.Console.exe path\to\your\Tests.dll --category Slow --fixie:XUnitXml TestResult.xml
+```
 
 > It looks like the xUnit file format can only describe a single test assembly, while the NUnit file format supports any number of assemblies.
 

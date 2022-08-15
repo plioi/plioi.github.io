@@ -8,7 +8,23 @@ First, skipped tests are like support beams for technical debt. You know there's
 
 Second, if you _really_ wanted to skip tests in Fixie, you could already effectively do that with a modified convention, like so:
 
-{% gist 7930603 %}
+```cs
+[AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
+public class SkipAttribute : Attribute { }
+
+public class CustomConvention : Convention
+{
+    public CustomConvention()
+    {
+        Classes
+            .NameEndsWith("Tests");
+
+        Methods
+            .Where(method => method.IsVoid())
+            .Where(method => !method.HasOrInherits<SkipAttribute>());
+    }
+}
+```
 
 > In other words, "a method is a test method if it isn't marked as skipped."
 
@@ -16,11 +32,65 @@ I don't like skipped tests, and I basically had poor-man's skipped tests anyway,
 
 My conclusion was to let Fixie know what it means for a test to be skipped, so that it can count them and warn the user like other test frameworks, but to deliberately not include any way to mark tests as skipped in the DefaultConvention. Out of the box, tests can't get skipped. **If you want skips, you're going to have to ask for them.** We can change the earlier poor-man's skipping convention so that you can alert the user to their pending disaster:
 
-{% gist 7930617 %}
+```cs
+public class CustomConvention : Convention
+{
+    public CustomConvention()
+    {
+        Classes
+            .NameEndsWith("Tests");
+
+        Methods
+            .Where(method => method.IsVoid());
+
+        CaseExecution
+            .Skip(@case => @case.Method.HasOrInherits<SkipAttribute>());
+    }
+}
+```
 
 Since the hook is a Func<Case, bool>, you can include custom logic aside from the mere presence of an attribute or naming convention. One way to mitigate the risk of skipping tests is to place an expiration date on them:
 
-{% gist 7930624 %}
+```cs
+[AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
+public class SkipAttribute : Attribute
+{
+    public string ExpirationDate { get; set; }
+
+    public bool HasExpired
+    {
+        get
+        {
+            DateTime expirationDate;
+            return DateTime.TryParse(ExpirationDate, out expirationDate)
+                && DateTime.Now > expirationDate;
+        }
+    }
+}
+
+public class CustomConvention : Convention
+{
+    public CustomConvention()
+    {
+        Classes
+            .NameEndsWith("Tests");
+
+        Methods
+            .Where(method => method.IsVoid());
+
+        CaseExecution
+            .Skip(@case => {
+                if (@case.Method.HasOrInherits<SkipAttribute>()) {
+                    var skipAttribute = @case.Method.GetCustomAttributes<SkipAttribute>(true).Single();
+
+                    return !skipAttribute.HasExpired;
+                }
+
+                return false;
+            });
+    }
+}
+```
 
 You might define a skip attribute that will skip a test until a specific GitHub issue gets closed, for instance (though that one might be a tad overkill, checking GitHub on every test run). Fixie only cares whether or not you want a given test to be skipped, and sets it aside for counting and reporting.
 

@@ -10,7 +10,16 @@ Test frameworks like NUnit, xUnit, and Fixie can each be split into two main fun
 
 From early on, Fixie has used the following abstraction for runners to implement (NUnit and xUnit have similar abstractions):
 
-{% gist 8986300 %}
+```cs
+public interface Listener
+{
+    void AssemblyStarted(Assembly assembly);
+    void CaseSkipped(SkipResult result);
+    void CasePassed(PassResult result);
+    void CaseFailed(FailResult result);
+    void AssemblyCompleted(Assembly assembly, AssemblyResult result);
+}
+```
 
 Fixie calls each method as the corresponding action takes place. The ConsoleListener reacts by echoing things to standard out, the TestDrivenListener reacts by echoing things to TestDriven.NET's own listener abstraction, etc.
 
