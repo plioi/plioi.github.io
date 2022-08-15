@@ -23,7 +23,7 @@ if (items.All(v => v != null))
     Console.WriteLine("None of these are null!");
 ```
 
-We leaned on the Any() extension method, with the intention of "short circuiting" the underlying loop.  Any() starts at the front of the list, and tests each item until one of them passes the condition in the lambda expression.  Once we hit that item, there is no need to continue processing items, so Any() returns early.  This is similar to the way that the || operator works: in the expression (a() || b() || c()), we only bother to call method c() when a() and b() are both false.
+We leaned on the `Any()` extension method, with the intention of "short circuiting" the underlying loop.  `Any()` starts at the front of the list, and tests each item until one of them passes the condition in the lambda expression.  Once we hit that item, there is no need to continue processing items, so `Any()` returns early.  This is similar to the way that the `||` operator works: in the expression `(a() || b() || c())`, we only bother to call method `c()` when `a()` and `b()` are both false.
 
 So, it seems the ReSharper suggestion is only *technically* the same.  You'll get the same answer, but surely testing "All" the items is potentially wasteful in the event that the collection is large.
 
@@ -35,6 +35,6 @@ I'm glad I didn't, though, because I was completely wrong.
 
 While searching for a code sample demonstrating this ReSharper suggestion, I found the truth: <a href="http://stackoverflow.com/questions/9027530/linq-not-any-vs-all-dont">Not Any vs All Don't</a>.
 
-The top answer reveals the actual implementation of both Any() and All().  Naturally, *both* Any() and All() are implemented with the "short circuit" logic mentioned above.  Any() behaves like (a() || b() || c()), **and All() behaves like (a() && b() && c())**.  Both have the opportunity to stop looking at items as soon as they have enough information to have the correct final answer.
+The top answer reveals the actual implementation of both `Any()` and `All()`.  Naturally, *both* `Any()` and `All()` are implemented with the "short circuit" logic mentioned above.  `Any()` behaves like `(a() || b() || c())`, **and `All()` behaves like `(a() && b() && c())`**.  Both have the opportunity to stop looking at items as soon as they have enough information to have the correct final answer.
 
 My mistake was to read too much into the use of the word "All" without actually thinking about how it could be best implemented.  Yet again, ReSharper has proven itself to be clearly smarter than me.
