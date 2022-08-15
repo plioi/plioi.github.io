@@ -4,7 +4,7 @@ layout: post
 ---
 
 
-Rich Hickey, creator of the Clojure programming language, recently gave a talk titled <a href="http://www.infoq.com/presentations/Simple-Made-Easy">Simple Made Easy</a>. About 15 minutes in, Hickey expresses some strong opinions on Test-Driven Development that initially struck me as blasphemy: *"I think we're in this world I'd like to call **Guard Rail Programming**... 'I can make change because I have tests!' Who *does* that? Who drives their car around, banging against the guard rails? Do the guard rails help you get to where you want to go?"*
+Rich Hickey, creator of the Clojure programming language, recently gave a talk titled <a href="http://www.infoq.com/presentations/Simple-Made-Easy">Simple Made Easy</a>. About 15 minutes in, Hickey expresses some strong opinions on Test-Driven Development that initially struck me as blasphemy: *"I think we're in this world I'd like to call **Guard Rail Programming**... 'I can make change because I have tests!' Who does that? Who drives their car around, banging against the guard rails? Do the guard rails help you get to where you want to go?"*
 
 Yikes. I'm kind of partial to tests. I get nervous working with a codebase that doesn't have some decent test coverage. I cringe at the thought of whole teams committing untested code all day. Coding without tests is coding without a net, and represents a great deal of expensive risk. If I had a nickel for every time a failing test saved me from introducing errors, I would have all the nickels.
 

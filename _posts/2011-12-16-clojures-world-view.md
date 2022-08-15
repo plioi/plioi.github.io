@@ -14,11 +14,11 @@ Today, we'll see how Clojure's approach to syntax can help us achieve brevity in
 
 ## **Clojure Syntax**
 
-Clojure is a dialect of Lisp, which means the first thing you'll notice (is all the (nested (parentheses))). The look and feel of Lisp dialects can be initially confusing to newcomers. Instead of saying *1 + 2 + 3*, we say *(+ 1 2 3)*. The name of an operation comes before its arguments, never between them. This inside-out syntax has an interesting effect: **everything looks the same**. Every construct in the language, from simple expressions, to conditional logic, to function and type definitions `(looks like this)`.
+Clojure is a dialect of Lisp, which means the first thing you'll notice (is all the (nested (parentheses))). The look and feel of Lisp dialects can be initially confusing to newcomers. Instead of saying `1 + 2 + 3`, we say `(+ 1 2 3)`. The name of an operation comes before its arguments, never between them. This inside-out syntax has an interesting effect: **everything looks the same**. Every construct in the language, from simple expressions, to conditional logic, to function and type definitions `(looks like this)`.
 
 The fact that everything looks the same as everything else is a double-edged sword. I *like* that different constructs in C# *look* different. I find it helps me "chunk" up the screen as I read through something unfamiliar.
 
-On the other hand, the extreme simplicity of Clojure syntax gives us <a href="http://en.wikipedia.org/wiki/Homoiconicity">homoiconicity</a>, meaning that every bit of Clojure code is also a description of a data structure, namely a list of lists. *(* 3 (+ 2 1))* is both an arithmetic expression to be evaluated **and** a list containing three items: the symbol *****, the number **3**, and another list containing 3 more items.
+On the other hand, the extreme simplicity of Clojure syntax gives us <a href="http://en.wikipedia.org/wiki/Homoiconicity">homoiconicity</a>, meaning that every bit of Clojure code is also a description of a data structure, namely a list of lists. `(* 3 (+ 2 1))` is both an arithmetic expression to be evaluated **and** a list containing three items: the symbol `*`, the number `3`, and another list containing 3 more items.
 
 Because all Clojure code is *also* a literal for a Clojure list, code generation becomes orders of magnitude simpler with Clojure than with C#. In fact, code generation is so common in Lisp dialects that it gets special treatment. A **macro** is a function whose job it is to take in code as its input and produce new code as its output. Even most of the seamingly-built-in keywords are in fact implemented as code-twiddling functions called early in the execution process.
 
