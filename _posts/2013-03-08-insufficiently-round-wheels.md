@@ -34,8 +34,11 @@ The insufficiently round wheel I'd like to reinvent is the unit test framework.
 > **No, really.**\
 > Yes.
 >
-> **Those have been around forever.** You could say the same thing about music or turducken, but we've only really started to get those right in the last few years.
-> **But Patrick, that is a sufficiently round wheel and you shouldn't be reinventing the wheel.  Do something cool instead!** First, all "reinventing the wheel" remarks shall be met with a friendly "That's kind of the point," followed by a not-so-friendly <a href="http://www.youtube.com/watch?v=fRiiiKA1xUI#t=13s">EPIC EYE-ROLL</a>.  Second, I think we really can add something cool to the mix.
+> **Those have been around forever.**\
+> You could say the same thing about music or turducken, but we've only really started to get those right in the last few years.
+>
+> **But Patrick, that is a sufficiently round wheel and you shouldn't be reinventing the wheel.  Do something cool instead!**\
+> First, all "reinventing the wheel" remarks shall be met with a friendly "That's kind of the point," followed by a not-so-friendly <a href="http://www.youtube.com/watch?v=fRiiiKA1xUI#t=13s">EPIC EYE-ROLL</a>.  Second, I think we really can add something cool to the mix.
 >
 > If you must, think of it as a big code review of the current state of the art, followed by some advice on building *any* old open source project you have in mind.
 
