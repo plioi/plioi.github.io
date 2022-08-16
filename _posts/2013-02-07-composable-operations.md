@@ -16,13 +16,13 @@ I said I'd reveal this week how this shift from low-level imperative coding to h
 
 Parsley can recognize patterns not unlike those recognized by regexes.  When working with regexes, we're constantly composing three fundamental operations: repetition, choice, and sequence.
 
-With **repetition**, we say, "I've got this regex here, and I want it to be repeated."  The regex "A" recognizes a single letter "A", and we can produce a more interesting regex "A*" to recognize zero-or-more As, or "A+" to recognize one-or-more As.  A more complex pattern like "(A+B+)" can likewise be made more interesting via repetition: "(A+B+)*" which recognizes zero-or-more occurrences of As-followed-by-Bs.
+With **repetition**, we say, "I've got this regex here, and I want it to be repeated."  The regex `"A"` recognizes a single letter `"A"`, and we can produce a more interesting regex `"A*"` to recognize zero-or-more As, or `"A+"` to recognize one-or-more As.  A more complex pattern like `"(A+B+)"` can likewise be made more interesting via repetition: `"(A+B+)*"` which recognizes zero-or-more occurrences of As-followed-by-Bs.
 
-With **choice**, we can combine some small patterns into a larger one by saying, "Any one of these subpatterns could happen next."  The regex "A|B" recognizes either an "A" or a "B".
+With **choice**, we can combine some small patterns into a larger one by saying, "Any one of these subpatterns could happen next."  The regex `"A|B"` recognizes either an `"A"` or a `"B"`.
 
-With **sequence**, we can combine some small patterns into a larger one by saying, "The first pattern, followed by the second, followed by the third."  Regexes achieve this by just squishing them together in order: the regex "ABC" recognizes an A, followed by a B, followed by a C.  They all have to appear, and in that order.
+With **sequence**, we can combine some small patterns into a larger one by saying, "The first pattern, followed by the second, followed by the third."  Regexes achieve this by just squishing them together in order: the regex `"ABC"` recognizes an A, followed by a B, followed by a C.  They all have to appear, and in that order.
 
-These three operations *compose* very well.  The regex @"[_a-zA-Z]+[_a-zA-Z0-9]*" recognizes variable names.  We have repetition: the pattern has one-or-more leading characters and zero-or-more trailing characters.  We have choice: each character is an underscore or a letter or a digit.  We have sequence: to enforce that names don't start with a digit, we have a two-part sequence of leading characters *followed by* trailing characters.  We say these operations "compose well" because:
+These three operations *compose* very well.  The regex `@"[_a-zA-Z]+[_a-zA-Z0-9]*"` recognizes variable names.  We have repetition: the pattern has one-or-more leading characters and zero-or-more trailing characters.  We have choice: each character is an underscore or a letter or a digit.  We have sequence: to enforce that names don't start with a digit, we have a two-part sequence of leading characters *followed by* trailing characters.  We say these operations "compose well" because:
 
 1. They can be applied to any pattern.
 2. Doing so takes very little code.
@@ -50,7 +50,7 @@ To write the Parser of Parenthesized Letters, we first needed to write an implem
 
 It hurts to have to write so much for so little gain.  I'd rather Parsley contain a suite of useful `Parser<T>` implementations out of the box, so I could just dive in and focus on detecting the pattern I'm interested in.  This suite of useful `Parser<T>` implementations ought to include our 3 fundamental/composable pattern-recognition operations: repetition, choice, and sequence.
 
-First, though, the suite should provide some primitive operations to get started with.  Compared to our regex examples, we need to be able to express things like "A" before we can augment them into interesting patterns like "A*".
+First, though, the suite should provide some primitive operations to get started with.  Compared to our regex examples, we need to be able to express things like `"A"` before we can augment them into interesting patterns like `"A*"`.
 
 ## Parsley's Default Parsers
 
