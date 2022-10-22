@@ -19,7 +19,7 @@ Fixie's own reporting hook provides a similar balance.
 
 In the case of integrating with GitHub Actions, your own test projects can get opinionated about how much or how little to include in your Job Summary. In my case, I just wanted a simple color-coded summary of a test run, trusting the details would be captured in the Step log.
 
-All it took was adding a simple event-based report class to [write the markdown the way I wanted](https://github.com/fixie/fixie/pull/293), and then to enlist that report when we're running inside the Continuous Integration environment:
+All it took was adding a simple event-based report class to [write the markdown the way I wanted](https://github.com/fixie/fixie/pull/293), and then enlistling that report when we're running inside the Continuous Integration environment:
 
 ```cs
 class GitHubReport :
