@@ -3,7 +3,7 @@ title: 'Nullable Reference Types in Entity Framework'
 layout: post
 ---
 
-C# 8 adds [Nullable Reference Types](https://docs.microsoft.com/en-us/dotnet/csharp/nullable-references), which warns us about problematic *null* values. If you're upgrading to C# 8, you may run into a few challenges related to Entity Framework. Let's walk through the upgrade and devise a few new patterns to adopt for using Entity Framework with C# 8.
+C# 8 adds [Nullable Reference Types](https://learn.microsoft.com/en-us/dotnet/csharp/nullable-references), which warns us about problematic *null* values. If you're upgrading to C# 8, you may run into a few challenges related to Entity Framework. Let's walk through the upgrade and devise a few new patterns to adopt for using Entity Framework with C# 8.
 
 ## Upgrading Entity Framework Core
 
