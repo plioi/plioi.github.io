@@ -77,7 +77,7 @@ Because we know how each `Create` method is really implemented, we can sit back 
 
 ## A Natural Pitfall
 
-The single biggest mistake people are going to make when using Nullable Reference Types is to quickly "chase" the warning message, taking it too literally, without stopping to think through the larger context. The first warning motivated us to place `?` hints where the compiler wanted us to. If we just de the same here without thinking, though, we would create a growing problem:
+The single biggest mistake people are going to make when using Nullable Reference Types is to quickly "chase" the warning message, taking it too literally, without stopping to think through the larger context. The first warning motivated us to place `?` hints where the compiler wanted us to. If we just do the same here without thinking, though, we would create a growing problem:
 
 ```cs
 static IEnumerable<Listener?> DefaultExecutionListeners(Options options)
